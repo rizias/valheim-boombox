@@ -1,0 +1,12 @@
+--- a/ffbuild/library.mak
++++ b/ffbuild/library.mak
+@@ -35,7 +35,8 @@
+ endif
+ $(SUBDIR)$(LIBNAME): $(OBJS) $(STLIBOBJS)
+ 	$(RM) $@
+-	$(AR) $(ARFLAGS) $(AR_O) $^
++	$(file >$@.rsp,$^)
++	$(AR) $(ARFLAGS) $(AR_O) @$@.rsp
+ 	$(RANLIB) $@
+ 
+ install-headers: install-lib$(NAME)-headers install-lib$(NAME)-pkgconfig

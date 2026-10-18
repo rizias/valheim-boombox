@@ -1,0 +1,522 @@
+{
+  "referenceBodySize": 0.1,
+  "effects": {
+    "Damage": "damage-embers",
+    "Health": "health-cross",
+    "Stamina": "stamina-orbit",
+    "Eitr": "eitr-aura-blue",
+    "Speed": "speed-wind"
+  },
+  "extras": {
+    "Coins": "coins-sparks",
+    "Notes": "music-note"
+  },
+  "variants": [
+    {
+      "id": "damage-embers",
+      "layers": [
+        {
+          "name": "heat",
+          "renderMode": "billboard",
+          "texture": "glow",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 1,
+          "startLifetime": [1.5],
+          "startSize": [0.17],
+          "offset": [0, 0, 0.05],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 1, 0.35, 0.35, 0],
+            [0.35, 1, 0.35, 0.35, 0.25],
+            [0.65, 1, 0.35, 0.35, 0.25],
+            [1, 1, 0.35, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.85],
+            [0.5, 1],
+            [1, 0.9]
+          ]
+        },
+        {
+          "name": "embers",
+          "renderMode": "billboard",
+          "texture": "dot",
+          "textureGlow": 1,
+          "space": "boombox",
+          "maxParticles": 22,
+          "rateOverTime": 18,
+          "startLifetime": [0.6, 1],
+          "startSize": [0.006, 0.011],
+          "startSpeed": [0.01, 0.04],
+          "shape": "sphere",
+          "radius": 0.055,
+          "radiusThickness": 1,
+          "velocity": [0, 0.08, 0],
+          "noiseStrength": 0.025,
+          "noiseFrequency": 3,
+          "colorOverLifetime": [
+            [0, 1, 0.9, 0.5, 0],
+            [0.15, 1, 0.6, 0.3, 1],
+            [1, 1, 0.35, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 1],
+            [1, 0.4]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-cross",
+      "layers": [
+        {
+          "name": "halo",
+          "renderMode": "billboard",
+          "texture": "glow",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 1.4,
+          "startLifetime": [2.1],
+          "startSize": [0.17],
+          "offset": [0, 0, 0.05],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 0.47, 1, 0.35, 0],
+            [0.35, 0.47, 1, 0.35, 0.22],
+            [0.65, 0.47, 1, 0.35, 0.22],
+            [1, 0.47, 1, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.85],
+            [0.5, 1],
+            [1, 0.9]
+          ]
+        },
+        {
+          "name": "crosses",
+          "renderMode": "billboard",
+          "texture": "cross",
+          "textureGlow": 0.3,
+          "space": "boombox",
+          "maxParticles": 5,
+          "rateOverTime": 2.2,
+          "startLifetime": [1, 1.4],
+          "startSize": [0.03, 0.038],
+          "startSpeed": [0.005, 0.02],
+          "offset": [0, 0, -0.02],
+          "shape": "sphere",
+          "radius": 0.05,
+          "radiusThickness": 1,
+          "velocity": [0, 0.06, 0],
+          "noiseStrength": 0.01,
+          "noiseFrequency": 1.5,
+          "colorOverLifetime": [
+            [0, 0.47, 1, 0.35, 0],
+            [0.15, 0.47, 1, 0.35, 1],
+            [0.7, 0.47, 1, 0.35, 1],
+            [1, 0.47, 1, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0],
+            [0.15, 1.15],
+            [0.3, 1],
+            [1, 0.7]
+          ]
+        },
+        {
+          "name": "sparkles",
+          "renderMode": "billboard",
+          "texture": "dot",
+          "textureGlow": 0.7,
+          "space": "boombox",
+          "maxParticles": 18,
+          "rateOverTime": 18,
+          "startLifetime": [0.45, 0.9],
+          "startSize": [0.007, 0.012],
+          "startSpeed": [0.02, 0.06],
+          "shape": "sphere",
+          "radius": 0.065,
+          "radiusThickness": 1,
+          "velocity": [0, 0.03, 0],
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 0],
+            [0.1, 1, 1, 1, 1],
+            [0.5, 0.47, 1, 0.35, 1],
+            [1, 0.47, 1, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 1],
+            [1, 0.35]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stamina-orbit",
+      "layers": [
+        {
+          "name": "halo",
+          "renderMode": "billboard",
+          "texture": "glow",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 1.4,
+          "startLifetime": [2.1],
+          "startSize": [0.16],
+          "offset": [0, 0, 0.05],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 1, 0.74, 0.35, 0],
+            [0.35, 1, 0.74, 0.35, 0.12],
+            [0.65, 1, 0.74, 0.35, 0.12],
+            [1, 1, 0.74, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.85],
+            [0.5, 1],
+            [1, 0.9]
+          ]
+        },
+        {
+          "name": "orbit",
+          "renderMode": "billboard",
+          "texture": "dot",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 26,
+          "rateOverTime": 20,
+          "startLifetime": [1, 1.3],
+          "startSize": [0.007, 0.011],
+          "shape": "circle",
+          "radius": 0.085,
+          "shapeRotation": [90, 0, 0],
+          "orbital": [0, 2.5, 0],
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 0],
+            [0.15, 1, 1, 1, 1],
+            [0.5, 1, 0.74, 0.35, 1],
+            [1, 1, 0.74, 0.35, 0]
+          ]
+        },
+        {
+          "name": "glints",
+          "renderMode": "billboard",
+          "texture": "sparkle",
+          "textureGlow": 0.25,
+          "space": "local",
+          "maxParticles": 2,
+          "rateOverTime": 1.5,
+          "startLifetime": [0.5, 0.7],
+          "startSize": [0.03, 0.036],
+          "shape": "circle",
+          "radius": 0.085,
+          "shapeRotation": [90, 0, 0],
+          "orbital": [0, 2.5, 0],
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 1],
+            [1, 1, 0.74, 0.35, 1]
+          ],
+          "sizeOverLifetime": [
+            [0, 0],
+            [0.5, 1],
+            [1, 0]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eitr-aura-blue",
+      "layers": [
+        {
+          "name": "orb",
+          "renderMode": "billboard",
+          "texture": "glow",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 1.5,
+          "startLifetime": [2.25],
+          "startSize": [0.2],
+          "offset": [0, 0, 0.05],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 0.29, 0.48, 1, 0],
+            [0.35, 0.29, 0.48, 1, 0.32],
+            [0.65, 0.29, 0.48, 1, 0.32],
+            [1, 0.29, 0.48, 1, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.85],
+            [0.5, 1],
+            [1, 0.9]
+          ]
+        },
+        {
+          "name": "sparks",
+          "renderMode": "billboard",
+          "texture": "dot",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 26,
+          "rateOverTime": 22,
+          "startLifetime": [0.7, 1.1],
+          "startSize": [0.006, 0.01],
+          "shape": "sphere",
+          "radius": 0.07,
+          "radiusThickness": 0.2,
+          "velocity": [0, 0.025, 0],
+          "orbital": [0, 2, 0],
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 0],
+            [0.2, 0.29, 0.48, 1, 1],
+            [1, 0.29, 0.48, 1, 0]
+          ]
+        },
+        {
+          "name": "glints",
+          "renderMode": "billboard",
+          "texture": "sparkle",
+          "textureGlow": 0.4,
+          "space": "local",
+          "maxParticles": 3,
+          "rateOverTime": 2.5,
+          "startLifetime": [0.4, 0.7],
+          "startSize": [0.024, 0.032],
+          "startRotation": [-20, 20],
+          "offset": [0, 0, -0.025],
+          "shape": "sphere",
+          "radius": 0.07,
+          "radiusThickness": 1,
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 1],
+            [0.25, 0.29, 0.48, 1, 1],
+            [1, 0.29, 0.48, 1, 1]
+          ],
+          "sizeOverLifetime": [
+            [0, 0],
+            [0.35, 1],
+            [1, 0]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "speed-wind",
+      "layers": [
+        {
+          "name": "streaks",
+          "renderMode": "stretch",
+          "texture": "dot",
+          "textureGlow": 0.8,
+          "space": "boombox",
+          "maxParticles": 8,
+          "rateOverTime": 12,
+          "startLifetime": [0.35, 0.5],
+          "startSize": [0.0035, 0.005],
+          "startSpeed": [0.4, 0.55],
+          "offset": [0.08, 0, -0.03],
+          "shape": "cone",
+          "radius": 0.07,
+          "radiusThickness": 1,
+          "coneAngle": 3,
+          "shapeRotation": [0, -90, 0],
+          "lengthScale": 5,
+          "velocityScale": 0.1,
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 0],
+            [0.2, 0.85, 0.95, 1, 0.9],
+            [1, 0.85, 0.95, 1, 0]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coins-sparks",
+      "layers": [
+        {
+          "name": "coins",
+          "renderMode": "coin",
+          "space": "world",
+          "maxParticles": 4,
+          "burstCount": 1,
+          "burstInterval": 2,
+          "startLifetime": [4],
+          "startSize": [0.033],
+          "startSpeed": [0],
+          "rotationSpeed": [180, 360],
+          "rotationAxes": [0, 1, 0],
+          "gravityModifier": 1,
+          "offset": [0, -0.045, 0],
+          "shape": "point",
+          "radiusThickness": 1,
+          "sizeOverLifetime": [
+            [0, 1],
+            [0.85, 1],
+            [1, 0]
+          ],
+          "collision": {
+            "bounce": 0.35,
+            "dampen": 0.35,
+            "radiusScale": 0.3
+          },
+          "impact": {
+            "name": "sparks",
+            "renderMode": "billboard",
+            "texture": "dot",
+            "textureGlow": 1,
+            "space": "world",
+            "maxParticles": 10,
+            "burstCount": 8,
+            "startLifetime": [0.35, 0.5],
+            "startSize": [0.009, 0.013],
+            "startSpeed": [0.15, 0.3],
+            "gravityModifier": 0.8,
+            "shape": "cone",
+            "radius": 0.004,
+            "radiusThickness": 1,
+            "coneAngle": 55,
+            "shapeRotation": [-90, 0, 0],
+            "colorOverLifetime": [
+              [0, 1, 1, 1, 1],
+              [0.35, 1, 0.74, 0.35, 1],
+              [1, 1, 0.74, 0.35, 0]
+            ]
+          },
+          "impactMinSpeed": 0.5,
+          "coinTint": [1, 0.86, 0.5],
+          "coinEmission": [0.4, 0.26, 0.05],
+          "coinMetallic": 0.6,
+          "coinSmoothness": 0.6
+        },
+        {
+          "name": "glint",
+          "renderMode": "billboard",
+          "texture": "sparkle",
+          "textureGlow": 0.35,
+          "space": "world",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 2,
+          "startLifetime": [0.8],
+          "startSize": [0.055],
+          "rotationSpeed": [120, 120],
+          "gravityModifier": 1,
+          "offset": [0, -0.045, 0],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 1],
+            [0.4, 1, 0.74, 0.35, 1],
+            [1, 1, 0.74, 0.35, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.25],
+            [0.12, 0.35],
+            [0.2, 1],
+            [0.45, 0.45],
+            [1, 0]
+          ],
+          "collision": {
+            "bounce": 0.35,
+            "dampen": 0.35,
+            "radiusScale": 0.4
+          }
+        }
+      ]
+    },
+    {
+      "id": "music-note",
+      "layers": [
+        {
+          "name": "halo",
+          "renderMode": "billboard",
+          "texture": "glow",
+          "textureGlow": 1,
+          "space": "local",
+          "maxParticles": 2,
+          "burstCount": 1,
+          "burstInterval": 1.4,
+          "startLifetime": [2.1],
+          "startSize": [0.16],
+          "offset": [0, 0, 0.05],
+          "shape": "point",
+          "colorOverLifetime": [
+            [0, 0.29, 0.48, 1, 0],
+            [0.35, 0.29, 0.48, 1, 0.16],
+            [0.65, 0.29, 0.48, 1, 0.16],
+            [1, 0.29, 0.48, 1, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0.85],
+            [0.5, 1],
+            [1, 0.9]
+          ]
+        },
+        {
+          "name": "notes",
+          "renderMode": "billboard",
+          "texture": "note",
+          "textureGlow": 0.3,
+          "space": "boombox",
+          "maxParticles": 4,
+          "rateOverTime": 1.4,
+          "startLifetime": [1.3, 1.7],
+          "startSize": [0.032, 0.04],
+          "startRotation": [-20, 20],
+          "offset": [0, 0, -0.02],
+          "shape": "sphere",
+          "radius": 0.05,
+          "radiusThickness": 1,
+          "velocity": [0, 0.055, 0],
+          "noiseStrength": 0.012,
+          "noiseFrequency": 1.5,
+          "colorOverLifetime": [
+            [0, 0.29, 0.48, 1, 0],
+            [0.12, 0.29, 0.48, 1, 1],
+            [0.7, 0.29, 0.48, 1, 1],
+            [1, 0.29, 0.48, 1, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 0],
+            [0.15, 1.15],
+            [0.3, 1],
+            [1, 0.7]
+          ]
+        },
+        {
+          "name": "sparkles",
+          "renderMode": "billboard",
+          "texture": "dot",
+          "textureGlow": 0.7,
+          "space": "boombox",
+          "maxParticles": 12,
+          "rateOverTime": 12,
+          "startLifetime": [0.45, 0.9],
+          "startSize": [0.007, 0.012],
+          "startSpeed": [0.02, 0.06],
+          "shape": "sphere",
+          "radius": 0.065,
+          "radiusThickness": 1,
+          "velocity": [0, 0.03, 0],
+          "colorOverLifetime": [
+            [0, 1, 1, 1, 0],
+            [0.1, 1, 1, 1, 1],
+            [0.5, 1, 1, 1, 1],
+            [1, 1, 1, 1, 0]
+          ],
+          "sizeOverLifetime": [
+            [0, 1],
+            [1, 0.35]
+          ]
+        }
+      ]
+    }
+  ]
+}

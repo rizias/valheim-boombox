@@ -1,0 +1,10 @@
+{
+  "version": "7.1.5",
+  "source": "https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz",
+  "sourceSha256": "DE668509CAF9E35E3CD162473441FDB29538C6D96ED080292B3CF9E6FC5D558F",
+  "license": "LGPL-2.1-or-later",
+  "platform": "Windows x64",
+  "configuration": "configuration: --toolchain=msvc --arch=x86_64 --prefix=/opt/valheim-audio --disable-autodetect --disable-gpl --disable-nonfree --disable-version3 --disable-debug --disable-doc --disable-stripping --disable-network --disable-avdevice --disable-postproc --disable-swscale --disable-ffplay --disable-everything --enable-ffmpeg --enable-ffprobe --enable-demuxers --enable-parsers --enable-decoders --enable-encoder='pcm_s16le,pcm_f32le' --enable-muxer='wav,f32le' --enable-protocol='file,pipe' --enable-filter='aresample,aformat,anull,atrim,asetpts,abuffer,abuffersink,highpass,lowpass'",
+  "ffmpegSha256": "A74C732EDC366A9F040E89E1A4315348FD1A0B11F4B7E3C18F3F8AA8722C4A21",
+  "ffprobeSha256": "D3C6F51E5ED063F1CD462BB905BF812CC7E89A32EBF00602E4B38540E51C430D"
+}

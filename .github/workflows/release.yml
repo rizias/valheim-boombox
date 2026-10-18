@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Semver bump
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_SOURCE_SHA: ${{ github.sha }}
+      RELEASE_BRANCH: ${{ github.event.repository.default_branch }}
+      RELEASE_REF: ${{ github.ref }}
+      RELEASE_BUMP: ${{ inputs.bump }}
+      VALHEIM_QA_ROOT: ${{ runner.temp }}/boombox-qa
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate release source and reserve version
+        id: plan
+        run: ./tools/release/prepare-hosted.ps1
+      - name: Release infrastructure checks
+        run: |
+          ./tests/offline/github-publication-check.ps1
+          ./tests/offline/release-receipt-check.ps1
+      - name: Restore FFmpeg distribution
+        id: ffmpeg
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/boombox-ffmpeg
+          key: ffmpeg-ucrt64-${{ runner.os }}-${{ hashFiles('third_party/ffmpeg/manifest.json', 'third_party/ffmpeg/library-response-file.patch', 'tools/release/build-ffmpeg.sh', 'tools/release/complete-ffmpeg.ps1') }}
+      - name: Prepare MinGW toolchain
+        if: steps.ffmpeg.outputs.cache-hit != 'true'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            make nasm diffutils tar xz curl patch
+      - name: Build audio tools from verified source
+        if: steps.ffmpeg.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        env:
+          FFMPEG_VERSION: ${{ steps.plan.outputs.ffmpeg-version }}
+          FFMPEG_SOURCE: ${{ steps.plan.outputs.ffmpeg-source }}
+          FFMPEG_SHA256: ${{ steps.plan.outputs.ffmpeg-sha256 }}
+        run: bash tools/release/build-ffmpeg.sh "$FFMPEG_SOURCE" "$FFMPEG_VERSION" "$FFMPEG_SHA256" "$RUNNER_TEMP/boombox-ffmpeg-work" "$RUNNER_TEMP/boombox-ffmpeg" third_party/ffmpeg/library-response-file.patch
+      - name: Record FFmpeg provenance
+        if: steps.ffmpeg.outputs.cache-hit != 'true'
+        run: ./tools/release/complete-ffmpeg.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -SourceManifest ./third_party/ffmpeg/manifest.json
+      - name: Verify FFmpeg and prepare build references
+        run: |
+          ./tools/release/complete-ffmpeg.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -VerifyOnly
+          ./tools/release/check-audio-tools.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -OutputDirectory (Join-Path $env:RUNNER_TEMP 'boombox-audio-check')
+          ./tools/release/bootstrap-hosted.ps1
+      - name: Build, verify and publish prerelease
+        env:
+          RELEASE_VERSION: ${{ steps.plan.outputs.version }}
+        run: |
+          ./publish-github.ps1 -CheckOnly
+          ./publish-github.ps1 -Version $env:RELEASE_VERSION

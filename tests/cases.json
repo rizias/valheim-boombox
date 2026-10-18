@@ -1,0 +1,1203 @@
+[
+  {
+    "id": "A-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Текущая установленная версия Valheim; общая установка игры, изолированные QA-профили/сохранения. Версия1.0.12 и отдельная копия игры больше не требуются.",
+    "references": [
+      "tests/integration/QaEnvironmentChecks.cs",
+      "tests/integration/QaRegistryChecks.cs",
+      "tests/integration/QaProfiles.cs"
+    ]
+  },
+  {
+    "id": "A-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Текущая установленная версия Valheim; общая установка игры, изолированные QA-профили/сохранения. Версия1.0.12 и отдельная копия игры больше не требуются.",
+    "references": [
+      "tests/integration/QaEnvironmentChecks.cs",
+      "tests/integration/QaRegistryChecks.cs",
+      "tests/integration/QaProfiles.cs"
+    ]
+  },
+  {
+    "id": "A-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Текущая установленная версия Valheim; общая установка игры, изолированные QA-профили/сохранения. Версия1.0.12 и отдельная копия игры больше не требуются.",
+    "references": [
+      "tests/integration/QaEnvironmentChecks.cs",
+      "tests/integration/QaRegistryChecks.cs",
+      "tests/integration/QaProfiles.cs"
+    ]
+  },
+  {
+    "id": "A-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Текущая установленная версия Valheim; общая установка игры, изолированные QA-профили/сохранения. Версия1.0.12 и отдельная копия игры больше не требуются.",
+    "references": [
+      "tests/integration/QaEnvironmentChecks.cs",
+      "tests/integration/QaRegistryChecks.cs",
+      "tests/integration/QaProfiles.cs"
+    ]
+  },
+  {
+    "id": "A-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Текущая установленная версия Valheim; общая установка игры, изолированные QA-профили/сохранения. Версия1.0.12 и отдельная копия игры больше не требуются.",
+    "references": [
+      "tests/integration/QaEnvironmentChecks.cs",
+      "tests/integration/QaRegistryChecks.cs",
+      "tests/integration/QaProfiles.cs"
+    ]
+  },
+  {
+    "id": "B-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "B-08",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один аппарат и одна кассета; доступный старт на верстаке1. Базовые и последующие рецепты из PLAY.md; четыре цветных предмета и бронзовый старт отменены. Сохранить проверки отказа/расхода/вместимости.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs"
+    ]
+  },
+  {
+    "id": "C-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-05",
+    "decision": "active-scripted",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayRemainingCases.cs"
+    ]
+  },
+  {
+    "id": "C-06",
+    "decision": "active-scripted",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayRemainingCases.cs"
+    ]
+  },
+  {
+    "id": "C-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-08",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-09",
+    "decision": "active-scripted",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs",
+      "src/BoomboxPlugin.cs"
+    ]
+  },
+  {
+    "id": "C-10",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-12",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-13",
+    "decision": "active-scripted",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayFullPickup.cs"
+    ]
+  },
+  {
+    "id": "C-14",
+    "decision": "archived-superseded",
+    "currentContext": "Отменённая отдельная кнопка постановки; исторический маршрут сохранён без PASS. Текущий штатный перенос на транспорт проверен в K-02, сохранность привязки — K-03.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-15",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiSlots.cs",
+      "tests/integration/gameplay/QaGameplayUiRoute.cs",
+      "tests/integration/gameplay/QaGameplayUsability.cs"
+    ]
+  },
+  {
+    "id": "C-16",
+    "decision": "active-scripted",
+    "currentContext": "Один физический аппарат; Extra Slots необязателен. Проверять реальные действия инвентаря, сохранность данных, клавиши, совместимость экипировки и размеры UI. Использовать действующие элементы меню, не вызывать отсутствующую старую кнопку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiScale.cs"
+    ]
+  },
+  {
+    "id": "D-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-06",
+    "decision": "active-scripted",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayFullEject.cs"
+    ]
+  },
+  {
+    "id": "D-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-08",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-09",
+    "decision": "active-scripted",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPlaylistValidation.cs"
+    ]
+  },
+  {
+    "id": "D-10",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "D-12",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыка управляется библиотекой/плейлистами независимо от пяти свойств одной кассеты. Вставка/извлечение/замена сохраняют предмет и ранги. Реальные CUE/ошибки файлов/очередь остаются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/offline/NativeMusicChecks.cs"
+    ]
+  },
+  {
+    "id": "E-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-08",
+    "decision": "active-scripted",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPlaylistMetadata.cs"
+    ]
+  },
+  {
+    "id": "E-09",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-10",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "E-12",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Аппарат I–VIII; одна кассета, пять независимых рангов0–VII. На каждом ранге кассеты следующий босс; проверки материалов, станции, пределов, сохранности и независимости свойств сохраняются.",
+    "references": [
+      "tests/offline/UpgradeChecks.cs",
+      "tests/integration/gameplay/QaGameplayUpgradeCycle.cs"
+    ]
+  },
+  {
+    "id": "F-01",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-02",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-03",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-04",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-05",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-06",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-07",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-08",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-09",
+    "decision": "archived-superseded",
+    "currentContext": "Владелец отменил слияние и несколько типов физических кассет; одна кассета с независимыми свойствами.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayIconPreview.cs"
+    ]
+  },
+  {
+    "id": "F-10",
+    "decision": "active-scripted",
+    "currentContext": "Слияние физических кассет отменено владельцем. Одна кассета хранит пять свойств. Проверка отображения состава остаётся отдельно.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCassetteCombinations.cs"
+    ]
+  },
+  {
+    "id": "G-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-06",
+    "decision": "active-scripted",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayEnemyWave.cs"
+    ]
+  },
+  {
+    "id": "G-07",
+    "decision": "active-scripted",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayEnemyWave.cs"
+    ]
+  },
+  {
+    "id": "G-08",
+    "decision": "active-scripted",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayOrdinaryCombat.cs"
+    ]
+  },
+  {
+    "id": "G-09",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-10",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "G-12",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Музыкальные события и безопасный урон при восьми уровнях аппарата; звук локальный. Сохраняются ограничения целей, отсутствие повторного события, пауза и независимость от громкости.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayCombat.cs",
+      "tests/integration/gameplay/QaGameplayDamageRace.cs",
+      "tests/integration/gameplay/QaGameplayMusic.cs"
+    ]
+  },
+  {
+    "id": "H-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "H-07",
+    "decision": "active-scripted",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayRecoverySwitches.cs"
+    ]
+  },
+  {
+    "id": "H-08",
+    "decision": "active-scripted",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayRecoveryReload.cs"
+    ]
+  },
+  {
+    "id": "H-09",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Восстановление определяется актуальными рангами/аурами/настройками. Сохраняются независимые периоды, пределы ресурсов, отсутствие выплаты на паузе/после переключений и независимость от визуальных выключателей.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayPoint3.cs",
+      "tests/integration/gameplay/QaGameplayAuraConfig.cs",
+      "tests/integration/gameplay/QaGameplayVisibility.cs"
+    ]
+  },
+  {
+    "id": "I-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-08",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-09",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-10",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "I-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Общий и отдельные визуальные переключатели не выключают игровое действие. Физический импульс применяется к свободным выпавшим предметам; брёвна, постройки, лодки и тележки исключены. Помощь рулевому — отдельная механика, не общий толчок транспорта.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayVisibility.cs",
+      "tests/integration/gameplay/QaGameplayDamagePhysics.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleOwn.cs"
+    ]
+  },
+  {
+    "id": "J-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-07",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "J-08",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Утверждённая модель3.2,17567треугольников, масштабношения0.8. Боковое свечение голубое; восемь уровней. Время на дисплее опционально. Сохраняются читаемость рун, детали, отсутствие перекрытий и корректная остановка движения.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayMount.cs",
+      "tests/integration/gameplay/QaGameplayShields.cs",
+      "tests/integration/gameplay/QaGameplayCatalog.cs"
+    ]
+  },
+  {
+    "id": "K-01",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayTransportCases.cs"
+    ]
+  },
+  {
+    "id": "K-02",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-03",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-07",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-08",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-09",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-10",
+    "decision": "active-scripted",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "K-11",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Сохраняются ID/кассета/ранги/уровень/обвесы и музыкальное состояние при хранении, переносе, смерти, перезаходе и миграции. Исторические fixtures не подменяют текущую приёмку.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayLifecycle.cs",
+      "tests/integration/gameplay/QaGameplayLifecycleRemaining.cs"
+    ]
+  },
+  {
+    "id": "L-01",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-02",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-03",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-05",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-06",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-07",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "L-08",
+    "decision": "active-scripted",
+    "currentContext": "Русский/английский и английский fallback, доступные подсказки, длинные строки и полный актуальный путь игрока. Тексты о четырёх цветах/слиянии больше не являются требованиями.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs"
+    ]
+  },
+  {
+    "id": "M-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Проверять именно текущий install/source ZIP: SHA, ресурсы, документацию, переносимость, лицензии и отсутствие игры/личных/QAданных. Публикация — отдельное действие.",
+    "references": [
+      "tests/integration/QaReleaseStage.cs",
+      "tests/integration/QaReleaseSource.cs"
+    ]
+  },
+  {
+    "id": "M-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Проверять именно текущий install/source ZIP: SHA, ресурсы, документацию, переносимость, лицензии и отсутствие игры/личных/QAданных. Публикация — отдельное действие.",
+    "references": [
+      "tests/integration/QaReleaseStage.cs",
+      "tests/integration/QaReleaseSource.cs"
+    ]
+  },
+  {
+    "id": "M-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Проверять именно текущий install/source ZIP: SHA, ресурсы, документацию, переносимость, лицензии и отсутствие игры/личных/QAданных. Публикация — отдельное действие.",
+    "references": [
+      "tests/integration/QaReleaseStage.cs",
+      "tests/integration/QaReleaseSource.cs"
+    ]
+  },
+  {
+    "id": "M-04",
+    "decision": "active-scripted",
+    "currentContext": "Проверять именно текущий install/source ZIP: SHA, ресурсы, документацию, переносимость, лицензии и отсутствие игры/личных/QAданных. Публикация — отдельное действие.",
+    "references": [
+      "tests/integration/QaReleaseStage.cs",
+      "tests/integration/QaReleaseSource.cs"
+    ]
+  },
+  {
+    "id": "M-05",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Проверять именно текущий install/source ZIP: SHA, ресурсы, документацию, переносимость, лицензии и отсутствие игры/личных/QAданных. Публикация — отдельное действие.",
+    "references": [
+      "tests/integration/QaReleaseStage.cs",
+      "tests/integration/QaReleaseSource.cs"
+    ]
+  },
+  {
+    "id": "N-01",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Поздние дополнения: библиотека/плейлисты/кассета, реальный UI, ползунки и отсутствие Python в поставке. Проверять актуальный интерфейс.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/integration/gameplay/QaGameplayMenuLatency.cs"
+    ]
+  },
+  {
+    "id": "N-02",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Поздние дополнения: библиотека/плейлисты/кассета, реальный UI, ползунки и отсутствие Python в поставке. Проверять актуальный интерфейс.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/integration/gameplay/QaGameplayMenuLatency.cs"
+    ]
+  },
+  {
+    "id": "N-03",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Поздние дополнения: библиотека/плейлисты/кассета, реальный UI, ползунки и отсутствие Python в поставке. Проверять актуальный интерфейс.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/integration/gameplay/QaGameplayMenuLatency.cs"
+    ]
+  },
+  {
+    "id": "N-04",
+    "decision": "active-existing-suite-reference",
+    "currentContext": "Поздние дополнения: библиотека/плейлисты/кассета, реальный UI, ползунки и отсутствие Python в поставке. Проверять актуальный интерфейс.",
+    "references": [
+      "tests/integration/gameplay/QaGameplayUiComplete.cs",
+      "tests/integration/gameplay/QaGameplayMenuLatency.cs"
+    ]
+  }
+]

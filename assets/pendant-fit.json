@@ -1,0 +1,208 @@
+{
+  "MushroomYellow": {
+    "rotation": [-90, 0, 0]
+  },
+  "TrophyBarka": {
+    "mainBody": { "min": [-0.75, -1.0, -0.3], "max": [0.75, 0.8, 1.3] }
+  },
+  "TrophyBjorn": {
+    "mainBody": { "min": [-0.6, -0.55, -0.3], "max": [0.6, 0.8, 0.95] }
+  },
+  "TrophyBjornUndead": {
+    "mainBody": { "min": [-0.4, -0.55, -0.05], "max": [0.4, 0.3, 1.1] }
+  },
+  "TrophyBonemawSerpent": {
+    "mainBody": { "min": [-2.009, -0.683, -2.305], "max": [2.103, 3.924, 3.133] },
+    "rotation": [-90, 0, 0]
+  },
+  "TrophyCharredMage": {
+    "mainBody": { "min": [-0.35, -0.3, -0.1], "max": [0.35, 0.33, 0.35] }
+  },
+  "TrophyCultist": {
+    "mainBody": { "min": [-0.35, -0.45, -0.15], "max": [0.35, 0.35, 0.85] }
+  },
+  "TrophyCultist_Hildir": {
+    "mainBody": { "min": [-0.332, -0.383, -0.101], "max": [0.332, 0.417, 0.871] },
+    "rotation": [-15, 0, 0]
+  },
+  "TrophyDeathsquito": {
+    "mainBody": { "min": [-0.08, -0.03, -0.01], "max": [0.08, 0.1, 0.12] }
+  },
+  "TrophyDeer": {
+    "mainBody": { "min": [-0.2816, -0.2318, -0.1029], "max": [0.2682, 0.305, 0.4103] }
+  },
+  "TrophyDeerWhite": {
+    "mainBody": { "min": [-0.2816, -0.2318, -0.1029], "max": [0.2682, 0.305, 0.4103] }
+  },
+  "TrophyDragonQueen": {
+    "mainBody": { "min": [-0.544, -0.443, -0.314], "max": [0.536, 0.804, 1.082] },
+    "rotation": [-60, 0, 0]
+  },
+  "TrophyDraugr": {
+    "mainBody": { "min": [-0.16, -0.165, -0.096], "max": [0.16, 0.211, 0.243] },
+    "rotation": [-30, 0, 0]
+  },
+  "TrophyDraugrFem": {
+    "mainBody": { "min": [-0.22, -0.25, -0.25], "max": [0.22, 0.2, 0.25] }
+  },
+  "TrophyEikthyr": {
+    "mainBody": { "min": [-0.2, -0.45, 0.2], "max": [0.25, 0.3, 0.9] }
+  },
+  "TrophyElaking": {
+    "mainBody": { "min": [-0.15, -0.15, 0.0], "max": [0.15, 0.22, 0.3] }
+  },
+  "TrophyFader": {
+    "mainBody": { "min": [-0.8, -1.6, 0.2], "max": [0.8, 0.5, 2.1] }
+  },
+  "TrophyForestTroll": {
+    "mainBody": { "min": [-0.8, -0.75, -0.6], "max": [0.8, 1.0, 1.35] }
+  },
+  "TrophyGjall": {
+    "mainBody": { "min": [-0.95, -0.45, -0.25], "max": [0.95, 1.35, 0.8] }
+  },
+  "TrophyGoblin": {
+    "mainBody": { "min": [-0.129, -0.098, -0.095], "max": [0.129, 0.144, 0.192] },
+    "rotation": [-45, 0, 0]
+  },
+  "TrophyGoblinBrute": {
+    "mainBody": { "min": [-0.345, -0.471, -0.393], "max": [0.346, 0.532, 0.848] },
+    "rotation": [-45, 0, 0]
+  },
+  "TrophyGoblinBruteBrosBrute": {
+    "mainBody": { "min": [-0.346, -0.509, -0.422], "max": [0.345, 0.521, 0.89] },
+    "rotation": [-45, 0, 0]
+  },
+  "TrophyGoblinBruteBrosShaman": {
+    "mainBody": { "min": [-0.105, -0.104, -0.142], "max": [0.105, 0.188, 0.199] },
+    "rotation": [-35, 0, 0]
+  },
+  "TrophyGoblinKing": {
+    "mainBody": { "min": [-1.2, -1.4, -0.1], "max": [1.2, 1.8, 2.6] }
+  },
+  "TrophyGreydwarfShaman": {
+    "mainBody": { "min": [-0.16, -0.58, -0.12], "max": [0.16, 0.25, 0.25] }
+  },
+  "TrophyGrowth": {
+    "mainBody": { "min": [-0.3394, -0.2654, -0.2036], "max": [0.3422, 0.2452, 0.2628] }
+  },
+  "TrophyHatchling": {
+    "mainBody": { "min": [-0.28, -0.27, -0.1], "max": [0.28, 0.2, 0.35] }
+  },
+  "TrophyJotunWarrior": {
+    "mainBody": { "min": [-0.246, -0.264, -0.069], "max": [0.246, 0.318, 0.398] },
+    "rotation": [-15, 0, 0]
+  },
+  "TrophyJotunWitch": {
+    "mainBody": { "min": [-0.23, -0.3, -0.15], "max": [0.23, 0.25, 0.42] }
+  },
+  "TrophyMoose": {
+    "mainBody": { "min": [-0.25, -0.6, -0.1], "max": [0.25, 0.2, 0.9] }
+  },
+  "TrophyNeck": {
+    "mainBody": { "min": [-0.213, -0.189, -0.274], "max": [0.235, 0.242, 0.373] },
+    "rotation": [-45, 0, 0]
+  },
+  "TrophySeal": {
+    "mainBody": { "min": [-0.3, -0.25, -0.12], "max": [0.3, 0.35, 0.42] }
+  },
+  "TrophySeekerQueen": {
+    "mainBody": { "min": [-0.776, -0.519, -0.003], "max": [0.78, 0.893, 2.488] },
+    "rotation": [-45, 0, 0]
+  },
+  "TrophySerpent": {
+    "mainBody": { "min": [-0.8, -1.7, -0.3], "max": [0.8, 1.0, 2.6] }
+  },
+  "TrophyTick": {
+    "mainBody": { "min": [-0.12, -0.28, -0.02], "max": [0.12, 0.3, 0.22] }
+  },
+  "TrophyVolture": {
+    "mainBody": { "min": [-0.15, -0.15, -0.1], "max": [0.15, 0.3, 0.35] }
+  },
+  "ValheimBoombox_CassetteArchive": {
+    "mainBody": { "min": [-0.051, -0.0, -0.01], "max": [0.051, 0.064, 0.01] },
+    "rotation": [-90, 0, 0],
+    "hangPoint": [-0.0449, 0.0]
+  },
+  "ValheimBoombox_Item": {
+    "mainBody": { "min": [-0.432, 0.0, -0.121], "max": [0.432, 0.489, 0.127] },
+    "rotation": [-90, 180, 0],
+    "hangPoint": [-0.3802, 0.003]
+  },
+  "TrophySGolem": {
+    "hangPoint": [-0.079, 1.85]
+  },
+  "Raft": {
+    "rotation": [0, 90, 0],
+    "turn": -40,
+    "mainBody": { "min": [-3.171, -1.392, -3.161], "max": [4.891, 6.042, 3.161] }
+  },
+  "Karve": {
+    "rotation": [0, 90, 0],
+    "turn": -40,
+    "mainBody": { "min": [-5.074, -1.014, -3.903], "max": [5.214, 8.329, 3.903] }
+  },
+  "VikingShip": {
+    "rotation": [0, 90, 0],
+    "turn": -40,
+    "mainBody": { "min": [-11.237, -1.462, -4.703], "max": [12.037, 11.000, 4.703] }
+  },
+  "VikingShip_Ashlands": {
+    "rotation": [0, 90, 0],
+    "turn": -40,
+    "mainBody": { "min": [-17.888, -1.843, -7.617], "max": [17.948, 17.896, 7.617] }
+  },
+  "blastfurnace": {
+    "mainBody": { "min": [-2.346, -0.521, -1.968], "max": [2.326, 5.606, 2.768] }
+  },
+  "TrophyTheElder": {
+    "rotation": [-30, 0, 0]
+  },
+  "piece_oven": {
+    "rotation": [0, -90, 0]
+  },
+  "Lingondricka": {
+    "rotation": [-90, 0, 0]
+  },
+  "MushroomBzerker": {
+    "rotation": [-90, 0, 0]
+  },
+  "Bronze": {
+    "rotation": [-90, 180, 0]
+  },
+  "Copper": {
+    "rotation": [-90, 180, 0]
+  },
+  "Tin": {
+    "rotation": [-90, 180, 0]
+  },
+  "Iron": {
+    "rotation": [-90, 180, 0]
+  },
+  "Silver": {
+    "rotation": [-90, 180, 0]
+  },
+  "BlackMetal": {
+    "rotation": [-90, 180, 0]
+  },
+  "Gold": {
+    "rotation": [-90, 180, 0]
+  },
+  "Flametal": {
+    "rotation": [-90, 180, 0]
+  },
+  "FlametalNew": {
+    "rotation": [-90, 180, 0]
+  },
+  "Blueberries": {
+    "rotation": [-90, 0, 0]
+  },
+  "DragonEgg": {
+    "rotation": [-90, 0, 0]
+  },
+  "GreydwarfEye": {
+    "rotation": [90, 0, 0]
+  },
+  "piece_birdnest": {
+    "rotation": [20, 0, 0]
+  }
+}
