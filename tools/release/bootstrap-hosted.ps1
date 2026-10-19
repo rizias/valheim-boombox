@@ -10,8 +10,14 @@ $bepRoot = Join-Path $toolRoot 'bepinex'
 $steamZip = Join-Path $toolRoot 'steamcmd.zip'
 Invoke-WebRequest -Uri 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip' -OutFile $steamZip
 Expand-Archive -LiteralPath $steamZip -DestinationPath $steamRoot
-& (Join-Path $steamRoot 'steamcmd.exe') +force_install_dir $serverRoot +login anonymous +app_update 896660 validate +quit
-if ($LASTEXITCODE -ne 0) { throw 'SteamCMD could not install Valheim dedicated-server build references.' }
+$steamCmd = Join-Path $steamRoot 'steamcmd.exe'
+Push-Location -LiteralPath $steamRoot
+try {
+    & $steamCmd +login anonymous +app_info_update 1 +app_info_print 896660 +quit
+    if ($LASTEXITCODE -ne 0) { throw 'SteamCMD could not initialize the Valheim application metadata.' }
+    & $steamCmd +force_install_dir $serverRoot +login anonymous +app_update 896660 validate +quit
+    if ($LASTEXITCODE -ne 0) { throw 'SteamCMD could not install Valheim dedicated-server build references.' }
+} finally { Pop-Location }
 $managed = Join-Path $serverRoot 'valheim_server_Data/Managed'
 if (-not (Test-Path -LiteralPath (Join-Path $managed 'assembly_valheim.dll') -PathType Leaf)) { throw 'Dedicated-server Managed references are missing.' }
 $manifest = Get-Content -Raw -LiteralPath (Join-Path $root 'manifest.json') | ConvertFrom-Json
