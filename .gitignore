@@ -5,6 +5,7 @@
 !/.github/
 !/.github/workflows/
 !/.github/workflows/release.yml
+!/.github/workflows/checks.yml
 !/README.md
 !/README.ru.md
 !/BUILDING.md

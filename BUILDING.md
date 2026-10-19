@@ -8,6 +8,12 @@ For the normal workflow, double-click **`Release.cmd`**. It builds, tests, updat
 
 Use **GitHub Actions → Release** with patch/minor/major to publish automatically. **`PublishGitHub.cmd`** dispatches the same hosted job. The release guide documents dependency sources, prerequisites and limits.
 
+## Checks on push
+
+Every push starts **Actions → Checks**. It compiles the plugin, validates translations and runs the offline product, translation synchronization and release-infrastructure checks. It does not launch Valheim, change the version, push commits or publish a release. The job has read-only repository permissions.
+
+Successful runs retain a `checked-dll-<commit>` artifact for 14 days. It contains the DLL and product test report, not an install ZIP. Use the complete install ZIP for manual game testing. **Release** remains a separate manually started workflow.
+
 ## Compile the DLL
 
 1. Install PowerShell 7 and .NET SDK 10.
