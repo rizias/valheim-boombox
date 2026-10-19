@@ -13,9 +13,9 @@ Expand-Archive -LiteralPath $steamZip -DestinationPath $steamRoot
 $steamCmd = Join-Path $steamRoot 'steamcmd.exe'
 Push-Location -LiteralPath $steamRoot
 try {
-    & $steamCmd +login anonymous +app_info_update 1 +app_info_print 896660 +quit
-    if ($LASTEXITCODE -ne 0) { throw 'SteamCMD could not initialize the Valheim application metadata.' }
-    & $steamCmd +force_install_dir $serverRoot +login anonymous +app_update 896660 validate +quit
+    & $steamCmd +quit
+    Write-Output ('SteamCMD self-update exit code: ' + $LASTEXITCODE + '. The install command and required assemblies are checked separately.')
+    & $steamCmd +force_install_dir $serverRoot +login anonymous +app_info_update 1 +app_info_print 896660 +app_update 896660 validate +quit
     if ($LASTEXITCODE -ne 0) { throw 'SteamCMD could not install Valheim dedicated-server build references.' }
 } finally { Pop-Location }
 $managed = Join-Path $serverRoot 'valheim_server_Data/Managed'
