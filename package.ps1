@@ -83,7 +83,9 @@ if($Action -eq 'Stage'){
     $packagePlugin=Join-Path $packageRoot 'BepInEx/plugins/Rizias-ValheimBoombox'
     $packageToolRoot=if(Test-Path -LiteralPath (Join-Path $FFmpegRoot 'bin') -PathType Container){Join-Path $FFmpegRoot 'bin'}else{$FFmpegRoot}
     Copy-PackageFile $SourceDll (Join-Path $packagePlugin 'ValheimBoombox.dll')
-    Copy-PackageFile (Join-Path $MetadataDirectory 'README.md') (Join-Path $packageRoot 'README.md')
+    $packageReadme = [IO.File]::ReadAllText((Join-Path $MetadataDirectory 'README.md'))
+    $packageReadme = $packageReadme.Replace('](Screenshots/', '](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/')
+    Write-PackageText (Join-Path $packageRoot 'README.md') $packageReadme
     Copy-PackageFile (Join-Path $MetadataDirectory 'manifest.json') (Join-Path $packageRoot 'manifest.json')
     Copy-PackageFile $IconPath (Join-Path $packageRoot 'icon.png')
     Copy-PackageFile $IconPath (Join-Path $packagePlugin 'icon.png')

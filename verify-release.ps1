@@ -46,6 +46,7 @@ try {
     foreach ($document in @('README.md')) {
         $text = Read-Entry $document
         $expected = Get-Content -Raw -LiteralPath (Join-Path $ReleaseDirectory $receipt.metadata.$document.candidate)
+        $expected = $expected.Replace('](Screenshots/', '](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/')
         if ($text -cne $expected) { throw ('Installed player document differs from its canonical source: ' + $document) }
         foreach ($link in [regex]::Matches($text, '\[[^\]]*\]\(([^\s)]+)\)')) {
             $target = $link.Groups[1].Value

@@ -4,7 +4,7 @@
 
 Carry your own music through Valheim. Play local tracks and playlists, react to other Windows audio, and turn music events into enemy waves, equipment charge, and nearby party bonuses.
 
-![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/boombox-showcase.png)
+![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
 *A decorated boombox during playback.*
 
@@ -33,7 +33,7 @@ Music stays local to each player. Multiplayer shares gameplay and appearance dat
 
 For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. The complete release includes FFmpeg tools and their source and licence materials. No music is included.
 
-![Library with a local album, computer audio, game music, and rhythm sources](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/manual-en-library.png)
+![Library with a local album, computer audio, game music, and rhythm sources](Screenshots/manual-en-library.png)
 
 *Choose a source, play an album, or select tracks for a playlist from the same library.*
 
@@ -49,13 +49,13 @@ For manual installation, copy the release's `BepInEx` tree into an existing BepI
 | Preview effects, pick colours, and hide selected visuals | [Effects and visibility](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#set-effects-and-visibility). |
 | Back up a library, fix missing music, or report a problem | [Paths and troubleshooting](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#keep-your-library-and-solve-problems). |
 
-![Carved side panel, chains, trophy heads, and a miniature boombox](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/runes-detail.png)
+![Carved side panel, chains, trophy heads, and a miniature boombox](Screenshots/runes-detail.png)
 
 *Decorations have reusable designs, selectable bonuses, and cosmetic particles.*
 
 ## Multiplayer and compatibility
 
-![Active bonus amounts, source contributions, and HUD placement controls](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/manual-en-bonuses.png)
+![Active bonus amounts, source contributions, and HUD placement controls](Screenshots/manual-en-bonuses.png)
 
 *The Bonuses page explains what each effect gives and where its on-screen indicators appear.*
 
@@ -63,6 +63,6 @@ Use the same version on the server and every client. A client without the requir
 
 This is an unofficial Windows x64 alpha. Extra Slots is optional. Compatibility with every other inventory or equipment mod is not guaranteed. The mod does not grant rights to music used in streams or videos.
 
-![Speaker membrane, cassette, and illuminated body runes during playback](https://raw.githubusercontent.com/rizias/valheim-boombox/main/Screenshots/speaker-reactive.png)
+![Speaker membrane, cassette, and illuminated body runes during playback](Screenshots/speaker-reactive.png)
 
 *Speakers, cassette reels, and body lighting react to playback. Visual switches leave gameplay controls separate.*

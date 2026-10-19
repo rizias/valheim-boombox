@@ -47,7 +47,7 @@ Local-file playback needs separate FFmpeg and ffprobe programs. Supply a complet
 
 Use `Release.cmd` for distribution. It passes the exact DLL and matching offline test results to `package.ps1` and creates `BUILD-INFO.json`. The install ZIP contains the plugin, translations, audio tools, licenses, manifest, icon, changelog and English `README.md`. The README links to the Russian description and both player guides on GitHub.
 
-Keep screenshots and full player guides in the source repository. They are not copied into the install ZIP. README images use `raw.githubusercontent.com` URLs so the same README works on GitHub and Thunderstore. The repository must be public and the referenced files pushed to `main` before publishing a package with those images.
+Keep screenshots and full player guides in the source repository. They are not copied into the install ZIP. The source README uses relative image paths, which GitHub resolves for readers with repository access. Packaging changes only those image paths to `raw.githubusercontent.com` URLs for Thunderstore. The repository must be public and the referenced files pushed to `main` before publishing a package with those images.
 
 `package.ps1` is the lower-level helper. `Stage` requires explicit `SourceDll`, `IconPath`, `FFmpegRoot` and `TestReport` from `test.ps1`; `MetadataDirectory` can select candidate release metadata. `Archive` takes the prepared `Destination`. Both write only inside `outputs/`. Existing destinations are preserved, not overwritten. The normal release command selects unique working destinations and maintains the version.
 
