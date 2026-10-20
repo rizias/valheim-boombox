@@ -8,8 +8,6 @@ Carry your own music through Valheim. Play local tracks and playlists, react to 
 
 Download `Rizias-ValheimBoombox-0.2.7.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
-FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corresponding source and build instructions](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7-FFmpeg-Sources.zip) are a separate free download. You do not need to install them to use the mod.
-
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
 *A decorated boombox during playback.*
@@ -25,7 +23,7 @@ FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corr
 - Fit 24 decoration positions with eligible trophy heads, mushrooms, items, and miniature objects. Choose each decoration's bonus and particles independently of its appearance.
 - Charge a bow, shield, melee weapon, staff, or crossbow. Fully charged resource tools and thrown spears can repeat their hit with a ghost strike. Musical pulses can assist a boat at the helm.
 - Share wave-damage, health, stamina, eitr, and movement-speed bonuses nearby. Inspect source contributions, choose personal Music only, and let the host set world rules.
-- Preview five music effects, pick colours, control 14 groups of world visuals, and move the player and bonus HUD.
+- Preview five music effects, pick colours, control 13 groups of world visuals, and move the player and bonus HUD.
 
 Music stays local to each player. Multiplayer shares gameplay and appearance data. English and Russian menus follow Valheim's language. A supported Extra Slots version provides a dedicated equipment slot.
 
@@ -38,13 +36,13 @@ Music stays local to each player. Multiplayer shares gameplay and appearance dat
 5. Click **Launch modded** in Gale.
 6. At Workbench level 1, craft the first device and a basic cassette. The [guide lists the materials](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#install-and-start-your-first-track).
 7. In your inventory, right-click the cassette to insert it, then equip the boombox.
-8. Click **Choose music**, open **Folders**, and add your music folder. After the scan, play a track from **Library**.
+8. Click **Boombox**, open **Folders**, and add your music folder. After the scan, play a track from **Library**.
 
 To test the complete upgrade process, follow [device levels](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#upgrade-the-device) and [cassette properties](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#improve-a-cassette). A separate mod profile does not isolate Valheim saves. The [local testing instructions](https://github.com/rizias/valheim-boombox/blob/main/RELEASE.md#test-locally-with-gale-before-publishing) explain how to use a separate save folder.
 
 Gale, r2modman, and Thunderstore Mod Manager accept the same complete installation ZIP through local mod import. The package does not need a Thunderstore listing before you can test it.
 
-For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. FFmpeg tools and their licenses are included. Their corresponding sources are a separate download on the release page and do not need to be installed. No music is included.
+For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. No music is included.
 
 ![Library with a local album, computer audio, game music, and rhythm sources](Screenshots/manual-en-library.png)
 
@@ -79,3 +77,7 @@ This is an unofficial Windows x64 mod. Extra Slots is optional. Compatibility wi
 ![Speaker membrane, cassette, and illuminated body runes during playback](Screenshots/speaker-reactive.png)
 
 *Speakers, cassette reels, and body lighting react to playback. Visual switches leave gameplay controls separate.*
+
+## Audio tools and licenses
+
+The installation ZIP includes FFmpeg, ffprobe, and their licenses. The mod uses these tools to read and decode audio files. FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corresponding source and build instructions](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7-FFmpeg-Sources.zip) are available as a separate free download. You do not need the source archive to play.
