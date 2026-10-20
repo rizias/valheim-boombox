@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+- Remove outdated private-repository instructions from the installation README.
+- Correct music-button instructions and clarify that recipe overrides and decoration slot prices are local settings.
+
 ## [0.2.5] - 2026-10-20
 
 - Open the boombox and cassette decoration designs by default without consuming either item, including existing devices.
