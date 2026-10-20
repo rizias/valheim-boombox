@@ -1,14 +1,14 @@
 # Valheim Boombox
 
-[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.6 · By **Rizias**
+[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.7 · By **Rizias**
 
 Carry your own music through Valheim. Play local tracks and playlists, react to other Windows audio, and turn music events into enemy waves, equipment charge, and nearby party bonuses.
 
-**[Download Valheim Boombox 0.2.6 for Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.6/Rizias-ValheimBoombox-0.2.6.zip)** · [All releases, including test builds](https://github.com/rizias/valheim-boombox/releases) · [Install with Gale](#install-and-start)
+**[Download Valheim Boombox 0.2.7 for Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7.zip)** · [All releases, including test builds](https://github.com/rizias/valheim-boombox/releases) · [Install with Gale](#install-and-start)
 
-Download `Rizias-ValheimBoombox-0.2.6.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
+Download `Rizias-ValheimBoombox-0.2.7.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
-FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corresponding source and build instructions](https://github.com/rizias/valheim-boombox/releases/download/v0.2.6/Rizias-ValheimBoombox-0.2.6-FFmpeg-Sources.zip) are a separate free download. You do not need to install them to use the mod.
+FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corresponding source and build instructions](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7-FFmpeg-Sources.zip) are a separate free download. You do not need to install them to use the mod.
 
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
@@ -34,7 +34,7 @@ Music stays local to each player. Multiplayer shares gameplay and appearance dat
 1. Download the installation ZIP using the link above. Keep the ZIP intact for import.
 2. In Gale, select **Valheim**. For a separate test setup, choose **Profile → Create new profile** and name it `Boombox Test`.
 3. Install **BepInExPack Valheim 5.4.2351** in that profile.
-4. Choose **Import → …local mod**, then select `Rizias-ValheimBoombox-0.2.6.zip`. Check that the profile contains one enabled Valheim Boombox entry at version **0.2.6**.
+4. Choose **Import → …local mod**, then select `Rizias-ValheimBoombox-0.2.7.zip`. Check that the profile contains one enabled Valheim Boombox entry at version **0.2.7**.
 5. Click **Launch modded** in Gale.
 6. At Workbench level 1, craft the first device and a basic cassette. The [guide lists the materials](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#install-and-start-your-first-track).
 7. In your inventory, right-click the cassette to insert it, then equip the boombox.

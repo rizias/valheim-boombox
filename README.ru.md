@@ -1,14 +1,14 @@
 # Valheim Boombox
 
-[English](README.md) · Windows x64 · 0.2.6 · Автор **Rizias**
+[English](README.md) · Windows x64 · 0.2.7 · Автор **Rizias**
 
 Носите свою музыку по миру Valheim. Включайте локальные треки и плейлисты, используйте звук других программ Windows и превращайте музыкальные события в боевые волны, заряд снаряжения и бонусы для игроков поблизости.
 
-**[Скачать Valheim Boombox 0.2.6 для Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.6/Rizias-ValheimBoombox-0.2.6.zip)** · [Все выпуски, включая тестовые](https://github.com/rizias/valheim-boombox/releases) · [Установить через Gale](#установить-и-начать)
+**[Скачать Valheim Boombox 0.2.7 для Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7.zip)** · [Все выпуски, включая тестовые](https://github.com/rizias/valheim-boombox/releases) · [Установить через Gale](#установить-и-начать)
 
-Скачайте `Rizias-ValheimBoombox-0.2.6.zip`. Это полный установочный пакет. Кнопки **Source code** на GitHub скачивают исходный проект.
+Скачайте `Rizias-ValheimBoombox-0.2.7.zip`. Это полный установочный пакет. Кнопки **Source code** на GitHub скачивают исходный проект.
 
-FFmpeg и ffprobe распространяются по LGPL 3.0 или более поздней версии. Их [полные соответствующие исходники и инструкции сборки](https://github.com/rizias/valheim-boombox/releases/download/v0.2.6/Rizias-ValheimBoombox-0.2.6-FFmpeg-Sources.zip) доступны отдельным бесплатным скачиванием. Устанавливать их для работы мода не требуется.
+FFmpeg и ffprobe распространяются по LGPL 3.0 или более поздней версии. Их [полные соответствующие исходники и инструкции сборки](https://github.com/rizias/valheim-boombox/releases/download/v0.2.7/Rizias-ValheimBoombox-0.2.7-FFmpeg-Sources.zip) доступны отдельным бесплатным скачиванием. Устанавливать их для работы мода не требуется.
 
 ![Играющий магнитофон с головами трофеев, подвесами, светящимися грибами и рунами](Screenshots/boombox-showcase.png)
 
@@ -34,7 +34,7 @@ FFmpeg и ffprobe распространяются по LGPL 3.0 или боле
 1. Скачайте установочный ZIP по ссылке выше. Для импорта оставьте его нераспакованным.
 2. В Gale выберите **Valheim**. Для отдельного тестового набора модов откройте **Профиль → Создать профиль** и назовите его `Boombox Test`.
 3. Установите в этот профиль **BepInExPack Valheim 5.4.2351**.
-4. Выберите **Импорт → …локальный мод**, затем `Rizias-ValheimBoombox-0.2.6.zip`. Убедитесь, что в профиле одна включённая запись Valheim Boombox версии **0.2.6**.
+4. Выберите **Импорт → …локальный мод**, затем `Rizias-ValheimBoombox-0.2.7.zip`. Убедитесь, что в профиле одна включённая запись Valheim Boombox версии **0.2.7**.
 5. Нажмите в Gale **Запустить с модами**.
 6. На станции «Верстак» уровня 1 создайте первый аппарат и обычную кассету. [Материалы перечислены в руководстве](PLAY.ru.md#установить-мод-и-включить-первый-трек).
 7. В инвентаре нажмите правой кнопкой на кассету, чтобы вставить её, затем наденьте магнитофон.

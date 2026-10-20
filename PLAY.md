@@ -2,7 +2,7 @@
 
 [Русский](PLAY.ru.md) · [Mod overview](README.md)
 
-Windows x64 · 0.2.6
+Windows x64 · 0.2.7
 
 Carry your music, build a decorated boombox, and share its bonuses with nearby players. This guide covers the player interface, progression, combat, appearance, and saved music library. Recipe quantities and balance values below are the defaults.
 
