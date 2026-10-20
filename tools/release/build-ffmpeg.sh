@@ -20,7 +20,8 @@ printf '%s  %s\n' "$source_sha" "$archive" | sha256sum --check --status
 tar -xJf "$archive" -C "$work"
 cd "$work/ffmpeg-$version"
 patch --batch --forward -p1 < "$source_patch"
-./configure --arch=x86_64 --target-os=mingw32 --cc=gcc --cxx=g++ --ar=ar --ranlib=ranlib --prefix=/opt/valheim-audio --pkg-config=false --disable-shared --enable-static --extra-ldflags=-static --disable-autodetect --disable-gpl --disable-nonfree --disable-version3 --disable-debug --disable-doc --disable-stripping --disable-network --disable-avdevice --disable-postproc --disable-swscale --disable-ffplay --disable-everything --enable-ffmpeg --enable-ffprobe --enable-demuxers --enable-parsers --enable-decoders --enable-encoder=pcm_s16le,pcm_f32le --enable-muxer=wav,f32le --enable-protocol=file,pipe --enable-filter=aresample,aformat,anull,atrim,asetpts,abuffer,abuffersink,highpass,lowpass
+./configure --arch=x86_64 --target-os=mingw32 --cc=gcc --cxx=g++ --ar=ar --ranlib=ranlib --prefix=/opt/valheim-audio --pkg-config=false --disable-shared --enable-static --extra-ldflags=-static --disable-autodetect --disable-gpl --disable-nonfree --disable-version3 --disable-debug --disable-doc --disable-stripping --disable-network --disable-avdevice --disable-postproc --disable-swscale --disable-ffplay --disable-everything --enable-ffmpeg --enable-ffprobe --enable-demuxers --enable-parsers --enable-decoders --enable-encoder=pcm_s16le,pcm_f32le --enable-muxer=wav,pcm_f32le --enable-protocol=file,pipe --enable-filter=aresample,aformat,anull,atrim,asetpts,abuffer,abuffersink,highpass,lowpass
+grep -q '^CONFIG_PCM_F32LE_MUXER=yes$' ffbuild/config.mak
 make -j"${NUMBER_OF_PROCESSORS:-2}" ffmpeg.exe ffprobe.exe
 cp ffmpeg.exe ffprobe.exe "$distribution/bin/"
 cp COPYING.LGPLv2.1 "$distribution/LICENSE"

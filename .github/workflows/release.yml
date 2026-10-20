@@ -49,7 +49,7 @@ jobs:
           ./tests/offline/release-receipt-check.ps1
       - name: Restore FFmpeg distribution
         id: ffmpeg
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ runner.temp }}/boombox-ffmpeg
           key: ffmpeg-ucrt64-${{ runner.os }}-${{ hashFiles('third_party/ffmpeg/manifest.json', 'third_party/ffmpeg/library-response-file.patch', 'tools/release/build-ffmpeg.sh', 'tools/release/complete-ffmpeg.ps1') }}
@@ -73,11 +73,18 @@ jobs:
       - name: Record FFmpeg provenance
         if: steps.ffmpeg.outputs.cache-hit != 'true'
         run: ./tools/release/complete-ffmpeg.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -SourceManifest ./third_party/ffmpeg/manifest.json
-      - name: Verify FFmpeg and prepare build references
+      - name: Verify FFmpeg audio
         run: |
           ./tools/release/complete-ffmpeg.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -VerifyOnly
           ./tools/release/check-audio-tools.ps1 -Distribution (Join-Path $env:RUNNER_TEMP 'boombox-ffmpeg') -OutputDirectory (Join-Path $env:RUNNER_TEMP 'boombox-audio-check')
-          ./tools/release/bootstrap-hosted.ps1
+      - name: Save verified FFmpeg distribution
+        if: steps.ffmpeg.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/boombox-ffmpeg
+          key: ${{ steps.ffmpeg.outputs.cache-primary-key }}
+      - name: Prepare build references
+        run: ./tools/release/bootstrap-hosted.ps1
       - name: Build, verify and publish prerelease
         env:
           RELEASE_VERSION: ${{ steps.plan.outputs.version }}
