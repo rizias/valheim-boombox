@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.8] - 2026-10-20
+
 - Correct cassette textures without changing its geometry, attachment, or embedded reel animation.
 - Remove obsolete cassette property markers and emitted symbols.
 - Fix player visibility over the main menu, mute and repeat icons, and inventory label sizing.
