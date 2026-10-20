@@ -14,19 +14,23 @@ $remoteHead = @(Invoke-HostedGit @('ls-remote','origin',('refs/heads/' + $env:RE
 if ($remoteHead.Count -ne 1 -or ($remoteHead[0] -split '\s+')[0] -cne $env:RELEASE_SOURCE_SHA) { throw 'Default branch advanced since dispatch. Start a new release run from its current commit.' }
 $manifest = Get-Content -Raw -LiteralPath (Join-Path $root 'manifest.json') | ConvertFrom-Json
 if ($manifest.version_number -notmatch '^\d+\.\d+\.\d+$') { throw 'Manifest version must be major.minor.patch.' }
-$current = [version]$manifest.version_number
 $releaseJson = @(& gh api ('repos/' + $env:GITHUB_REPOSITORY + '/releases?per_page=100') --paginate --slurp)
 if ($LASTEXITCODE -ne 0) { throw 'Cannot read existing releases before selecting a version.' }
 $pages = ($releaseJson -join "`n") | ConvertFrom-Json
-$existing = @($pages | ForEach-Object { $_ } | ForEach-Object { $_ } | Where-Object { $_.tag_name -ceq ('v' + $manifest.version_number) })
-if ($existing.Count -gt 1) { throw 'Multiple releases use the current version tag.' }
-$resume = $existing.Count -eq 1 -and $existing[0].draft
-$next = if ($resume) { $manifest.version_number } else { switch ($env:RELEASE_BUMP) {
+$releases = @($pages | ForEach-Object { $_ } | ForEach-Object { $_ })
+$published = @($releases | Where-Object {
+    -not $_.draft -and -not $_.prerelease -and $_.tag_name -cmatch '^v\d+\.\d+\.\d+$'
+} | Sort-Object { [version]$_.tag_name.Substring(1) } -Descending)
+$current = if ($published.Count) { [version]$published[0].tag_name.Substring(1) } else { [version]'0.0.0' }
+$next = switch ($env:RELEASE_BUMP) {
     'patch' { '{0}.{1}.{2}' -f $current.Major,$current.Minor,($current.Build + 1) }
     'minor' { '{0}.{1}.0' -f $current.Major,($current.Minor + 1) }
     'major' { '{0}.0.0' -f ($current.Major + 1) }
     default { throw 'Release bump must be patch, minor or major.' }
-} }
+}
+$existing = @($releases | Where-Object { $_.tag_name -ceq ('v' + $next) })
+if ($existing.Count -gt 1) { throw 'Multiple releases use the current version tag.' }
+$resume = $existing.Count -eq 1 -and $existing[0].draft
 $changelog = Get-Content -Raw -LiteralPath (Join-Path $root 'CHANGELOG.md')
 $unreleased = [regex]::Match($changelog, '(?ms)^## \[Unreleased\]\r?\n(?<notes>.*?)(?=^## |\z)')
 if (-not $resume -and (-not $unreleased.Success -or $unreleased.Groups['notes'].Value -notmatch '(?m)^-\s+\S')) { throw 'CHANGELOG.md must contain actual bullet notes under [Unreleased] before release.' }

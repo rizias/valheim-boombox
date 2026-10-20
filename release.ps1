@@ -2,6 +2,7 @@ param(
     [ValidateSet('Patch','Minor','Major')][string]$Increment = 'Patch',
     [string]$Version,
     [switch]$Rebuild,
+    [switch]$ForPublication,
     [string]$SettingsPath = (Join-Path $PSScriptRoot 'release.local.json')
 )
 $ErrorActionPreference = 'Stop'
@@ -15,6 +16,13 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
     exit $LASTEXITCODE
 }
 Set-StrictMode -Version Latest
+if ($ForPublication) {
+    if ($env:GITHUB_ACTIONS -ne 'true' -or -not $Version) {
+        throw 'Publication version metadata is updated only by the GitHub Release workflow with an explicit version.'
+    }
+} elseif ($PSBoundParameters.ContainsKey('Version') -or $PSBoundParameters.ContainsKey('Increment')) {
+    throw 'Local builds keep the source version. Choose patch, minor or major in the GitHub Release workflow.'
+}
 $settings = Get-Content -Raw -LiteralPath $SettingsPath | ConvertFrom-Json -AsHashtable
 foreach ($key in @('GameManaged','BepInExCore','FFmpegRoot','PwshPath')) {
     if (-not $settings[$key] -or -not [IO.Path]::IsPathFullyQualified($settings[$key]) -or -not (Test-Path -LiteralPath $settings[$key])) { throw ('Set an existing absolute path for ' + $key + ' in release.local.json.') }
@@ -25,7 +33,7 @@ if (-not (Test-Path -LiteralPath $settings.PwshPath -PathType Leaf)) { throw 'Pw
 if ($LASTEXITCODE -ne 0) { throw 'PwshPath must run PowerShell 7 or newer.' }
 $utf8 = [Text.UTF8Encoding]::new($false)
 $outputRoot = Join-Path $PSScriptRoot 'outputs'
-$releaseRoot = Join-Path $outputRoot 'releases'
+$releaseRoot = Join-Path $outputRoot $(if ($ForPublication) { 'releases' } else { 'local' })
 New-Item -ItemType Directory -Path $releaseRoot -Force | Out-Null
 try { $lock = [IO.File]::Open((Join-Path $outputRoot '.release.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None) }
 catch { throw 'Another release is running. Wait for it to finish and retry.' }
@@ -88,6 +96,9 @@ function Get-ReleaseFingerprint([hashtable]$Overrides = @{}) {
 
 try {
     $metadataNames = @('manifest.json','src/BoomboxNetworkProtocol.cs','README.md','README.ru.md','PLAY.md','PLAY.ru.md','CHANGELOG.md','CHANGELOG.ru.md')
+    $sourceManifest = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'manifest.json') | ConvertFrom-Json
+    if ($sourceManifest.version_number -notmatch '^\d+\.\d+\.\d+$') { throw 'Source manifest version must be major.minor.patch.' }
+    if (-not $ForPublication) { $Version = $sourceManifest.version_number }
     foreach ($receiptFile in Get-ChildItem -LiteralPath $releaseRoot -Filter 'release.json' -Recurse -File | Sort-Object LastWriteTimeUtc -Descending) {
         $receipt = Get-Content -Raw -LiteralPath $receiptFile.FullName | ConvertFrom-Json -AsHashtable
         if (-not $receipt.ContainsKey('formatVersion') -or $receipt.formatVersion -ne 2) { continue }
@@ -108,9 +119,11 @@ try {
             $overrides[$name] = $candidate
         }
         if (-not $compatible -or (Get-ReleaseFingerprint $overrides) -ne $receipt.fingerprint) { continue }
-        foreach ($name in $metadataNames) {
-            if ((Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash -ne $receipt.metadata[$name].after) {
-                [IO.File]::WriteAllBytes((Join-Path $PSScriptRoot $name), [IO.File]::ReadAllBytes($overrides[$name]))
+        if ($ForPublication) {
+            foreach ($name in $metadataNames) {
+                if ((Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash -ne $receipt.metadata[$name].after) {
+                    [IO.File]::WriteAllBytes((Join-Path $PSScriptRoot $name), [IO.File]::ReadAllBytes($overrides[$name]))
+                }
             }
         }
         [IO.File]::WriteAllText(($archive + '.sha256'), ($receipt.sha256 + '  ' + [IO.Path]::GetFileName($archive) + "`n"), $utf8)
@@ -119,23 +132,15 @@ try {
         exit 0
     }
 
-    $sourceManifest = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'manifest.json') | ConvertFrom-Json
-    $currentVersion = [version]$sourceManifest.version_number
-    if ($sourceManifest.version_number -notmatch '^\d+\.\d+\.\d+$') { throw 'Source manifest version must be major.minor.patch.' }
-    if (-not $Version) {
-        $Version = switch ($Increment) {
-            'Major' { '{0}.0.0' -f ($currentVersion.Major + 1) }
-            'Minor' { '{0}.{1}.0' -f $currentVersion.Major, ($currentVersion.Minor + 1) }
-            'Patch' { '{0}.{1}.{2}' -f $currentVersion.Major, $currentVersion.Minor, ($currentVersion.Build + 1) }
-        }
-    }
     if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Release version must be major.minor.patch.' }
-    if ($Rebuild) {
-        if ([version]$Version -ne $currentVersion) { throw 'Rebuild requires the current source version.' }
-    } elseif ([version]$Version -le $currentVersion) { throw 'Release version must be greater than the source version.' }
-    $versionRoot = Join-Path $releaseRoot $Version
-    if (Test-Path -LiteralPath $versionRoot) { throw ('Release destination already exists. Preserved files: ' + $versionRoot) }
+    if ($Rebuild -and $Version -ne $sourceManifest.version_number) { throw 'Rebuild requires the current source version.' }
     $initialFingerprint = Get-ReleaseFingerprint
+    $versionRoot = if ($ForPublication) {
+        Join-Path $releaseRoot $Version
+    } else {
+        Join-Path (Join-Path $releaseRoot $Version) $initialFingerprint
+    }
+    if (Test-Path -LiteralPath $versionRoot) { throw ('Release destination already exists. Preserved files: ' + $versionRoot) }
     $workRoot = Join-Path $outputRoot ('release-work/' + $Version + '-' + [guid]::NewGuid().ToString('N'))
     $metadataRoot = Join-Path $workRoot 'metadata'
     New-Item -ItemType Directory -Path (Join-Path $metadataRoot 'src') -Force | Out-Null
@@ -144,6 +149,11 @@ try {
         $source = Join-Path $PSScriptRoot $name
         $candidate = Join-Path $metadataRoot $name
         $text = [IO.File]::ReadAllText($source)
+        if (-not $ForPublication) {
+            [IO.File]::WriteAllText($candidate, $text, $utf8)
+            $overrides[$name] = $candidate
+            continue
+        }
         switch ($name) {
             'manifest.json' { $text = [regex]::Replace($text, '("version_number"\s*:\s*")[^"]+("\s*)', ('${1}' + $Version + '${2}')) }
             'src/BoomboxNetworkProtocol.cs' {
@@ -206,7 +216,9 @@ try {
     $receipt = [ordered]@{formatVersion=2;version=$Version;archive=$archiveName;sha256=$archiveHash;ffmpegSourceArchive=$sourceArchiveName;ffmpegSourceSha256=$sourceArchiveHash;fingerprint=$finalFingerprint;metadata=$metadata}
     [IO.File]::WriteAllText((Join-Path $versionRoot 'release.json'), ($receipt | ConvertTo-Json -Depth 8), $utf8)
     if ((Get-ReleaseFingerprint) -ne $initialFingerprint) { throw 'Release inputs changed before the source metadata update. Verified artifacts were preserved; source metadata was not advanced.' }
-    foreach ($name in $metadataNames) { [IO.File]::WriteAllBytes((Join-Path $PSScriptRoot $name), [IO.File]::ReadAllBytes($overrides[$name])) }
+    if ($ForPublication) {
+        foreach ($name in $metadataNames) { [IO.File]::WriteAllBytes((Join-Path $PSScriptRoot $name), [IO.File]::ReadAllBytes($overrides[$name])) }
+    }
     [IO.File]::WriteAllText(($archive + '.sha256'), ($archiveHash + '  ' + $archiveName + "`n"), $utf8)
     [IO.File]::WriteAllText(($sourceArchive + '.sha256'), ($sourceArchiveHash + '  ' + $sourceArchiveName + "`n"), $utf8)
     Write-Output ('Verified release ' + $Version + ': ' + $archive)

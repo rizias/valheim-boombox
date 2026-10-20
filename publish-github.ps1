@@ -87,7 +87,11 @@ function Invoke-GitHubPublication {
         $current = (Get-Content -Raw -LiteralPath (Join-Path $Root 'manifest.json') | ConvertFrom-Json).version_number
         if ($Version -cne $current) { throw 'Resume requires the current source version explicitly.' }
         $resumeTagCommit = (Git @('rev-parse','--verify',('refs/tags/v' + $Version + '^{commit}'))).Lines -join ''
-        $infrastructure = @('publish-github.ps1','release.ps1','tools/release/prepare-hosted.ps1','.github/workflows/release.yml','tests/offline/github-publication-check.ps1','RELEASE.md','RELEASE.ru.md')
+        $infrastructure = @(
+            'publish-github.ps1','release.ps1','tools/release/prepare-hosted.ps1','.github/workflows/release.yml',
+            'tests/offline/github-publication-check.ps1','tests/offline/release-versioning-check.ps1',
+            'RELEASE.md','RELEASE.ru.md'
+        )
         $changedSinceTag = @((Git @('diff','--name-only',$resumeTagCommit,'HEAD')).Lines | Where-Object { $_ })
         if (@($changedSinceTag | Where-Object { $_ -notin $infrastructure }).Count) { throw 'Cannot resume: product files differ from the existing release tag.' }
     }
@@ -97,7 +101,7 @@ function Invoke-GitHubPublication {
     try { $lock = [IO.File]::Open((Join-Path $outputRoot '.github-publication.lock'), 'OpenOrCreate', 'ReadWrite', 'None') }
     catch { throw 'Another GitHub publication is running. Retry when it finishes.' }
     try {
-        $arguments = @('-NoProfile','-NonInteractive','-File',(Join-Path $Root 'release.ps1'),'-SettingsPath',$SettingsPath,'-Increment',$Increment)
+        $arguments = @('-NoProfile','-NonInteractive','-File',(Join-Path $Root 'release.ps1'),'-SettingsPath',$SettingsPath,'-ForPublication')
         if ($Version) { $arguments += @('-Version',$Version) }
         if ($Resume) { $arguments += '-Rebuild' }
         Invoke-PublicationCommand $settings.PwshPath $arguments | Out-Null

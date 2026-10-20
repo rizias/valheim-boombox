@@ -107,13 +107,16 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
             }
             default { throw ('Unexpected fixture gh call: ' + $key) }
         }
-    } elseif ($Arguments -contains (Join-Path $root 'release.ps1')) { Fake-Build }
+    } elseif ($Arguments -contains (Join-Path $root 'release.ps1')) {
+        Assert ($Arguments -contains '-ForPublication' -and $Arguments -contains '-Version') 'Publisher must pass its selected version in publication mode'
+        Fake-Build
+    }
     elseif ($Arguments -contains (Join-Path $root 'verify-release.ps1')) { $state.verify++; if ($state.failVerify) { throw 'Fixture verifier failed' } }
     else { throw ('Unexpected fixture tool: ' + $Tool) }
     if ($code -ne 0 -and -not $AllowFailure) { throw 'Fixture command failed' }
     [pscustomobject]@{Code=$code; Lines=@($lines)}
 }
-function Run { Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile }
+function Run { Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile -Version '1.0.1' }
 function Reject([string]$Contains) {
     $errorText = ''
     try { Run | Out-Null } catch { $errorText = $_.Exception.Message }
@@ -227,7 +230,7 @@ $state.failUpload=$true
 Reject 'Fixture upload failed'
 $state.failUpload=$false
 $state.head='c'*40
-$state.infrastructureDiff=@('publish-github.ps1')
+$state.infrastructureDiff=@('publish-github.ps1','tests/offline/release-versioning-check.ps1')
 $oldPushes=$state.pushes
 $oldCommits=$state.commits
 Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile -Version '1.0.1' -Resume | Out-Null
@@ -250,3 +253,4 @@ $after = @(Get-ChildItem -LiteralPath $root -File -Recurse | ForEach-Object { $_
 Assert ($before -ceq $after -and $state.build -eq 0 -and $state.commits -eq 0 -and $state.pushes -eq 0) 'CheckOnly modified files or built/pushed'
 Write-Output 'GitHub publication behavior checks passed. Create, repeat, draft recovery, conflicts, failure gates and preflight were exercised through the real publisher.'
 Write-Output ('FIXTURES_RETAINED ' + $fixtures)
+& (Join-Path $PSScriptRoot 'release-versioning-check.ps1')

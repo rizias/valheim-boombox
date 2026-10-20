@@ -104,9 +104,32 @@ try {
     if ((Read-Entry 'NOTICE.txt') -cne $runtimeNotice) { throw 'Source and binary redistribution notices differ.' }
     if ($sourceHashes.LICENSE -ne $hashes.($ffmpegPrefix + 'LICENSE')) { throw 'Source and binary original LGPL notices differ.' }
     if ($sourceHashes.'BUILD-SCRIPTS-LICENSE.txt' -ne $hashes.LICENSE) { throw 'Source archive lacks the project build-script license.' }
-    foreach ($name in @('LICENSE','README.txt','Sources/build-ffmpeg.sh','Sources/complete-ffmpeg.ps1','Sources/compiler-version.txt','Sources/build-packages.txt','Sources/config.mak','Sources/source.json','Sources/library-response-file.patch',('Sources/ffmpeg-' + $toolManifest.version + '.tar.xz'))) { if (-not $zip.GetEntry($name)) { throw ('Missing FFmpeg source material: ' + $name) } }
-    $sourceIdentity = Read-Entry 'Sources/source.json' | ConvertFrom-Json
-    if ($sourceIdentity.version -ne $toolManifest.version -or $sourceIdentity.source -ne $toolManifest.source -or $sourceIdentity.sourceSha256 -ne $toolManifest.sourceSha256) { throw 'FFmpeg corresponding source identity mismatch.' }
+    $requiredSourceFiles = @(
+        'LICENSE','README.txt','Sources/library-response-file.patch',
+        ('Sources/ffmpeg-' + $toolManifest.version + '.tar.xz')
+    )
+    $msvc = $toolManifest.configuration -match '(?:^|\s)--toolchain=msvc(?:\s|$)'
+    if ($msvc) {
+        $requiredSourceFiles += @('Sources/build-local.ps1','Sources/build-local.sh')
+    } elseif ($toolManifest.configuration -match '(?:^|\s)--target-os=mingw32(?:\s|$)') {
+        $requiredSourceFiles += @(
+            'Sources/build-ffmpeg.sh','Sources/complete-ffmpeg.ps1','Sources/compiler-version.txt',
+            'Sources/build-packages.txt','Sources/config.mak','Sources/source.json'
+        )
+    } else {
+        throw 'Unrecognized FFmpeg build configuration.'
+    }
+    foreach ($name in $requiredSourceFiles) {
+        if (-not $zip.GetEntry($name)) { throw ('Missing FFmpeg source material: ' + $name) }
+    }
+    if (-not $msvc) {
+        $sourceIdentity = Read-Entry 'Sources/source.json' | ConvertFrom-Json
+        if ($sourceIdentity.version -ne $toolManifest.version -or
+            $sourceIdentity.source -ne $toolManifest.source -or
+            $sourceIdentity.sourceSha256 -ne $toolManifest.sourceSha256) {
+            throw 'FFmpeg corresponding source identity mismatch.'
+        }
+    }
     $patchProperty = $toolManifest.PSObject.Properties['patchSha256']
     $patchHash = if ($patchProperty) { $patchProperty.Value } else { (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'third_party/ffmpeg/library-response-file.patch')).Hash }
     if ($sourceHashes.('Sources/ffmpeg-' + $toolManifest.version + '.tar.xz') -ne $toolManifest.sourceSha256 -or $sourceHashes.'Sources/library-response-file.patch' -ne $patchHash) { throw 'FFmpeg corresponding source or patch identity mismatch.' }

@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+- Correct cassette textures without changing its geometry, attachment, or embedded reel animation.
+- Remove obsolete cassette property markers and emitted symbols.
+- Fix player visibility over the main menu, mute and repeat icons, and inventory label sizing.
+- Number decoration positions in physical order while preserving saved placements.
+- Keep local builds on the source version without changing release metadata.
+- Calculate GitHub release versions from published regular releases instead of local build numbers.
+- Verify corresponding FFmpeg sources for both local MSVC and hosted GCC builds.
+
 ## [0.2.7] - 2026-10-20
 
 - Move FFmpeg source code and build scripts out of the installation package into a separate source archive.

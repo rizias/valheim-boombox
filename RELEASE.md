@@ -10,12 +10,12 @@ Commit `src/`, `assets/`, `Translations/`, `Screenshots/`, `tests/`, `tools/`, `
 
 Screenshots and full English and Russian player guides stay in this repository. The install ZIP contains the English README with GitHub links, not copies of the screenshots or full guides. Thunderstore renders the README from the uploaded ZIP. Its image URLs point to GitHub. Push the linked files to `main` and make the repository public before publishing the package; a private repository cannot serve images to other players.
 
-## One-button release
+## One-button local build
 
 1. Finish saving source changes and close editors that could save concurrently.
 2. Double-click **`Release.cmd`**.
 3. Wait for `Verified release` or `Reused verified release`. An error means the candidate is not ready.
-4. Take `outputs/releases/<version>/Rizias-ValheimBoombox-<version>.zip` from the printed path. Its `.zip.sha256` file sits beside it.
+4. Take `outputs/local/<version>/<build fingerprint>/Rizias-ValheimBoombox-<version>.zip` from the printed path. Its `.zip.sha256` file sits beside it.
 
 The separate `Rizias-ValheimBoombox-<version>-FFmpeg-Sources.zip` contains corresponding FFmpeg sources and build instructions. It is published beside the installation ZIP with its own checksum. Do not install the source archive or upload it as the mod package to Thunderstore.
 
@@ -23,16 +23,9 @@ FFmpeg/ffprobe are redistributed under LGPL 3.0 or later using upstream's later-
 
 Configure `release.local.json` using the next section before the first local build. The button compiles source, runs offline checks against that DLL, packages it and verifies ZIP contents and hashes. It does not launch Valheim, modify Gale or upload anything.
 
-Changed inputs increment the patch version by default, for example `0.2.1` to `0.2.2`. Success updates manifest, plugin version, both READMEs, player guide and changelog together. The network protocol is unchanged. An ordinary build failure leaves source version metadata unchanged. Repeating an unchanged successful request reuses the same verified archive. Earlier outputs are preserved.
+Local builds keep the version already recorded in the source. They do not change the manifest, plugin version, READMEs, player guides, or changelogs. Build as often as needed. Changed inputs produce a separate local build directory; unchanged inputs reuse the verified archive. Earlier outputs are preserved. The build fingerprint identifies the exact inputs, independently of the release version.
 
-For another increment, use a terminal in this directory:
-
-```powershell
-.\Release.cmd -Increment Minor
-.\Release.cmd -Version 0.3.0
-```
-
-An explicit new version must exceed the current version. A normal increment with unchanged inputs reuses the existing release; an explicit different `-Version` creates another. Write actual changes in CHANGELOG before release. Review and commit updated version metadata with its corresponding code after the build.
+Choose `patch`, `minor`, or `major` only when starting **GitHub Actions → Release**. That job calculates the next version from the highest published regular release, ignoring local build numbers, drafts, and prereleases. For example, after published `0.2.7`, `patch` publishes `0.2.8` even if the source still contains a higher number from older local builds. A push alone runs checks and does not publish or increase the version.
 
 ## Configure another machine after cloning
 
@@ -61,7 +54,7 @@ The example JSON demonstrates path syntax. Escape Windows backslashes by doublin
 
 | Check | Expected observation |
 |---|---|
-| Equip, open inventory, and click Choose music | Readable menu, draggable controls, no map overlap. |
+| Equip, open inventory, and click Boombox | Readable menu, draggable controls, no map overlap. |
 | Add a small local music folder, create a playlist, choose Listen to playlist | Track plays; pause/resume and reactive speakers work. |
 | Select computer audio, start an external player | Visuals follow the default Windows multimedia output without replaying captured sound. |
 | Toggle independent visuals in Effects | Selected visuals disappear independently of gameplay bonuses. |
@@ -75,7 +68,7 @@ For a defect, record versions, reproduction steps and expected/actual behaviour.
 
 ## Publish the same ZIP
 
-**Thunderstore and Hexium host packages. Gale installs them.** Share the same verified ZIP with friends, import it locally or upload it to both package hosts. GitHub's generated source ZIP is not an install package.
+**Thunderstore and Hexium host packages. Gale installs them.** After local testing, run GitHub Release and download its installation ZIP for distribution. Upload that same published ZIP to both package hosts. Local test archives are not published releases. GitHub's generated source ZIP is not an install package.
 
 ### Thunderstore
 
@@ -105,7 +98,7 @@ Push this source directory, including `.github/workflows/release.yml`, to [rizia
 
 Commit/push source and actual `[Unreleased]` notes in CHANGELOG before release. The job uses the dispatched `main` commit and:
 
-1. Validates the source commit, version bump and release notes before downloading dependencies.
+1. Validates the source commit and release notes, then calculates the selected increment from the highest published regular release before downloading dependencies.
 2. Obtains dedicated-server Valheim libraries and BepInEx on an ephemeral Windows GitHub runner. FFmpeg is built from hash-verified source; its tool distribution is cached.
 3. Checks audio decoding, builds the DLL and runs offline checks through `release.ps1`.
 4. Verifies archive/version metadata against the build receipt.
@@ -124,7 +117,7 @@ Default dispatch chooses `patch`; `PublishGitHub.cmd -Increment Minor` chooses `
 
 `PublishGitHub.cmd` calls `dispatch-release.ps1` to start the workflow. The workflow calls `publish-github.ps1` to verify the build, commit version files, push a tag and upload release assets. These files contain no credentials. Dispatch uses your GitHub CLI login; the hosted job uses its repository-scoped `GITHUB_TOKEN`. [Write access is required to start the workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow). Downloading the source does not grant another user permission to push or publish to this repository.
 
-The hosted job refuses an advanced source branch or an existing target tag for a new version. If the current version has an unfinished release draft, Run workflow resumes that version without changing its tag or incrementing the version. Only publication-infrastructure fixes may differ from the tagged source; product changes stop recovery. Existing uploaded assets must match their hashes and are not overwritten. No archive or draft is automatically deleted.
+The hosted job refuses an advanced source branch or an existing target tag without a matching draft. If the calculated next version has an unfinished release draft, Run workflow resumes that version without changing its tag or incrementing the version. Only publication-infrastructure fixes may differ from the tagged source; product changes stop recovery. Existing uploaded assets must match their hashes and are not overwritten. No archive or draft is automatically deleted.
 
 Automation uses [GitHub Actions authentication](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token) and [supported GitHub release commands](https://cli.github.com/manual/gh_release_create). Offline/decoder checks do not establish native game rendering, audio-device or live multiplayer acceptance.
 
