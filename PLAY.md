@@ -37,7 +37,7 @@ Craft and assemble your first player as follows.
 2. Craft a basic cassette at the same station with 2 Wood, 1 Resin, and 1 Bone Fragments.
 3. Open your inventory. Right-click the cassette to insert it into your carried boombox.
 4. Equip the boombox from your inventory. The device appears on your back and leaves your hands free.
-5. Click **Choose music** in the inventory to open the boombox menu.
+5. Click **Boombox** in the inventory to open the boombox menu.
 6. Open **Folders**. Select a music folder in the built-in browser and click **Add this folder**. The scan starts automatically.
 7. Open **Library**. Click the play button beside a track.
 
@@ -67,7 +67,7 @@ The player bar under the menu contains previous track, play or pause, next track
 
 With your inventory open, the floating player provides previous, play or pause, next, repeat, mute, and volume minus or plus. It remains visible while the Boombox menu is open. Volume changes in 10% steps. Active repeat and mute buttons are highlighted. Repeat loops the current queue. The main menu bar shows the repeat state, while the floating player changes it.
 
-Drag the floating player's title bar to move it. **Choose music** opens the library, and **Bonuses** opens the bonus panel. The menu header's **Player** switch shows or hides this floating panel. **Reset player** enables it and restores its automatic position beside the inventory, including after an interrupted drag. When the panel is hidden, **Choose music** remains available in the inventory. You can drag the main menu by its header and close it with **Close**.
+Drag the floating player's title bar to move it. **Boombox** opens the library, and **Bonuses** opens the bonus panel. The floating player hides while the main menu is open and returns when you close it. The menu header's **Player** switch enables or disables the floating panel. **Reset player** enables it and restores its automatic position beside the inventory, including after an interrupted drag. When the panel is disabled, **Boombox** remains available in the inventory. You can drag the main menu by its header and close it with **Close**.
 
 With several devices, the floating player uses your equipped boombox first, otherwise one of your placed devices, otherwise a device in your backpack. Selecting another device in the main menu does not change that priority.
 
@@ -186,7 +186,7 @@ The base push strength reaches its highest default value at level VII and stays 
 
 ## Improve a cassette
 
-There is one basic cassette with five independent properties. Each property starts at rank 0 and can reach VII by default. The coloured symbols identify the property. They are not five separately crafted cassette types.
+There is one basic cassette with five independent properties. Each property starts at rank 0 and can reach VII by default. The cassette menu lists each property and its rank. They are not five separately crafted cassette types.
 
 1. Insert the cassette and open **Cassette**.
 2. Select a property on the left.
@@ -378,7 +378,6 @@ Open **Visibility** for the complete display switches.
 | Hand and weapon charge effects | Charge particles, ghost models, and their trails. |
 | Body glow | Illumination on the device body. |
 | Carving glow | Illumination on its carved panels. |
-| Cassette symbols | Glowing cassette-property signs. |
 | Decoration particles | Bonus, extra, and product particles on decorations. |
 | Decoration movement | Motion of hanging decorations. |
 | Mushroom glow | Glowing mushroom decorations. |
@@ -404,7 +403,7 @@ The in-game pages cover everyday controls. The plugin configuration also contain
 |---|---|
 | Sound | Placed-device hearing distance, streaming buffer length, decoder program paths, and computer-audio sensitivity (default 1, range 0.1–5). |
 | Body appearance | Body, rune, and carving glow colours and brightness; the body pattern colour and pulsing. |
-| Speakers and cassette | Membrane travel, speaker-front size and duration, and cassette-property symbol colours. |
+| Speakers | Membrane travel and speaker-front size and duration. |
 | Decorations | Mushroom glow strength and the interval and lifetime of coin-shaped and product-shaped particles. |
 | Back attachment | Body fitting, equipment clearance, position, and rotation. |
 | World progression | Recipe materials and stations, maximum device and cassette levels, decoration-position prices, and recovery balance. |

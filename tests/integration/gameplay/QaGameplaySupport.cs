@@ -16,8 +16,6 @@ public sealed partial class QaGameplay
         var player = Player.m_localPlayer;
         var originalPosition = player.transform.position;
         var originalRotation = player.transform.rotation;
-        var settings = BoomboxPlugin.Instance.Settings;
-        bool symbols = settings.ShowCassetteSymbols.Value;
         bool debugTime = EnvMan.instance.m_debugTimeOfDay;
         float day = EnvMan.instance.m_debugTime;
         var cameraRoot = new GameObject("QA native support and icon camera");
@@ -40,7 +38,6 @@ public sealed partial class QaGameplay
         var result = new JObject();
         try
         {
-            settings.ShowCassetteSymbols.Value = false;
             EnvMan.instance.m_debugTimeOfDay = true;
             EnvMan.instance.m_debugTime = .5f;
             var frame = audioDeck.Visual.transform;
@@ -180,7 +177,6 @@ public sealed partial class QaGameplay
         }
         finally
         {
-            settings.ShowCassetteSymbols.Value = symbols;
             EnvMan.instance.m_debugTimeOfDay = debugTime;
             EnvMan.instance.m_debugTime = day;
             target.Release();

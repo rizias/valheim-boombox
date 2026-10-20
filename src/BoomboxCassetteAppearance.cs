@@ -34,12 +34,7 @@ namespace VikingBoombox
         public static void Apply(GameObject model, RecordedCassette cassette)
         {
             if (model.GetComponent<VikingBoomboxVisualState>() != null)
-            {
-                var embedded = model.GetComponent<BoomboxEmbeddedCassetteAppearance>()
-                    ?? model.AddComponent<BoomboxEmbeddedCassetteAppearance>();
-                embedded.Apply(cassette);
                 return;
-            }
             int value = 0;
             for (int i = 0; i < BoomboxItemData.Properties.Length; i++)
                 if (cassette?.Rank(BoomboxItemData.Properties[i]) > 0)

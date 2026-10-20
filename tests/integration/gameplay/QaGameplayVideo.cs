@@ -26,7 +26,7 @@ public sealed partial class QaGameplay
         if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null || Camera.main == null)
             throw new InvalidOperationException("Real GPU/main camera required");
         var settings = BoomboxPlugin.Instance.Settings;
-        bool symbols = settings.ShowCassetteSymbols.Value, visuals = settings.ShowVisualEffects.Value;
+        bool visuals = settings.ShowVisualEffects.Value;
         bool debugTime = EnvMan.instance.m_debugTimeOfDay;
         float day = EnvMan.instance.m_debugTime;
         int rate = Application.targetFrameRate, sync = QualitySettings.vSyncCount;
@@ -47,7 +47,6 @@ public sealed partial class QaGameplay
         JObject recording = null;
         try
         {
-            settings.ShowCassetteSymbols.Value = false;
             settings.ShowVisualEffects.Value = true;
             EnvMan.instance.m_debugTimeOfDay = true;
             EnvMan.instance.m_debugTime = .5f;
@@ -257,7 +256,6 @@ public sealed partial class QaGameplay
                     if (pair.Key != null)
                         pair.Key.layer = pair.Value;
                 bool restored = layers.All(pair => pair.Key == null || pair.Key.layer == pair.Value);
-                settings.ShowCassetteSymbols.Value = symbols;
                 settings.ShowVisualEffects.Value = visuals;
                 EnvMan.instance.m_debugTimeOfDay = debugTime;
                 EnvMan.instance.m_debugTime = day;

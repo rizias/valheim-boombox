@@ -62,8 +62,8 @@ namespace VikingBoombox
                     );
                 case "repeat":
                     return Mathf.Min(
-                        Arc(p, Vector2.zero, .5f, .1f, 50f, 330f),
-                        Polygon(p, new Vector2(.2f, .52f), new Vector2(.6f, .2f), new Vector2(.62f, .72f))
+                        Arc(p, Vector2.zero, .54f, .1f, 60f, 345f),
+                        Polygon(p, new Vector2(.18f, .22f), new Vector2(.72f, .34f), new Vector2(.18f, .83f))
                     );
                 case "sound":
                     return Mathf.Min(
@@ -78,6 +78,23 @@ namespace VikingBoombox
                             )
                         ),
                         Arc(p, new Vector2(.02f, 0), .42f, .08f, -50f, 50f)
+                    );
+                case "muted":
+                    return Mathf.Min(
+                        Mathf.Min(
+                            Box(p, new Vector2(-.55f, 0), new Vector2(.14f, .22f)),
+                            Polygon(
+                                p,
+                                new Vector2(-.44f, -.22f),
+                                new Vector2(.02f, -.6f),
+                                new Vector2(.02f, .6f),
+                                new Vector2(-.44f, .22f)
+                            )
+                        ),
+                        Mathf.Min(
+                            Box(Turn(p - new Vector2(.43f, 0), 45f), Vector2.zero, new Vector2(.3f, .07f)),
+                            Box(Turn(p - new Vector2(.43f, 0), -45f), Vector2.zero, new Vector2(.3f, .07f))
+                        )
                     );
                 case "minus":
                     return Box(p, Vector2.zero, new Vector2(.55f, .09f));

@@ -238,7 +238,7 @@ namespace VikingBoombox
             string shownPrefab = selectedPrefab ?? placement?.prefab;
             itemIcon.sprite = shownPrefab == null ? null : BoomboxDecorationCatalog.Icon(shownPrefab);
             itemIcon.enabled = itemIcon.sprite != null;
-            itemName.text = BoomboxText.Get("text.slot") + (selectedSlot + 1) + " · "
+            itemName.text = BoomboxText.Get("text.slot") + slot.Number + " · "
                 + (slot.Kind == BoomboxDecorationKind.Figurine
                     ? BoomboxText.Get("text.stand")
                     : slot.Upper

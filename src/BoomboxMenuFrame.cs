@@ -15,6 +15,8 @@ namespace VikingBoombox
         private readonly Dictionary<int, Button> tabs = new Dictionary<int, Button>();
         private readonly BoomboxMenuLabels labels = new BoomboxMenuLabels();
         private readonly BoomboxPlayerBar player;
+        private readonly BoomboxPlugin plugin;
+        private readonly Button playerToggle;
         private int shownTab = -1;
         private Vector2 position = new Vector2(80, 70);
         internal readonly RectTransform Window;
@@ -23,6 +25,7 @@ namespace VikingBoombox
 
         internal BoomboxMenuFrame(BoomboxPlugin plugin, Action<int> selectTab)
         {
+            this.plugin = plugin;
             canvas = new GameObject(
                 "BoomboxMenuCanvas",
                 typeof(RectTransform),
@@ -63,16 +66,11 @@ namespace VikingBoombox
                 () => BoomboxText.Get("text.close")
             );
             BoomboxNativeUI.Place((RectTransform)close.transform, 936, 20, 100, 36);
-            var playerToggle = labels.Add(
-                BoomboxNativeControls.TextButton(
-                    "ShowPlayerPanel",
-                    Window,
-                    "",
-                    () => plugin.Settings.ShowPlayerPanel.Value = !plugin.Settings.ShowPlayerPanel.Value
-                ),
-                () => BoomboxText.Get("text.player_2") + (plugin.Settings.ShowPlayerPanel.Value
-                    ? BoomboxText.Get("text.on")
-                    : BoomboxText.Get("text.off"))
+            playerToggle = BoomboxNativeControls.TextButton(
+                "ShowPlayerPanel",
+                Window,
+                "",
+                () => plugin.Settings.ShowPlayerPanel.Value = !plugin.Settings.ShowPlayerPanel.Value
             );
             BoomboxNativeUI.Place((RectTransform)playerToggle.transform, 624, 20, 140, 36);
             var playerReset = labels.Add(
@@ -119,6 +117,12 @@ namespace VikingBoombox
             if (!canvas.activeSelf)
                 canvas.SetActive(true);
             Layout();
+            BoomboxNativeUI.Label(
+                playerToggle,
+                BoomboxText.Get("text.player_2") + (plugin.Settings.ShowPlayerPanel.Value
+                    ? BoomboxText.Get("text.on")
+                    : BoomboxText.Get("text.off"))
+            );
             if (labels.Refresh() || tab != shownTab)
             {
                 shownTab = tab;

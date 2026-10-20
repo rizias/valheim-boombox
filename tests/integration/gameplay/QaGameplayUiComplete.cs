@@ -120,7 +120,7 @@ public sealed partial class QaGameplay
             yield return new WaitForSecondsRealtime(.2f);
             UiDispatch(UiButton("Group0"), false);
             yield return new WaitForSecondsRealtime(.16f);
-            UiDispatch(UiElement("SlotChip0"), false);
+            UiDispatch(UiSlot(17), false);
             yield return new WaitForSecondsRealtime(.16f);
             steps.Add(UiDispatch(UiButton("ClearSlot"), false));
             yield return UiAwait(() => !deck.State.decorationPlacements.Any(p => p.slot == 17), "clear saved design");
@@ -129,7 +129,7 @@ public sealed partial class QaGameplay
             UiRawItem("MushroomYellow", 1);
             UiDispatch(UiButton("Group2"), false);
             yield return new WaitForSecondsRealtime(.16f);
-            UiDispatch(UiElement("SlotChip0"), false);
+            UiDispatch(UiSlot(0), false);
             yield return new WaitForSecondsRealtime(.16f);
             UiDispatch(UiElement("Design_MushroomYellow"), false);
             yield return new WaitForSecondsRealtime(.16f);

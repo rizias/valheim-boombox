@@ -20,7 +20,7 @@ namespace VikingBoombox
         private Vector2? dragged;
         private readonly Button previous, play, next, repeat, mute, quieter, louder;
         private readonly TMP_Text volume, title;
-        private readonly Image playIcon;
+        private readonly Image playIcon, muteIcon;
         private readonly Dictionary<Button, Sprite> normalSprites = new Dictionary<Button, Sprite>();
         private readonly GameObject[] elements;
         internal bool Alive => previous != null && title != null;
@@ -101,6 +101,7 @@ namespace VikingBoombox
             title.alignment = TextAlignmentOptions.MidlineLeft;
             title.overflowMode = TextOverflowModes.Ellipsis;
             playIcon = play.transform.Find("Icon").GetComponent<Image>();
+            muteIcon = mute.transform.Find("Icon").GetComponent<Image>();
             elements = new[] {
                 previous.gameObject,
                 play.gameObject,
@@ -122,7 +123,7 @@ namespace VikingBoombox
 
         internal void Update(bool visible)
         {
-            bool shown = visible && plugin.Settings.ShowPlayerPanel.Value;
+            bool shown = visible && plugin.Settings.ShowPlayerPanel.Value && !plugin.MenuOpen;
             var gui = InventoryGui.instance;
             var musicParent = shown ? parent : gui.m_player;
             if (musicButton.transform.parent != musicParent)
@@ -135,7 +136,7 @@ namespace VikingBoombox
                 rect.anchorMin = rect.anchorMax = new Vector2(1, 0);
                 rect.pivot = new Vector2(1, 1);
                 rect.anchoredPosition = new Vector2(-10, -10);
-                rect.sizeDelta = new Vector2(160, 40);
+                rect.sizeDelta = new Vector2(190, 40);
                 rect.localScale = Vector3.one;
                 return;
             }
@@ -164,6 +165,7 @@ namespace VikingBoombox
             Place((RectTransform)louder.transform, left + 366, top, 44, 44);
             Place(title.rectTransform, left, 39, 760, 34);
             playIcon.sprite = BoomboxPlayerIcons.Get(deck.State.playing ? "pause" : "play");
+            muteIcon.sprite = BoomboxPlayerIcons.Get(deck.State.muted ? "muted" : "sound");
             volume.text = Mathf.RoundToInt(deck.State.volume * 100f) + " %";
             string name = deck.State.TrackId == null ? null : deck.TrackTitle;
             title.text = string.IsNullOrEmpty(name) ? BoomboxText.Get("text.no_track_selected") : name;
@@ -173,7 +175,7 @@ namespace VikingBoombox
 
         private void Layout(InventoryGui gui)
         {
-            scale = Mathf.Min(Screen.height / 1080f, (Screen.width - 16f) / Width);
+            scale = Mathf.Min(1.15f, Screen.height / 1080f, (Screen.width - 16f) / Width);
             var saved = dragged ?? plugin.Settings.PlayerPanelPosition.Value;
             float x = saved.x * Screen.width, y = saved.y * Screen.height;
             if (saved.x < 0 || saved.y < 0)
@@ -190,8 +192,8 @@ namespace VikingBoombox
             y = Mathf.Clamp(y, 8f, Mathf.Max(8f, Screen.height - Height * scale - 8f));
             BoomboxNativeUI.Place(parent, x, y, Width, Height);
             parent.localScale = Vector3.one * scale;
-            BoomboxNativeUI.Place((RectTransform)musicButton.transform, 446, 110, 174, 44);
-            BoomboxNativeUI.Place((RectTransform)bonuses.transform, 632, 110, 148, 44);
+            BoomboxNativeUI.Place((RectTransform)musicButton.transform, 446, 110, 190, 44);
+            BoomboxNativeUI.Place((RectTransform)bonuses.transform, 648, 110, 132, 44);
         }
 
         private Button IconButton(InventoryGui gui, string name, string icon, Action action)

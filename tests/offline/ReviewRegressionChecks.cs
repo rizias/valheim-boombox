@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 internal static class ReviewRegressionChecks
@@ -68,6 +69,14 @@ internal static class ReviewRegressionChecks
         }
         try
         {
+            DecorationNumbering(product);
+        }
+        catch (Exception error)
+        {
+            failures.Add("DecorationNumbering: " + error.GetBaseException().Message);
+        }
+        try
+        {
             DesktopDisposal(product);
         }
         catch (Exception error)
@@ -82,6 +91,53 @@ internal static class ReviewRegressionChecks
             dllSha = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(dll)))
         }));
         return failures.Count == 0 ? 0 : 1;
+    }
+
+    private static void DecorationNumbering(Assembly product)
+    {
+        var catalog = product.GetType("VikingBoombox.BoomboxDecorationCatalog", true);
+        var slots = (Array)catalog.GetField("Slots", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+        var slotType = slots.GetValue(0).GetType();
+        int Field(object slot, string name) => (int)slotType.GetField(name).GetValue(slot);
+        var ordered = slots.Cast<object>().OrderBy(s => Field(s, "Number")).ToArray();
+        Check(ordered.Select(s => Field(s, "Number")).SequenceEqual(Enumerable.Range(1, 24)),
+            "Decoration numbers cover 1 through 24 exactly once");
+        for (int index = 0; index < slots.Length; index++)
+            Check(Field(slots.GetValue(index), "Index") == index,
+                "Saved decoration slot identity preserved: " + index);
+        using var stream = product.GetManifestResourceStream("ValheimBoombox.ContactShapes.json");
+        using var layout = JsonDocument.Parse(stream);
+        var mounts = new Dictionary<int, float[]>();
+        foreach (var name in layout.RootElement.GetProperty("mounts").EnumerateArray())
+            foreach (var group in layout.RootElement.GetProperty("mountLayouts").GetProperty(name.GetString()).EnumerateArray())
+            {
+                var ids = group.GetProperty("slots").EnumerateArray().Select(v => v.GetInt32()).ToArray();
+                var aims = group.GetProperty("aims").EnumerateArray().ToArray();
+                for (int i = 0; i < ids.Length; i++)
+                    mounts.Add(ids[i], aims[i].EnumerateArray().Select(v => v.GetSingle()).ToArray());
+            }
+        float[] Position(int number) => mounts[Field(ordered[number - 1], "Index")];
+        Check(Position(1)[0] > 0 && Position(1)[2] < 0
+            && Position(2)[0] > 0 && Position(2)[2] == 0
+            && Position(3)[0] > 0 && Position(3)[2] > 0,
+            "Lower 1, 2, 3 run from viewer-left back through side midpoint to front corner");
+        Check(Position(4)[0] > Position(5)[0] && Position(5)[0] > Position(6)[0]
+            && Position(6)[0] == 0 && Enumerable.Range(4, 5).All(n => Position(n)[2] > 0)
+            && Enumerable.Range(3, 6).All(n => Position(n)[0] > Position(n + 1)[0]),
+            "Lower 4 and 5 lie under left speaker, 6 is center, and front order continues right");
+        Check(Position(9)[0] < 0 && Position(9)[2] > 0
+            && Position(10)[0] < 0 && Position(10)[2] == 0
+            && Position(11)[0] < 0 && Position(11)[2] < 0,
+            "Lower 9, 10, 11 continue from viewer-right front to back");
+        Check(Enumerable.Range(12, 3).All(n => Position(n)[0] > 0)
+            && Position(12)[2] < Position(13)[2] && Position(13)[2] < Position(14)[2]
+            && Enumerable.Range(15, 3).All(n => Position(n)[0] < 0)
+            && Position(15)[2] > Position(16)[2] && Position(16)[2] > Position(17)[2],
+            "Upper 12 through 17 continue around left back-to-front and right front-to-back");
+        var stands = ordered.Skip(17).ToArray();
+        Check(stands.All(s => slotType.GetField("Kind").GetValue(s).ToString() == "Figurine")
+            && stands.Select(s => Field(s, "MountIndex")).SequenceEqual(Enumerable.Range(0, 7).Reverse()),
+            "Stands 18 through 24 run from viewer left to right without moving mounts");
     }
 
     private static void DesktopDisposal(Assembly product)
@@ -206,7 +262,11 @@ internal static class ReviewRegressionChecks
         string path = Path.Combine(output, "configured-recipes.cfg");
         File.WriteAllText(
             path,
-            "[Recipe Cassette rank 1]\nStation = forge\nStationLevel = 3\nMaterials = Wood:17\n\n[Recipe Cassette rank 7]\nStation = blackforge\nStationLevel = 4\nMaterials = Iron:29\n\n[Music]\nPythonPath = retired-python\n\n[Unrelated mod setting]\nKeep = user-value\n"
+            "[Recipe Cassette rank 1]\nStation = forge\nStationLevel = 3\nMaterials = Wood:17\n\n"
+                + "[Recipe Cassette rank 7]\nStation = blackforge\nStationLevel = 4\nMaterials = Iron:29\n\n"
+                + "[Speaker effects]\nShowCassetteSymbols = true\nCassetteSymbolIntensity = 0.2\n\n"
+                + "[Cassette symbols]\nRedColor = RGBA(1,0,0,1)\n\n"
+                + "[Music]\nPythonPath = retired-python\n\n[Unrelated mod setting]\nKeep = user-value\n"
         );
         var configType = Assembly.Load("BepInEx").GetType("BepInEx.Configuration.ConfigFile", true);
         var boundary = product.GetType("VikingBoombox.BoomboxConfiguration", true).GetMethod(
@@ -219,6 +279,18 @@ internal static class ReviewRegressionChecks
             object config = Activator.CreateInstance(configType, new object[] { path, false, null });
             configType.GetProperty("SaveOnConfigSet").SetValue(config, true);
             object settings = boundary.Invoke(null, new[] { config });
+            bool hasCassetteSymbolControl = false;
+            var definitions = (System.Collections.IEnumerable)configType.GetProperty("Keys").GetValue(config);
+            foreach (object definition in definitions)
+            {
+                var type = definition.GetType();
+                string section = (string)type.GetProperty("Section").GetValue(definition);
+                string key = (string)type.GetProperty("Key").GetValue(definition);
+                hasCassetteSymbolControl |= section == "Cassette symbols"
+                    || (section == "Speaker effects"
+                        && (key == "ShowCassetteSymbols" || key == "CassetteSymbolIntensity"));
+            }
+            Check(!hasCassetteSymbolControl, "Removed cassette symbol controls are not exposed: round " + round);
             foreach (int rank in new[] { 1, 7 })
             {
                 object recipe = progression.Invoke(null, new object[] { settings, rank });

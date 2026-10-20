@@ -141,7 +141,6 @@ namespace VikingBoombox
                 {
                     var model = presenter.Model.GetComponent<VikingBoomboxVisualState>();
                     BoomboxSpeakerPulse.Emit(model, strike.Strength);
-                    BoomboxCassetteSymbol.Emit(model, state.Appearance.insertedCassette, strike.Strength);
                 }
             }
             effects.Present(

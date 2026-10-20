@@ -172,7 +172,9 @@ namespace VikingBoombox
             {
                 pendant.Destroy();
                 BoomboxPlugin.Instance.LogError(
-                    BoomboxText.Get("text.pendant_particles_in_slot") + (anchor.Slot + 1) + BoomboxText.Get("text.were_not_created") + error.Message
+                    BoomboxText.Get("text.pendant_particles_in_slot")
+                        + BoomboxDecorationCatalog.Slots[anchor.Slot].Number
+                        + BoomboxText.Get("text.were_not_created") + error.Message
                 );
             }
         }

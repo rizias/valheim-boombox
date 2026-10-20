@@ -24,6 +24,8 @@ namespace VikingBoombox
         private bool lastVisible;
         private Button musicButton;
         private BoomboxInventoryPlayer player;
+        private TMPro.TMP_Text slotLabel;
+        private float slotLabelFontSize;
         public BoomboxInventorySlot(BoomboxPlugin owner)
         {
             plugin = owner;
@@ -64,12 +66,12 @@ namespace VikingBoombox
                 rect.anchorMin = rect.anchorMax = new Vector2(1, 0);
                 rect.pivot = new Vector2(1, 1);
                 rect.anchoredPosition = new Vector2(-10, -10);
-                rect.sizeDelta = new Vector2(160, 40);
+                rect.sizeDelta = new Vector2(190, 40);
             }
             if (player == null || !player.Alive)
                 player = new BoomboxInventoryPlayer(plugin, gui, musicButton);
             musicButton.interactable = true;
-            SetButtonText(musicButton, BoomboxText.Get("text.choose_music"));
+            SetButtonText(musicButton, BoomboxText.Get("boombox_name"));
             player.Update(
                 InventoryVisible && (BoomboxEquipment.Known || plugin.Items.Own != null)
             );
@@ -127,7 +129,7 @@ namespace VikingBoombox
                 Screen.height - points.Min(p => p.y)
             );
         }
-        private static Rect NativeSlotRect()
+        private Rect NativeSlotRect()
         {
             var position = BoomboxEquipment.SlotPosition;
             var grid = InventoryGui.instance.m_playerGrid;
@@ -137,7 +139,26 @@ namespace VikingBoombox
                 grid,
                 new object[] { position.Value.x, position.Value.y, Player.m_localPlayer.GetInventory().GetWidth() }
             );
-            return element == null ? new Rect() : ScreenRect(element.GetElementRectTransform());
+            if (element == null)
+                return new Rect();
+            var rect = element.GetElementRectTransform();
+            var label = rect.Find("binding")?.GetComponent<TMPro.TMP_Text>();
+            if (label != null)
+            {
+                if (slotLabel != label)
+                {
+                    slotLabel = label;
+                    slotLabelFontSize = label.fontSize;
+                }
+                label.textWrappingMode = TMPro.TextWrappingModes.NoWrap;
+                label.fontSizeMax = slotLabelFontSize;
+                label.fontSizeMin = slotLabelFontSize * .65f;
+                label.enableAutoSizing = true;
+                var margin = label.margin;
+                margin.z = Mathf.Max(margin.z, 14f);
+                label.margin = margin;
+            }
+            return ScreenRect(rect);
         }
         public void Dispose()
         {

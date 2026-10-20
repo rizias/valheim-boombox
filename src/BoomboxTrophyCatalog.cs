@@ -32,7 +32,9 @@ namespace VikingBoombox
         internal BoomboxDecorationKind Kind => group == 0
             ? BoomboxDecorationKind.Figurine
             : BoomboxDecorationKind.Hanging;
-        internal IEnumerable<BoomboxDecorationSlot> GroupSlots => BoomboxDecorationCatalog.Slots.Where(s => InGroup(s, group));
+        internal IEnumerable<BoomboxDecorationSlot> GroupSlots => BoomboxDecorationCatalog.Slots
+            .Where(s => InGroup(s, group))
+            .OrderBy(s => s.Number);
 
         private static bool InGroup(BoomboxDecorationSlot slot, int index) => index == 0
             ? slot.Kind == BoomboxDecorationKind.Figurine
@@ -177,7 +179,7 @@ namespace VikingBoombox
                 bool unlocked = state.unlockedDecorationSlots.Contains(slot.Index);
                 chip.gameObject.SetActive(true);
                 chip.m_amount.gameObject.SetActive(true);
-                chip.m_amount.text = (slot.Index + 1).ToString();
+                chip.m_amount.text = slot.Number.ToString();
                 chip.m_amount.color = unlocked ? Color.white : new Color(.55f, .55f, .55f);
                 chip.m_icon.enabled = placement != null;
                 if (placement != null)
@@ -185,7 +187,7 @@ namespace VikingBoombox
                 chip.m_icon.color = unlocked ? Color.white : new Color(.5f, .5f, .5f);
                 chip.m_equiped.enabled = false;
                 chip.m_selected.SetActive(slot.Index == selectedSlot);
-                chip.m_tooltip.m_topic = BoomboxText.Get("text.slot") + (slot.Index + 1);
+                chip.m_tooltip.m_topic = BoomboxText.Get("text.slot") + slot.Number;
                 chip.m_tooltip.m_text = !unlocked
                     ? BoomboxText.Get("text.locked")
                     : placement == null

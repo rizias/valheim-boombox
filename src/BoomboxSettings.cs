@@ -39,8 +39,6 @@ namespace VikingBoombox
         public readonly ConfigEntry<float> DisplayScrollSpeed;
         public readonly ConfigEntry<float> DisplayScrollPause;
         public readonly ConfigEntry<bool> DisplayShowTime;
-        public readonly ConfigEntry<bool> ShowCassetteSymbols;
-        public readonly ConfigEntry<float> CassetteSymbolIntensity;
         public readonly ConfigEntry<float> WaveSpeed;
         public readonly MusicEffectSettings Effect;
         public readonly ConfigEntry<bool> ShowVisualEffects;
@@ -110,8 +108,6 @@ namespace VikingBoombox
         public readonly ConfigEntry<Color> EngravingGlowTint;
         public readonly ConfigEntry<Color> PatternColor;
         public readonly ConfigEntry<bool> PatternPulse;
-        public readonly Dictionary<string, ConfigEntry<Color>> CassetteColors =
-            new Dictionary<string, ConfigEntry<Color>>();
         private readonly Dictionary<string, RecipeSettings> recipes = new Dictionary<string, RecipeSettings>();
 
         public BoomboxSettings(ConfigFile config)
@@ -454,14 +450,6 @@ namespace VikingBoombox
                 true,
                 BoomboxText.Description("text.upper_pattern_pulsing_in_response_to_music_impulses")
             );
-            foreach (string property in BoomboxItemData.Properties)
-                CassetteColors[property] =
-                    config.Bind(
-                    "Cassette symbols",
-                    property + "Color",
-                    Color.clear,
-                    BoomboxText.Description("text.override_the_emitted_property_symbol_colour_alpha")
-                );
             for (int tier = 1; tier <= BoomboxProgression.MaxTier; tier++)
                 BindRecipe(config, "Device " + tier, BoomboxProgression.GetTier(tier).Recipe);
             BindRecipe(config, "Cassette basic", BoomboxCassetteWorkshop.BaseRecipe);
@@ -669,18 +657,6 @@ namespace VikingBoombox
                 "PurpleSpeedPerRank",
                 .05f,
                 BoomboxText.Description("text.movement_speed_bonus_per_purple_rank_0")
-            );
-            ShowCassetteSymbols = config.Bind(
-                "Speaker effects",
-                "ShowCassetteSymbols",
-                true,
-                BoomboxText.Description("text.show_colored_cassette_property_symbols_on_music")
-            );
-            CassetteSymbolIntensity = config.Bind(
-                "Speaker effects",
-                "CassetteSymbolIntensity",
-                0.2f,
-                BoomboxText.Description("text.cassette_property_symbol_brightness_independent_of")
             );
         }
 

@@ -24,6 +24,7 @@ namespace VikingBoombox
     public sealed class BoomboxDecorationSlot
     {
         public int Index;
+        public int Number;
         public int MountIndex;
         public BoomboxDecorationKind Kind;
         public Vector3 Outward;
@@ -457,6 +458,11 @@ namespace VikingBoombox
         );
         private static BoomboxDecorationSlot[] BuildSlots()
         {
+            int[] numbers = {
+                9, 8, 7, 6, 5, 4, 3, 10, 11, 2, 1,
+                17, 16, 15, 12, 13, 14,
+                24, 23, 22, 21, 20, 19, 18
+            };
             var slots = new List<BoomboxDecorationSlot>();
             for (int i = 0; i < 7; i++)
                 slots.Add(new BoomboxDecorationSlot
@@ -500,6 +506,8 @@ namespace VikingBoombox
                         Outward = Vector3.up
                     }
                 );
+            foreach (var slot in slots)
+                slot.Number = numbers[slot.Index];
             return slots.ToArray();
         }
     }

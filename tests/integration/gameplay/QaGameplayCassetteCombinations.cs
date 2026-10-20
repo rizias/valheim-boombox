@@ -20,7 +20,7 @@ public sealed partial class QaGameplay
             {
                 ["case"] = "F-10",
                 ["scope"] =
-                    "32 masks of five properties: native item tooltip, actual cassette menu labels, spawned cassette bands and installed symbols. Numeric/material composition, not icon-art approval."
+                    "32 masks of five properties: native item tooltip, actual cassette menu labels, spawned cassette bands and absence of stray installed property markers. Numeric/material composition, not icon-art approval."
             };
         lastCapture = proof;
         var rows = new JArray();
@@ -106,11 +106,7 @@ public sealed partial class QaGameplay
                     "F10 cassette bands mismatch mask=" + mask
                 );
                 var symbols = deck.Visual.transform.Find("InstalledCassetteProperties");
-                Need(symbols != null, "F10 installed symbols root missing");
-                var names = symbols.Cast<Transform>().Where(t => t.gameObject.activeSelf).Select(
-                    t => t.name.Replace("(Clone)", "").Replace("Property", "")
-                ).ToArray();
-                Need(names.SequenceEqual(active), "F10 installed symbols mismatch mask=" + mask);
+                Need(symbols == null, "F10 stray installed cassette markers present mask=" + mask);
                 rows.Add(new JObject
                 {
                     ["mask"] = mask,
@@ -118,7 +114,7 @@ public sealed partial class QaGameplay
                     ["menu"] = labels,
                     ["tooltip"] = tip,
                     ["bands"] = new JArray(materials.Select(m => m.name)),
-                    ["installedSymbols"] = new JArray(names)
+                    ["installedSymbols"] = new JArray()
                 });
             }
             proof["seconds"] = Time.realtimeSinceStartup - start;

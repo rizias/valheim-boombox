@@ -35,7 +35,6 @@ namespace VikingBoombox
             {
                 var model = Visual.GetComponent<VikingBoomboxVisualState>();
                 BoomboxSpeakerPulse.Emit(model, strength);
-                BoomboxCassetteSymbol.Emit(model, State.insertedCassette, strength);
             }
             catch (Exception error)
             {

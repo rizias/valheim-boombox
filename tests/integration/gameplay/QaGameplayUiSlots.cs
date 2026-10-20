@@ -129,14 +129,10 @@ public sealed partial class QaGameplay
                 : slot >= 11
                     ? 1
                     : 2;
-            int chip = slot >= 17
-                ? slot - 17
-                : slot >= 11
-                    ? slot - 11
-                    : slot;
             var groupEvent = UiDispatch(UiButton("Group" + group), false);
             yield return new WaitForSecondsRealtime(.16f);
-            var slotEvent = UiDispatch(UiElement("SlotChip" + chip), false);
+            var slotButton = UiSlot(slot);
+            var slotEvent = UiDispatch(slotButton, false);
             yield return new WaitForSecondsRealtime(.16f);
             int selected = (int)AccessTools.Field(panel.GetType(), "selectedSlot").GetValue(panel);
             int count = deck.State.unlockedDecorationSlots.Count, raw = Math.Max(
@@ -160,7 +156,7 @@ public sealed partial class QaGameplay
             {
                 ["slot"] = slot,
                 ["group"] = group,
-                ["chip"] = chip,
+                ["chip"] = slotButton.name,
                 ["selected"] = selected,
                 ["countBefore"] = count,
                 ["expected"] = expected,
@@ -195,7 +191,7 @@ public sealed partial class QaGameplay
         proof["coinsAfter"] = coins();
         UiDispatch(UiButton("Group0"), false);
         yield return new WaitForSecondsRealtime(.16f);
-        UiDispatch(UiElement("SlotChip0"), false);
+        UiDispatch(UiSlot(17), false);
         yield return new WaitForSecondsRealtime(.16f);
         bool deerKnown = player.IsMaterialKnown(
             ObjectDB.instance.GetItemPrefab("TrophyDeer").GetComponent<ItemDrop>().m_itemData.m_shared.m_name
@@ -226,7 +222,7 @@ public sealed partial class QaGameplay
         proof["cleared"] = true;
         UiDispatch(UiButton("Group2"), false);
         yield return new WaitForSecondsRealtime(.16f);
-        UiDispatch(UiElement("SlotChip0"), false);
+        UiDispatch(UiSlot(0), false);
         yield return new WaitForSecondsRealtime(.16f);
         UiDispatch(UiElement("Design_MushroomYellow"), false);
         yield return new WaitForSecondsRealtime(.16f);
@@ -257,6 +253,17 @@ public sealed partial class QaGameplay
         proof["nativeProfileSaveRequested"] = true;
         proof["coreSeconds"] = Time.realtimeSinceStartup - coreStarted;
         proof["utc"] = DateTime.UtcNow.ToString("O");
+    }
+
+    private static RectTransform UiSlot(int index)
+    {
+        var catalog = typeof(BoomboxDecorationSlot).Assembly.GetType("VikingBoombox.BoomboxDecorationCatalog");
+        var slots = (BoomboxDecorationSlot[])AccessTools.Field(catalog, "Slots").GetValue(null);
+        string number = slots[index].Number.ToString();
+        var element = UnityEngine.Object.FindObjectsByType<InventoryElement>(FindObjectsSortMode.None)
+            .Single(e => e.gameObject.activeInHierarchy && e.name.StartsWith("SlotChip", StringComparison.Ordinal)
+                && e.m_amount.text == number);
+        return (RectTransform)element.m_button.transform;
     }
 
     private static RectTransform UiElement(

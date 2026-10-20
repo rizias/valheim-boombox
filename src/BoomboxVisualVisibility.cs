@@ -48,7 +48,6 @@ namespace VikingBoombox
             Add("EnchantVisual", settings.ShowEnchantmentVisuals, "visibility.EnchantVisual");
             Add("BodyVisual", settings.ShowBodyGlow, "visibility.BodyVisual");
             Add("CarvingVisual", settings.ShowSigurdGlow, "visibility.CarvingVisual");
-            Add("CassetteVisual", settings.ShowCassetteSymbols, "visibility.CassetteVisual");
             Add("DecorationParticlesVisual", settings.DecorationParticles, "visibility.DecorationParticlesVisual");
             Add("DecorationMotionVisual", settings.DecorationMovement, "visibility.DecorationMotionVisual");
             Add("MushroomVisual", settings.ShowDecorationGlow, "visibility.MushroomVisual");

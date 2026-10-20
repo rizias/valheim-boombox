@@ -191,21 +191,6 @@ namespace VikingBoombox
             cassetteIcon = null;
         }
 
-        public static GameObject CreatePropertySymbol(string property, Transform parent)
-        {
-            if (!prefabs.TryGetValue(BoomboxItemData.CassettePrefix + property, out var prefab))
-                return null;
-            var source = prefab.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name
-                == "Property" + property);
-            if (source == null)
-                return null;
-            var symbol = UnityEngine.Object.Instantiate(source.gameObject, parent, false);
-            symbol.SetActive(true);
-            var bounds = BoundsOf(symbol);
-            symbol.transform.localPosition -= bounds.center;
-            return symbol;
-        }
-
         private static void RegisterRecipes(ObjectDB database, ZNetScene scene)
         {
             var workbench = scene.GetPrefab("piece_workbench")?.GetComponent<CraftingStation>();

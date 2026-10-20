@@ -15,7 +15,6 @@ public sealed partial class QaGameplay
     {
         yield return AwaitAudio();
         var settings = BoomboxPlugin.Instance.Settings;
-        settings.ShowCassetteSymbols.Value = false;
         settings.DecorationMovement.Value =
             settings.DecorationMusicMovement.Value =
             settings.DecorationParticles.Value =

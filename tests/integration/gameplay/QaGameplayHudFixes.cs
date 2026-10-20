@@ -69,9 +69,14 @@ public sealed partial class QaGameplay
             var panel = GameObject.Find("BoomboxFloatingPlayer").GetComponent<RectTransform>();
             Click(UiButton("BoomboxMusicButton"));
             yield return new WaitForSecondsRealtime(.2f);
+            Need(plugin.MenuOpen && !panel.gameObject.activeInHierarchy && settings.ShowPlayerPanel.Value,
+                "Library did not temporarily hide the player");
+            var toggleLabel = UiButton("ShowPlayerPanel").GetComponentInChildren<TMP_Text>();
+            string enabledLabel = toggleLabel.text;
             Click(UiButton("ShowPlayerPanel"));
             yield return new WaitForSecondsRealtime(.2f);
             Need(!settings.ShowPlayerPanel.Value && !panel.gameObject.activeInHierarchy, "OFF did not hide player");
+            Need(toggleLabel.text != enabledLabel, "OFF left the player toggle label unchanged");
             plugin.CloseMenu();
             yield return new WaitForSecondsRealtime(.2f);
             Click(UiButton("BoomboxMusicButton"));
@@ -79,14 +84,35 @@ public sealed partial class QaGameplay
             Need(plugin.MenuOpen, "OFF removed inventory music entry");
             Click(UiButton("ShowPlayerPanel"));
             yield return new WaitForSecondsRealtime(.2f);
-            Need(panel.gameObject.activeInHierarchy && plugin.MenuOpen, "ON did not show player over open menu");
-            var menuWindow = GameObject.Find("BoomboxMenuWindow").GetComponent<RectTransform>();
-            Need(
-                panel.GetComponentInParent<Canvas>().sortingOrder > menuWindow.GetComponentInParent<Canvas>().sortingOrder,
-                "Player is behind menu"
-            );
+            Need(!panel.gameObject.activeInHierarchy && plugin.MenuOpen && settings.ShowPlayerPanel.Value,
+                "ON displayed player over the open menu");
+            Need(toggleLabel.text == enabledLabel, "ON did not restore the player toggle label");
             Click(UiButton("ResetPlayerPanel"));
             yield return new WaitForSecondsRealtime(.2f);
+            Need(!panel.gameObject.activeInHierarchy, "Reset displayed player over the menu");
+            plugin.CloseMenu();
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(panel.gameObject.activeInHierarchy, "Closing menu did not restore player");
+            Click(UiButton("OpenBonuses"));
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(plugin.MenuOpen && !panel.gameObject.activeInHierarchy, "Bonuses did not hide player");
+            plugin.CloseMenu();
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(panel.gameObject.activeInHierarchy, "Closing bonuses did not restore player");
+            var muteButton = UiButton("BoomboxPlayerMute");
+            var muteIcon = muteButton.Find("Icon").GetComponent<UnityEngine.UI.Image>();
+            string originalIcon = muteIcon.sprite.name;
+            bool originalMuted = deck.State.muted;
+            Click(muteButton);
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(deck.State.muted != originalMuted
+                && muteIcon.sprite.name == "BoomboxPlayerIcon_" + (deck.State.muted ? "muted" : "sound")
+                && muteIcon.sprite.name != originalIcon, "Mute did not update state and icon");
+            Click(muteButton);
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(deck.State.muted == originalMuted && muteIcon.sprite.name == originalIcon,
+                "Unmute did not restore state and icon");
+            cases.Add(new JObject { ["id"] = "menu-hides-player-and-mute-icon", ["passed"] = true });
             var resetPosition = panel.anchoredPosition;
             var handle = panel.Find("PlayerDragHandle").gameObject;
             var pointer = new PointerEventData(EventSystem.current)
@@ -98,9 +124,14 @@ public sealed partial class QaGameplay
             ExecuteEvents.Execute(handle, pointer, ExecuteEvents.dragHandler);
             yield return null;
             Need(Vector2.Distance(panel.anchoredPosition, resetPosition) > 20, "Fixture interrupted drag did not move");
+            Click(UiButton("BoomboxMusicButton"));
+            yield return new WaitForSecondsRealtime(.2f);
             Click(UiButton("ShowPlayerPanel"));
             yield return new WaitForSecondsRealtime(.2f);
             Click(UiButton("ResetPlayerPanel"));
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(!panel.gameObject.activeInHierarchy, "Reset reopened player over menu after drag");
+            plugin.CloseMenu();
             yield return new WaitForSecondsRealtime(.2f);
             Need(
                 settings.ShowPlayerPanel.Value && panel.gameObject.activeInHierarchy
@@ -109,13 +140,39 @@ public sealed partial class QaGameplay
                 "Reset did not recover visible player after interrupted drag"
             );
             cases.Add(new JObject { ["id"] = "player-toggle-entry-and-reset", ["passed"] = true });
+            Click(UiButton("BoomboxMusicButton"));
+            yield return new WaitForSecondsRealtime(.2f);
             Click(UiButton("ShowPlayerPanel"));
             yield return new WaitForSecondsRealtime(.2f);
             Click(UiButton("Tab4"));
             yield return new WaitForSecondsRealtime(.2f);
+            int[][] groupSlots = {
+                new[] { 23, 22, 21, 20, 19, 18, 17 },
+                new[] { 14, 15, 16, 13, 12, 11 },
+                new[] { 10, 9, 6, 5, 4, 3, 2, 1, 0, 7, 8 }
+            };
+            int[] firstNumbers = { 18, 12, 1 };
+            var menu = AccessTools.Field(typeof(BoomboxPlugin), "menu").GetValue(plugin);
+            var trophyPanel = AccessTools.Field(menu.GetType(), "trophyPanel").GetValue(menu);
+            for (int group = 0; group < groupSlots.Length; group++)
+            {
+                Click(UiButton("Group" + group));
+                yield return new WaitForSecondsRealtime(.16f);
+                for (int chip = 0; chip < groupSlots[group].Length; chip++)
+                {
+                    var element = UiElement("SlotChip" + chip);
+                    Need(element.GetComponentInParent<InventoryElement>().m_amount.text
+                        == (firstNumbers[group] + chip).ToString(), "Decoration chip number is out of order");
+                    Click(element);
+                    yield return null;
+                    Need((int)AccessTools.Field(trophyPanel.GetType(), "selectedSlot").GetValue(trophyPanel)
+                        == groupSlots[group][chip], "Decoration chip selected the wrong physical place");
+                }
+            }
+            cases.Add(new JObject { ["id"] = "all-24-decoration-number-selections", ["passed"] = true });
             Click(UiButton("Group2"));
             yield return new WaitForSecondsRealtime(.2f);
-            Click(UiElement("SlotChip0"));
+            Click(UiSlot(0));
             int itemCount = player.GetInventory().GetAllItems().Count;
             int deviceCount = player.GetInventory().GetAllItems().Where(BoomboxItemData.IsDevice).Sum(i => i.m_stack);
             int cassetteCount = player.GetInventory().GetAllItems().Where(BoomboxItemData.IsCassette).Sum(i => i.m_stack);
@@ -407,21 +464,24 @@ public sealed partial class QaGameplay
             UiDispatch(UiButton("ShowPlayerPanel"), false);
             UiDispatch(UiButton("BonusHudToggle"), false);
             yield return new WaitForSecondsRealtime(.2f);
-            Need(panel.gameObject.activeInHierarchy && plugin.MenuOpen, "Enabled player is hidden while menu is open");
-            Need(
-                panel.GetComponentInParent<Canvas>().sortingOrder > window.GetComponentInParent<Canvas>().sortingOrder,
-                "Enabled player is behind the menu"
-            );
+            Need(!panel.gameObject.activeInHierarchy && plugin.MenuOpen && settings.ShowPlayerPanel.Value,
+                "Enabled player overlaps the open menu");
+            UiDispatch(UiButton("ResetPlayerPanel"), false);
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(!panel.gameObject.activeInHierarchy, "Reset displayed player over the menu");
+            plugin.CloseMenu();
+            yield return new WaitForSecondsRealtime(.2f);
+            Need(panel.gameObject.activeInHierarchy, "Closing menu did not restore the enabled player");
             var playerMusic = UiButton("BoomboxMusicButton");
             var playerHit = UiRaycast(playerMusic, false).gameObject;
             Need(playerHit != null && playerHit.transform.IsChildOf(playerMusic), "Enabled player button unreachable");
-            UiDispatch(UiButton("ResetPlayerPanel"), false);
-            yield return new WaitForSecondsRealtime(.2f);
             var resetPosition = panel.anchoredPosition;
             ExecuteEvents.Execute(handle, pointer, ExecuteEvents.beginDragHandler);
             ExecuteEvents.Execute(handle, pointer, ExecuteEvents.dragHandler);
             yield return null;
             Need(Vector2.Distance(panel.anchoredPosition, resetPosition) > 20, "Interrupted drag did not move the player");
+            UiDispatch(UiButton("BoomboxMusicButton"), false);
+            yield return new WaitForSecondsRealtime(.2f);
             UiDispatch(UiButton("ShowPlayerPanel"), false);
             yield return new WaitForSecondsRealtime(.2f);
             UiDispatch(UiButton("ResetPlayerPanel"), false);
@@ -430,6 +490,9 @@ public sealed partial class QaGameplay
                 settings.ShowPlayerPanel.Value && settings.PlayerPanelPosition.Value == new Vector2(-1, -1),
                 "Player reset did not enable the default position"
             );
+            Need(!panel.gameObject.activeInHierarchy, "Player reset displayed panel over menu");
+            plugin.CloseMenu();
+            yield return new WaitForSecondsRealtime(.2f);
             Need(panel.gameObject.activeInHierarchy, "Player reset did not restore the visible panel");
             Need(Vector2.Distance(panel.anchoredPosition, resetPosition) < .1f, "Interrupted drag overrides player reset");
             cases.Add(new JObject { ["id"] = "player-toggle-and-interrupted-drag-reset", ["passed"] = true });
