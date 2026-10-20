@@ -49,7 +49,7 @@ namespace BoomboxQa
                         {
                             caseId = id
                         },
-                        seconds: id == "C09manual"
+                        seconds: id == "UserFixes" || id == "C09manual"
                             || id.StartsWith("K03", StringComparison.Ordinal)
                             || id.StartsWith("L01", StringComparison.Ordinal)
                             || id.StartsWith("L08", StringComparison.Ordinal)

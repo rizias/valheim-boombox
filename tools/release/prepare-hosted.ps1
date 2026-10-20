@@ -20,7 +20,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Cannot read existing releases before selecting
 $pages = ($releaseJson -join "`n") | ConvertFrom-Json
 $existing = @($pages | ForEach-Object { $_ } | ForEach-Object { $_ } | Where-Object { $_.tag_name -ceq ('v' + $manifest.version_number) })
 if ($existing.Count -gt 1) { throw 'Multiple releases use the current version tag.' }
-$resume = $existing.Count -eq 1 -and $existing[0].draft -and $existing[0].prerelease
+$resume = $existing.Count -eq 1 -and $existing[0].draft
 $next = if ($resume) { $manifest.version_number } else { switch ($env:RELEASE_BUMP) {
     'patch' { '{0}.{1}.{2}' -f $current.Major,$current.Minor,($current.Build + 1) }
     'minor' { '{0}.{1}.0' -f $current.Major,($current.Minor + 1) }

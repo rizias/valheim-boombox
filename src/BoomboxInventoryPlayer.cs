@@ -36,7 +36,7 @@ namespace VikingBoombox
                 typeof(GraphicRaycaster)
             );
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.GetComponent<Canvas>().sortingOrder = 950;
+            canvas.GetComponent<Canvas>().sortingOrder = 1010;
             parent = BoomboxNativeUI.Rect("BoomboxFloatingPlayer", canvas.transform);
             var background = BoomboxNativeUI.Image(
                 "Background",
@@ -115,13 +115,31 @@ namespace VikingBoombox
             canvas.SetActive(false);
         }
 
-        internal void Update(Vector2 music, bool visible)
+        internal void ResetPosition()
+        {
+            dragged = null;
+        }
+
+        internal void Update(bool visible)
         {
             bool shown = visible && plugin.Settings.ShowPlayerPanel.Value;
+            var gui = InventoryGui.instance;
+            var musicParent = shown ? parent : gui.m_player;
+            if (musicButton.transform.parent != musicParent)
+                musicButton.transform.SetParent(musicParent, false);
+            musicButton.gameObject.SetActive(visible && (shown || !plugin.MenuOpen));
             canvas.SetActive(shown);
             if (!shown)
+            {
+                var rect = (RectTransform)musicButton.transform;
+                rect.anchorMin = rect.anchorMax = new Vector2(1, 0);
+                rect.pivot = new Vector2(1, 1);
+                rect.anchoredPosition = new Vector2(-10, -10);
+                rect.sizeDelta = new Vector2(160, 40);
+                rect.localScale = Vector3.one;
                 return;
-            Layout(InventoryGui.instance);
+            }
+            Layout(gui);
             var deck = visible ? plugin.Items.Own : null;
             heading.text = deck != null && deck.State.playing
                 ? BoomboxText.Get("text.now_playing")

@@ -111,7 +111,12 @@ namespace VikingBoombox
         public int upgradeTier;
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
         public List<int> unlockedDecorationSlots = new List<int> { 0 };
-        public List<string> unlockedDecorationPrefabs = new List<string>();
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<string> unlockedDecorationPrefabs = new List<string>
+        {
+            BoomboxItemData.DevicePrefab,
+            BoomboxItemData.ArchivePrefab
+        };
         public List<BoomboxDecorationPlacement> decorationPlacements = new List<BoomboxDecorationPlacement>();
         public string platformGuid;
         public string platformPrefab;
@@ -127,6 +132,15 @@ namespace VikingBoombox
         public float platformScaleX = 1f;
         public float platformScaleY = 1f;
         public float platformScaleZ = 1f;
+        internal void UnlockBuiltInDesigns()
+        {
+            if (unlockedDecorationPrefabs == null)
+                unlockedDecorationPrefabs = new List<string>();
+            if (!unlockedDecorationPrefabs.Contains(BoomboxItemData.DevicePrefab))
+                unlockedDecorationPrefabs.Add(BoomboxItemData.DevicePrefab);
+            if (!unlockedDecorationPrefabs.Contains(BoomboxItemData.ArchivePrefab))
+                unlockedDecorationPrefabs.Add(BoomboxItemData.ArchivePrefab);
+        }
         [JsonIgnore]
         public Vector3 Position
         {

@@ -158,6 +158,7 @@ namespace BoomboxQa
                 }
                 if (action.StartsWith("local-case-", StringComparison.Ordinal)
                 && action.Substring("local-case-".Length).Split('-').All(id => new[] {
+                    "UserFixes",
                     "C05",
                     "C06",
                     "C09",

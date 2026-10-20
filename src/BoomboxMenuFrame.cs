@@ -80,7 +80,7 @@ namespace VikingBoombox
                     "ResetPlayerPanel",
                     Window,
                     "",
-                    () => plugin.Settings.PlayerPanelPosition.Value = new Vector2(-1, -1)
+                    plugin.InventorySlot.ResetPlayer
                 ),
                 () => BoomboxText.Get("text.reset_player")
             );

@@ -1,14 +1,14 @@
 # Valheim Boombox
 
-[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.4 alpha · By **Rizias**
+[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.5 · By **Rizias**
 
 Carry your own music through Valheim. Play local tracks and playlists, react to other Windows audio, and turn music events into enemy waves, equipment charge, and nearby party bonuses.
 
-**[Download Valheim Boombox 0.2.4 for Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.4/Rizias-ValheimBoombox-0.2.4.zip)** · [All releases, including test builds](https://github.com/rizias/valheim-boombox/releases) · [Install with Gale](#install-and-start)
+**[Download Valheim Boombox 0.2.5 for Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.5/Rizias-ValheimBoombox-0.2.5.zip)** · [All releases, including test builds](https://github.com/rizias/valheim-boombox/releases) · [Install with Gale](#install-and-start)
 
-Download `Rizias-ValheimBoombox-0.2.4.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
+Download `Rizias-ValheimBoombox-0.2.5.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
-**Pre-release** means this is an alpha build for testing. You can download and install it. This package passed automated build and offline checks; it has not yet been accepted through manual testing in Valheim. If GitHub shows 404, sign in with an account that has access while this repository is private.
+The ZIP contains the mod and its required audio tools. If GitHub shows 404, sign in with an account that has access while this repository is private.
 
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
@@ -34,7 +34,7 @@ Music stays local to each player. Multiplayer shares gameplay and appearance dat
 1. Download the installation ZIP using the link above. Keep the ZIP intact for import.
 2. In Gale, select **Valheim**. For a separate test setup, choose **Profile → Create new profile** and name it `Boombox Test`.
 3. Install **BepInExPack Valheim 5.4.2351** in that profile.
-4. Choose **Import → …local mod**, then select `Rizias-ValheimBoombox-0.2.4.zip`. Check that the profile contains one enabled Valheim Boombox entry at version **0.2.4**.
+4. Choose **Import → …local mod**, then select `Rizias-ValheimBoombox-0.2.5.zip`. Check that the profile contains one enabled Valheim Boombox entry at version **0.2.5**.
 5. Click **Launch modded** in Gale.
 6. At Workbench level 1, craft the first device and a basic cassette. The [guide lists the materials](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#install-and-start-your-first-track).
 7. In your inventory, right-click the cassette to insert it, then equip the boombox.
@@ -74,7 +74,7 @@ For manual installation, copy the release's `BepInEx` tree into an existing BepI
 
 Use the same version on the server and every client. A client without the required mod receives Valheim's connection rejection. The server log records the required version. The host controls shared bonus strength and range. Recipes and upgrade caps use each installation's local configuration and are not synchronized by the server.
 
-This is an unofficial Windows x64 alpha. Extra Slots is optional. Compatibility with every other inventory or equipment mod is not guaranteed. The mod does not grant rights to music used in streams or videos.
+This is an unofficial Windows x64 mod. Extra Slots is optional. Compatibility with every other inventory or equipment mod is not guaranteed. The mod does not grant rights to music used in streams or videos.
 
 ![Speaker membrane, cassette, and illuminated body runes during playback](Screenshots/speaker-reactive.png)
 

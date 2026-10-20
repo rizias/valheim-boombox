@@ -54,6 +54,8 @@ namespace VikingBoombox
                 return;
             if (musicButton == null)
             {
+                player?.Dispose();
+                player = null;
                 musicButton = BoomboxNativeUI.CleanButton("BoomboxMusicButton", gui.m_player, "", plugin.OpenLibrary);
                 musicButton.name = "BoomboxMusicButton";
                 musicButton.onClick = new Button.ButtonClickedEvent();
@@ -66,13 +68,17 @@ namespace VikingBoombox
             }
             if (player == null || !player.Alive)
                 player = new BoomboxInventoryPlayer(plugin, gui, musicButton);
-            musicButton.gameObject.SetActive(!plugin.MenuOpen && BoomboxEquipment.Known);
             musicButton.interactable = true;
             SetButtonText(musicButton, BoomboxText.Get("text.choose_music"));
             player.Update(
-                ((RectTransform)musicButton.transform).anchoredPosition,
-                InventoryVisible && !plugin.MenuOpen && musicButton.gameObject.activeSelf
+                InventoryVisible && (BoomboxEquipment.Known || plugin.Items.Own != null)
             );
+        }
+        public void ResetPlayer()
+        {
+            player?.ResetPosition();
+            plugin.Settings.PlayerPanelPosition.Value = new Vector2(-1, -1);
+            plugin.Settings.ShowPlayerPanel.Value = true;
         }
         private static void SetButtonText(Button button, string text)
         {

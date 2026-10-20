@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-10-20
+
+- Open the boombox and cassette decoration designs by default without consuming either item, including existing devices.
+- Restore the floating player toggle and reset, and retain the inventory music button while the player is hidden.
+- Keep existing decoration geometry during device upgrades and avoid a full character/map save on each cassette upgrade.
+- Publish regular GitHub releases with the Latest label instead of alpha prereleases.
+
 ## [0.2.4] - 2026-10-20
 
 - Keep screenshots and full player guides on GitHub; use GitHub links in the install package README.

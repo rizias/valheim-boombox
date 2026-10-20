@@ -1,8 +1,8 @@
 {
   "name": "ValheimBoombox",
-  "version_number": "0.2.4",
+  "version_number": "0.2.5",
   "website_url": "https://github.com/rizias/valheim-boombox",
-  "description": "Windows x64 alpha: local music, CUE/playlists, upgraded cassettes, 24 decorations, reactive speakers and native multiplayer with shared nearby bonuses. RU/EN. Server and clients require this mod. Bundled FFmpeg; Extra Slots optional.",
+  "description": "Windows x64: local music, CUE/playlists, upgraded cassettes, 24 decorations, reactive speakers and native multiplayer with shared nearby bonuses. RU/EN. Server and clients require this mod. Bundled FFmpeg; Extra Slots optional.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2351"
   ]

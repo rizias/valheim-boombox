@@ -33,9 +33,10 @@ namespace VikingBoombox
             unlockedPrefabs = state.unlockedDecorationPrefabs.ToArray();
         }
 
-        internal bool Matches(DeckState state)
+        internal bool Matches(DeckState state, bool includeTier = true)
         {
-            if (id != state.id || tier != state.upgradeTier || cassettePrefab != state.insertedCassette?.prefab
+            if (id != state.id || includeTier && tier != state.upgradeTier
+                || cassettePrefab != state.insertedCassette?.prefab
                 || (properties == null) != (state.insertedCassette == null)
                 || placements.Length != state.decorationPlacements.Count
                 || !unlockedSlots.SequenceEqual(state.unlockedDecorationSlots)

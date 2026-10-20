@@ -66,7 +66,7 @@ namespace VikingBoombox
             if (!force && Time.unscaledTime < nextStateCheck)
                 return;
             nextStateCheck = Time.unscaledTime + .15f;
-            if (!force && signature != null && signature.Matches(state))
+            if (!force && signature != null && signature.Matches(state, includeTier: false))
                 return;
             signature = new BoomboxVisualSnapshot(state);
             BoomboxCassetteAppearance.Apply(model, state.insertedCassette);

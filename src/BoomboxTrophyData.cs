@@ -446,9 +446,14 @@ namespace VikingBoombox
         internal static UpgradeRecipe DesignRecipe(string prefab) => new UpgradeRecipe(
             "piece_workbench",
             1,
-            new UpgradeIngredient(prefab, 1),
-            new UpgradeIngredient("Wood", 2),
-            new UpgradeIngredient("Resin", 1)
+            prefab == BoomboxItemData.DevicePrefab || prefab == BoomboxItemData.ArchivePrefab
+                ? Array.Empty<UpgradeIngredient>()
+                : new[]
+                {
+                    new UpgradeIngredient(prefab, 1),
+                    new UpgradeIngredient("Wood", 2),
+                    new UpgradeIngredient("Resin", 1)
+                }
         );
         private static BoomboxDecorationSlot[] BuildSlots()
         {

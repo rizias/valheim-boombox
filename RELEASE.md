@@ -106,7 +106,7 @@ Commit/push source and actual `[Unreleased]` notes in CHANGELOG before release. 
 3. Checks audio decoding, builds the DLL and runs offline checks through `release.ps1`.
 4. Verifies archive/version metadata against the build receipt.
 5. Commits version files as `rizias` with the GitHub noreply identity and pushes tag `v<version>`.
-6. Creates the GitHub Release using that version's CHANGELOG notes, uploads ZIP/checksum, validates sizes/server SHA256 and publishes a **pre-release**.
+6. Creates the GitHub Release using that version's CHANGELOG notes, uploads ZIP/checksum, validates sizes/server SHA256 and publishes a regular release marked **Latest**.
 
 Heavy work runs on GitHub. It does not use your Gale, running game or saves. A green Release job and published package establish success. An accepted dispatch request alone does not establish a successful release.
 
@@ -120,7 +120,7 @@ Default dispatch chooses `patch`; `PublishGitHub.cmd -Increment Minor` chooses `
 
 `PublishGitHub.cmd` calls `dispatch-release.ps1` to start the workflow. The workflow calls `publish-github.ps1` to verify the build, commit version files, push a tag and upload release assets. These files contain no credentials. Dispatch uses your GitHub CLI login; the hosted job uses its repository-scoped `GITHUB_TOKEN`. [Write access is required to start the workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow). Downloading the source does not grant another user permission to push or publish to this repository.
 
-The hosted job refuses an advanced source branch or an existing target tag for a new version. If the current version has an unfinished alpha draft, Run workflow resumes that version without changing its tag or incrementing the version. Only publication-infrastructure fixes may differ from the tagged source; product changes stop recovery. Existing uploaded assets must match their hashes and are not overwritten. No archive or draft is automatically deleted.
+The hosted job refuses an advanced source branch or an existing target tag for a new version. If the current version has an unfinished release draft, Run workflow resumes that version without changing its tag or incrementing the version. Only publication-infrastructure fixes may differ from the tagged source; product changes stop recovery. Existing uploaded assets must match their hashes and are not overwritten. No archive or draft is automatically deleted.
 
 Automation uses [GitHub Actions authentication](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token) and [supported GitHub release commands](https://cli.github.com/manual/gh_release_create). Offline/decoder checks do not establish native game rendering, audio-device or live multiplayer acceptance.
 

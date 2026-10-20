@@ -165,8 +165,7 @@ namespace VikingBoombox
                 motion.angle.y
             );
         }
-        private string Signature() => state.upgradeTier + ":"
-            + string.Join(
+        private string Signature() => string.Join(
             "|",
             state.decorationPlacements.OrderBy(p => p.slot).Select(p => p.slot + ":" + p.prefab)
         );

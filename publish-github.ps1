@@ -120,7 +120,7 @@ function Invoke-GitHubPublication {
         $commit = (Git @('rev-parse','HEAD')).Lines -join ''
         $archive = Join-Path $releaseDirectory $receipt.archive
         $releaseCommit = if ($Resume) { $resumeTagCommit } else { $commit }
-        $plan = [ordered]@{ repository=$repository; branch=$branch; version=$receipt.version; tag=('v' + $receipt.version); postBuildCommitSha=$commit; releaseTagCommitSha=$releaseCommit; archivePath=$archive; archiveSha256=(Hash $archive); checksumPath=($archive + '.sha256'); checksumSha256=(Hash ($archive + '.sha256')); prerelease=$true }
+        $plan = [ordered]@{ repository=$repository; branch=$branch; version=$receipt.version; tag=('v' + $receipt.version); postBuildCommitSha=$commit; releaseTagCommitSha=$releaseCommit; archivePath=$archive; archiveSha256=(Hash $archive); checksumPath=($archive + '.sha256'); checksumSha256=(Hash ($archive + '.sha256')); prerelease=$false }
         $publicationPath = Join-Path $releaseDirectory 'github-publication.json'
         if (Test-Path -LiteralPath $publicationPath) {
             $saved = Get-Content -Raw -LiteralPath $publicationPath | ConvertFrom-Json -AsHashtable
@@ -153,14 +153,14 @@ function Invoke-GitHubPublication {
         if (-not $releases.Count) {
             if ($Resume) { throw 'Cannot resume: existing draft release was not found.' }
             $requestPath = Join-Path $releaseDirectory 'github-create.json'
-            $request = @{tag_name=$plan.tag;target_commitish=$releaseCommit;name=('Valheim Boombox ' + $plan.version);body=$notes;draft=$true;prerelease=$true;make_latest='false'}
+            $request = @{tag_name=$plan.tag;target_commitish=$releaseCommit;name=('Valheim Boombox ' + $plan.version);body=$notes;draft=$true;prerelease=$false;make_latest='false'}
             [IO.File]::WriteAllText($requestPath,($request | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
             $created = ((Gh @('api','--method','POST',('repos/' + $repository + '/releases'),'--input',$requestPath)).Lines -join "`n") | ConvertFrom-Json
             $releases = @($created)
         }
         if ($releases.Count -ne 1) { throw 'Created draft release could not be confirmed.' }
         $release = Read-Release $releases[0].id
-        if ($release.prerelease -ne $true) { throw 'Existing release is not an alpha prerelease.' }
+        if ($release.prerelease) { throw 'Existing release is marked as a prerelease.' }
         $assets = @($plan.archivePath,$plan.checksumPath)
         $names = @($assets | ForEach-Object { [IO.Path]::GetFileName($_) })
         if (@($release.assets | Where-Object { $_.name -cnotin $names }).Count) { throw 'Existing release has unexpected assets.' }
@@ -180,9 +180,9 @@ function Invoke-GitHubPublication {
             $digest = $matching[0].PSObject.Properties['digest']
             if (-not $digest -or $digest.Value -cne $expected) { throw ('GitHub asset SHA256 is missing or mismatched: ' + $name + '. Draft was not published; assets were not overwritten.') }
         }
-        if ($release.draft) { Gh @('release','edit',$plan.tag,'--repo',$repository,'--draft=false','--prerelease','--latest=false') | Out-Null }
+        if ($release.draft) { Gh @('release','edit',$plan.tag,'--repo',$repository,'--draft=false','--prerelease=false','--latest=true') | Out-Null }
         $release = Read-Release $release.id
-        if ($release.draft -or -not $release.prerelease) { throw 'GitHub did not confirm a published prerelease.' }
+        if ($release.draft -or $release.prerelease) { throw 'GitHub did not confirm a published release.' }
         [IO.File]::WriteAllText($publicationPath, (@{plan=$plan; url=$release.html_url} | ConvertTo-Json -Depth 5))
         return $release.html_url
     }

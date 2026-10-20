@@ -143,8 +143,89 @@ internal static class UpgradeChecks
         );
     }
     [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void BuiltInDecorationDesigns()
+    {
+        var state = new DeckState();
+        Check(
+            state.unlockedDecorationPrefabs.Contains(BoomboxItemData.DevicePrefab)
+                && state.unlockedDecorationPrefabs.Contains(BoomboxItemData.ArchivePrefab),
+            "Boombox and cassette decoration designs must be available without sacrificing equipment"
+        );
+        var cassette = new RecordedCassette();
+        state.insertedCassette = cassette;
+        state.unlockedDecorationPrefabs = new List<string> { "TrophyDeer" };
+        string id = state.id;
+        var unlock = typeof(DeckState).GetMethod("UnlockBuiltInDesigns", BindingFlags.Instance | BindingFlags.NonPublic);
+        unlock.Invoke(state, null);
+        unlock.Invoke(state, null);
+        Check(
+            state.unlockedDecorationPrefabs.Count == 3
+                && state.unlockedDecorationPrefabs.Contains("TrophyDeer")
+                && state.unlockedDecorationPrefabs.Contains(BoomboxItemData.DevicePrefab)
+                && state.unlockedDecorationPrefabs.Contains(BoomboxItemData.ArchivePrefab),
+            "Existing devices receive both built-in designs once and retain purchased designs"
+        );
+        Check(
+            state.id == id && ReferenceEquals(state.insertedCassette, cassette),
+            "Unlocking built-in designs preserves the device and its inserted cassette"
+        );
+        var catalog = typeof(DeckState).Assembly.GetType("VikingBoombox.BoomboxDecorationCatalog", true);
+        var recipe = catalog.GetMethod("DesignRecipe", BindingFlags.Static | BindingFlags.NonPublic);
+        foreach (string prefab in new[] { BoomboxItemData.DevicePrefab, BoomboxItemData.ArchivePrefab })
+        {
+            var cost = (UpgradeRecipe)recipe.Invoke(null, new object[] { prefab });
+            Check(cost.Ingredients.Count == 0, "Built-in decoration design must not consume " + prefab);
+        }
+        var trophyCost = (UpgradeRecipe)recipe.Invoke(null, new object[] { "TrophyDeer" });
+        Check(
+            Cost(trophyCost).OrderBy(p => p.Key).SequenceEqual(Inventory("TrophyDeer:1,Wood:2,Resin:1").OrderBy(p => p.Key)),
+            "Other decoration recipes keep their original material costs"
+        );
+    }
+
+    private static void UpgradeDecorationRefresh()
+    {
+        var state = new DeckState { upgradeTier = 1 };
+        state.insertedCassette = new RecordedCassette { prefab = BoomboxItemData.ArchivePrefab };
+        var type = typeof(DeckState).Assembly.GetType("VikingBoombox.BoomboxVisualSnapshot", true);
+        object snapshot = Activator.CreateInstance(
+            type,
+            BindingFlags.Instance | BindingFlags.NonPublic,
+            null,
+            new object[] { state },
+            null
+        );
+        var matches = type.GetMethod("Matches", BindingFlags.Instance | BindingFlags.NonPublic);
+        state.upgradeTier = 2;
+        Check(
+            (bool)matches.Invoke(
+                snapshot,
+                matches.GetParameters().Length == 1 ? new object[] { state } : new object[] { state, false }
+            ),
+            "A device level upgrade retains existing decoration geometry"
+        );
+        Check(
+            !(bool)matches.Invoke(snapshot, new object[] { state, true }),
+            "Menus still detect the new device level"
+        );
+        state.insertedCassette.properties["Red"] = 1;
+        Check(
+            !(bool)matches.Invoke(snapshot, new object[] { state, false }),
+            "Cassette property changes still update the visible cassette"
+        );
+        state.insertedCassette.properties.Clear();
+        state.decorationPlacements.Add(new BoomboxDecorationPlacement { slot = 0, prefab = "TrophyDeer" });
+        Check(
+            !(bool)matches.Invoke(snapshot, new object[] { state, false }),
+            "Changing a decoration still refreshes its geometry"
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private static void Run(string root)
     {
+        BuiltInDecorationDesigns();
+        UpgradeDecorationRefresh();
         string[] properties = { "Red", "Green", "Yellow", "Blue", "Purple" };
         Check(
             BoomboxItemData.Properties.OrderBy(x => x).SequenceEqual(properties.OrderBy(x => x)),

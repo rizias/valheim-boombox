@@ -63,6 +63,11 @@ public sealed partial class QaGameplay
     }
     private IEnumerator RemainingCase(string id)
     {
+        if (id == "UserFixes")
+        {
+            yield return CaseUserFixes();
+            yield break;
+        }
         if (id == "C13")
         {
             yield return CaseFullPickup();

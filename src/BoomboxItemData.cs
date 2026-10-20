@@ -87,8 +87,8 @@ namespace VikingBoombox
                 throw new InvalidDataException(BoomboxText.Get("text.boombox_data_is_damaged"));
             if (device && payload.deck.unlockedDecorationSlots == null)
                 payload.deck.unlockedDecorationSlots = new List<int> { 0 };
-            if (device && payload.deck.unlockedDecorationPrefabs == null)
-                payload.deck.unlockedDecorationPrefabs = new List<string>();
+            if (device)
+                payload.deck.UnlockBuiltInDesigns();
             if (device && payload.deck.decorationPlacements == null)
                 payload.deck.decorationPlacements = new List<BoomboxDecorationPlacement>();
             if (device)

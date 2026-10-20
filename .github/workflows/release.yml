@@ -85,7 +85,7 @@ jobs:
           key: ${{ steps.ffmpeg.outputs.cache-primary-key }}
       - name: Prepare build references
         run: ./tools/release/bootstrap-hosted.ps1
-      - name: Build, verify and publish prerelease
+      - name: Build, verify and publish release
         env:
           RELEASE_VERSION: ${{ steps.plan.outputs.version }}
           RELEASE_RESUME: ${{ steps.plan.outputs.resume }}

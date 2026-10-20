@@ -2,7 +2,7 @@
 
 [Русский](PLAY.ru.md) · [Mod overview](README.md)
 
-Windows x64 · 0.2.4 alpha
+Windows x64 · 0.2.5
 
 Carry your music, build a decorated boombox, and share its bonuses with nearby players. This guide covers the player interface, progression, combat, appearance, and saved music library. Recipe quantities and balance values below are the defaults.
 
@@ -65,9 +65,9 @@ The menu has seven tabs.
 
 The player bar under the menu contains previous track, play or pause, next track, and a volume slider. Drag the position bar to seek when the current source supports seeking. Synthetic sources do not have an ordinary track position. **Game music during playback** controls Valheim's own background music, as described in [Choose an audio source](#choose-an-audio-source).
 
-When you close the menu and keep your inventory open, the floating player provides previous, play or pause, next, repeat, mute, and volume minus or plus. Volume changes in 10% steps. Active repeat and mute buttons are highlighted. Repeat loops the current queue. The main menu bar shows the repeat state, while the floating player changes it.
+With your inventory open, the floating player provides previous, play or pause, next, repeat, mute, and volume minus or plus. It remains visible while the Boombox menu is open. Volume changes in 10% steps. Active repeat and mute buttons are highlighted. Repeat loops the current queue. The main menu bar shows the repeat state, while the floating player changes it.
 
-Drag the floating player's title bar to move it. The music-note button opens the library, and **Bonuses** opens the bonus panel. The menu header's **Player** switch shows or hides this floating panel. **Reset player** returns it to its automatic position beside the inventory. You can drag the main menu by its header and close it with **Close**.
+Drag the floating player's title bar to move it. The music-note button opens the library, and **Bonuses** opens the bonus panel. The menu header's **Player** switch shows or hides this floating panel. **Reset player** enables it and restores its automatic position beside the inventory, including after an interrupted drag. When the panel is hidden, **Choose music** remains available in the inventory. You can drag the main menu by its header and close it with **Close**.
 
 With several devices, the floating player uses your equipped boombox first, otherwise one of your placed devices, otherwise a device in your backpack. Selecting another device in the main menu does not change that priority.
 
@@ -255,7 +255,7 @@ Slot 1, the first lower front pendant, is already unlocked and selected when you
 
 The host sets the first purchased slot's price, the increase for each later purchase, and an optional price cap. A zero cap means no cap. The price is the start price plus the step times the number of prior purchases, with a minimum of zero. The menu shows the price of your next unlock.
 
-For an item or trophy design, the default unlock cost is one copy of that object, Wood ×2, and Resin ×1 at Workbench level 1. A miniature building design unlocks without material cost once you know its building recipe. A design unlock belongs to that device and can be reused in its compatible positions. Installing another copy of an unlocked design does not consume another trophy.
+The miniature boombox and cassette designs are unlocked by default, including on existing devices. They never consume your boombox or cassette. For other item or trophy designs, the default unlock cost is one copy of that object, Wood ×2, and Resin ×1 at Workbench level 1. A miniature building design unlocks without material cost once you know its building recipe. A design unlock belongs to that device and can be reused in its compatible positions. Installing another copy of an unlocked design does not consume another trophy.
 
 **Clear** removes the installed appearance from a position and keeps its slot and design unlocked. To put a design elsewhere, select another compatible position and install it there. Clear the old position if you want only one copy. There is no drag-to-move decoration operation.
 

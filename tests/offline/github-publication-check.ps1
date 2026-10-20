@@ -77,10 +77,30 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
             'auth status*' { if (-not $state.auth) { $code = 1 } }
             'api repos/example/boombox --silent' { }
             'api repos/example/boombox/releases?per_page=100*' { Assert ($a -contains '--paginate' -and $a -contains '--slurp') 'Release listing must include all pages'; $items = @($state.release | Where-Object { $null -ne $_ -and -not ($state.hideNewRelease -and $state.creates) }); $pages = [Collections.Generic.List[object]]::new(); $pages.Add(@()); $pages.Add($items); $lines = @((ConvertTo-Json -InputObject $pages -Depth 8 -Compress)) }
-            'api --method POST repos/example/boombox/releases --input *' { $request=Get-Content -Raw -LiteralPath $a[-1]|ConvertFrom-Json;Assert ($request.draft -and $request.prerelease) 'Release was not created as alpha draft';Assert ($state.remoteTag -eq $request.target_commitish) 'Release does not target the verified remote tag';Assert ($request.body -match 'Publish the selected version automatically') 'Release notes do not come from CHANGELOG';$state.creates++;$state.release=[pscustomobject]@{id=1;tag_name='v1.0.1';draft=$true;prerelease=$true;assets=@();html_url='https://github.com/example/boombox/releases/tag/v1.0.1'};$lines=@($state.release|ConvertTo-Json -Depth 8 -Compress) }
+            'api --method POST repos/example/boombox/releases --input *' {
+                $request = Get-Content -Raw -LiteralPath $a[-1] | ConvertFrom-Json
+                Assert ($request.draft -and -not $request.prerelease) 'Release was not created as a regular draft'
+                Assert ($state.remoteTag -eq $request.target_commitish) 'Release does not target the verified remote tag'
+                Assert ($request.body -match 'Publish the selected version automatically') 'Release notes do not come from CHANGELOG'
+                $state.creates++
+                $state.release = [pscustomobject]@{
+                    id = 1
+                    tag_name = 'v1.0.1'
+                    draft = $true
+                    prerelease = $false
+                    assets = @()
+                    html_url = 'https://github.com/example/boombox/releases/tag/v1.0.1'
+                }
+                $lines = @($state.release | ConvertTo-Json -Depth 8 -Compress)
+            }
             'api repos/example/boombox/releases/1' { $lines=@($state.release|ConvertTo-Json -Depth 8 -Compress) }
             'release upload *' { if ($state.failUpload) { throw 'Fixture upload failed' }; $state.uploads++; $state.release.assets += Asset $a[3] }
-            'release edit *' { Assert ($state.release.assets.Count -eq 2) 'Published before both assets existed'; Assert ($a -contains '--draft=false') 'Unexpected release edit'; $state.publishes++; $state.release.draft = $false }
+            'release edit *' {
+                Assert ($state.release.assets.Count -eq 2) 'Published before both assets existed'
+                Assert ($a -contains '--draft=false' -and $a -contains '--prerelease=false' -and $a -contains '--latest=true') 'Release must be regular and Latest'
+                $state.publishes++
+                $state.release.draft = $false
+            }
             default { throw ('Unexpected fixture gh call: ' + $key) }
         }
     } elseif ($Arguments -contains (Join-Path $root 'release.ps1')) { Fake-Build }

@@ -62,7 +62,6 @@ namespace VikingBoombox
             plugin.Notice = Localization.instance.Localize("$boombox_property_" + property.ToLowerInvariant()) + ": "
                 + cassette.Rank(property);
             plugin.Save();
-            Game.instance?.SavePlayerProfile(false, false);
             return true;
         }
 
