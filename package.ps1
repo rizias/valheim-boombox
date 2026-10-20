@@ -73,6 +73,7 @@ if($Action -eq 'Stage'){
     }
     if(-not (Test-Path -LiteralPath (Join-Path $FFmpegRoot 'Sources') -PathType Container)){throw 'Corresponding FFmpeg source and build materials are required'}
     $toolManifest=Get-Content -LiteralPath (Join-Path $FFmpegRoot 'manifest.json') -Raw|ConvertFrom-Json
+    if ($toolManifest.license -ne 'LGPL-2.1-or-later') { throw 'FFmpeg must permit the later-version license election used by this package.' }
     foreach($toolHash in @(@('bin/ffmpeg.exe',$toolManifest.ffmpegSha256),@('bin/ffprobe.exe',$toolManifest.ffprobeSha256),@(('Sources/ffmpeg-'+$toolManifest.version+'.tar.xz'),$toolManifest.sourceSha256))){
         if(!$toolHash[1] -or (Get-FileHash -LiteralPath (Join-Path $FFmpegRoot $toolHash[0])).Hash -ne $toolHash[1]){throw ('FFmpeg distribution hash mismatch: '+$toolHash[0])}
     }
@@ -95,15 +96,103 @@ if($Action -eq 'Stage'){
     Copy-PackageTree (Join-Path $PSScriptRoot 'Translations') (Join-Path $packagePlugin 'Translations')
     foreach($packageTool in @('ffmpeg.exe','ffprobe.exe')){Copy-PackageFile (Join-Path $packageToolRoot $packageTool) (Join-Path $packagePlugin ('Tools/FFmpeg/'+$packageTool))}
     Copy-PackageFile (Join-Path $FFmpegRoot 'manifest.json') (Join-Path $packagePlugin 'Tools/FFmpeg/manifest.json')
-    foreach($packageLicense in @('LICENSE','README.txt')){Copy-PackageFile (Join-Path $FFmpegRoot $packageLicense) (Join-Path $packagePlugin ('Tools/FFmpeg/'+$packageLicense))}
-    Copy-PackageTree (Join-Path $FFmpegRoot 'Sources') (Join-Path $packagePlugin 'Tools/FFmpeg/Sources')
+    Copy-PackageFile (Join-Path $FFmpegRoot 'LICENSE') (Join-Path $packagePlugin 'Tools/FFmpeg/LICENSE')
+    $sourceArchiveName = [IO.Path]::GetFileName($packageRoot) + '-FFmpeg-Sources.zip'
+    $sourceArchive = Join-Path (Split-Path -Parent $packageRoot) $sourceArchiveName
+    if (Test-Path -LiteralPath $sourceArchive) { throw 'FFmpeg source archive already exists; preserve previous candidates' }
+    $sourceUrl = 'https://github.com/rizias/valheim-boombox/releases/download/v' + $packageManifest.version_number + '/' + $sourceArchiveName
+    $runtimeNotice = @"
+FFmpeg and ffprobe $($toolManifest.version), Windows x64
+Copyright (c) 2000-2026 the FFmpeg developers.
+
+Upstream licenses these programs under LGPL 2.1 or any later version.
+For this redistribution, Max Smirnov (Rizias) elects LGPL 3.0 or later,
+as permitted by LGPL 2.1 section 13. See COPYING.LGPLv3 and COPYING.GPLv3.
+The original LGPL 2.1 text is retained in LICENSE. These programs are
+not covered by the mod's MIT license. They come WITHOUT ANY WARRANTY.
+
+Modification dated 2026-10-20: ffbuild/library.mak passes library object
+paths through an archiver response file. The exact patch is supplied
+with the complete source; no codec changes were made.
+
+Complete corresponding source, modifications and build instructions:
+$sourceUrl
+
+The source archive is a separate download beside the mod installation ZIP.
+It supplies source for the whole tools, including their command-line code
+and FFmpeg libraries, under GPL 3.0 sections 4-6 incorporated by LGPL 3.0.
+It does not need to be installed. You may rebuild or replace these tools.
+The mod starts them as separate processes. Close Valheim before replacing
+Tools/FFmpeg/ffmpeg.exe and ffprobe.exe, or configure FFmpegPath and
+FFprobePath in the shared Mods settings menu.
+
+Third-party notices are retained in COPYING.FFmpeg-third-party.txt,
+COPYING.MinGW-w64-runtime.txt and COPYING.winpthreads.txt. GCC startup
+code uses GPL 3.0 or later with Runtime Library Exception 3.1; see
+COPYING.GPLv3 and COPYING.GCC-RUNTIME.txt. Project build scripts and the
+response-file patch use MIT; see BUILD-SCRIPTS-LICENSE.txt in the source
+archive. Original build manifests retain the upstream license identifier.
+No music is included.
+"@
+    Write-PackageText (Join-Path $packagePlugin 'Tools/FFmpeg/README.txt') $runtimeNotice
+    $redistributionLicenses = @('COPYING.LGPLv3','COPYING.GPLv3','COPYING.FFmpeg-third-party.txt','COPYING.MinGW-w64-runtime.txt','COPYING.winpthreads.txt','COPYING.GCC-RUNTIME.txt')
+    foreach ($name in $redistributionLicenses) {
+        Copy-PackageFile (Join-Path $PSScriptRoot ('third_party/ffmpeg/licenses/' + $name)) (Join-Path $packagePlugin ('Tools/FFmpeg/' + $name))
+    }
+    $sourceFiles = [ordered]@{}
+    foreach ($name in @('LICENSE','manifest.json')) {
+        $sourceFiles[$name] = Join-Path $FFmpegRoot $name
+    }
+    $sourceReadmePath = $packageRoot + '-FFmpeg-BUILDING.txt'
+    $sourceReadme = [IO.File]::ReadAllText((Join-Path $FFmpegRoot 'README.txt'))
+    $sourceReadme = $sourceReadme.Replace('and source.json.', 'and Sources/source.json.')
+    $sourceReadme = $sourceReadme.Replace('manifest.json and TOOLS.json.', 'manifest.json.')
+    Write-PackageText $sourceReadmePath $sourceReadme
+    $sourceFiles['README.txt'] = $sourceReadmePath
+    $sourceFiles['NOTICE.txt'] = Join-Path $packagePlugin 'Tools/FFmpeg/README.txt'
+    $sourceFiles['BUILD-SCRIPTS-LICENSE.txt'] = Join-Path $PSScriptRoot 'LICENSE'
+    foreach ($name in $redistributionLicenses) {
+        $sourceFiles[$name] = Join-Path $PSScriptRoot ('third_party/ffmpeg/licenses/' + $name)
+    }
+    foreach ($file in Get-ChildItem -LiteralPath (Join-Path $FFmpegRoot 'Sources') -Recurse -File) {
+        if (($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw 'Linked FFmpeg source file denied' }
+        $relative = [IO.Path]::GetRelativePath($FFmpegRoot, $file.FullName).Replace('\','/')
+        $sourceFiles[$relative] = $file.FullName
+    }
+    $sourceHashes = [ordered]@{}
+    $sourceOutput = [BoomboxPackageQuotaStream]::new($sourceArchive, $MaximumBytes)
+    $sourceWriter = [IO.Compression.ZipArchive]::new($sourceOutput, [IO.Compression.ZipArchiveMode]::Create, $true)
+    try {
+        foreach ($name in $sourceFiles.Keys) {
+            $sourceHashes[$name] = (Get-FileHash -LiteralPath $sourceFiles[$name] -Algorithm SHA256).Hash
+            $entry = $sourceWriter.CreateEntry($name, [IO.Compression.CompressionLevel]::Optimal)
+            $inputFile = [IO.File]::OpenRead($sourceFiles[$name])
+            $entryOutput = $entry.Open()
+            try { $inputFile.CopyTo($entryOutput,65536) } finally { $entryOutput.Dispose(); $inputFile.Dispose() }
+        }
+        $entry = $sourceWriter.CreateEntry('SHA256.json', [IO.Compression.CompressionLevel]::Optimal)
+        $entryOutput = [IO.StreamWriter]::new($entry.Open(), [Text.UTF8Encoding]::new($false))
+        try { $entryOutput.Write(($sourceHashes | ConvertTo-Json)) } finally { $entryOutput.Dispose() }
+    } finally { try { $sourceWriter.Dispose() } finally { $sourceOutput.Dispose() } }
+    $sourceZip = [IO.Compression.ZipFile]::OpenRead($sourceArchive)
+    try {
+        foreach ($name in $sourceHashes.Keys) {
+            $entry = $sourceZip.GetEntry($name)
+            if (-not $entry) { throw ('FFmpeg source archive entry missing: ' + $name) }
+            $stream = $entry.Open()
+            $sha = [Security.Cryptography.SHA256]::Create()
+            try { $actual = [BitConverter]::ToString($sha.ComputeHash($stream)).Replace('-','') }
+            finally { $sha.Dispose(); $stream.Dispose() }
+            if ($actual -ne $sourceHashes[$name]) { throw ('FFmpeg source archive hash mismatch: ' + $name) }
+        }
+    } finally { $sourceZip.Dispose() }
     $packageProvenance=[ordered]@{musicProcessing='C# inside ValheimBoombox.dll';ffmpeg=(Get-Content -LiteralPath (Join-Path $FFmpegRoot 'manifest.json') -Raw|ConvertFrom-Json)}
     Write-PackageText (Join-Path $packageRoot 'TOOLS.json') ($packageProvenance|ConvertTo-Json -Depth 10)
     if($TestReport){
         $packageBuildInfo=[ordered]@{version=$packageManifest.version_number;dllSha256=$packageDllHash;offlineTests='passed';gameTested=$false}
         Write-PackageText (Join-Path $packageRoot 'BUILD-INFO.json') ($packageBuildInfo|ConvertTo-Json)
     }
-    [pscustomobject]@{stage=$packageRoot;plugin=$packagePlugin}|ConvertTo-Json
+    [pscustomobject]@{stage=$packageRoot;plugin=$packagePlugin;ffmpegSources=$sourceArchive}|ConvertTo-Json
     exit 0
 }
 $packageActualManifest=Get-Content -Raw -LiteralPath (Join-Path $packageRoot 'manifest.json') | ConvertFrom-Json
@@ -117,7 +206,7 @@ if($packageIcon.Length -lt 24 -or [BitConverter]::ToString($packageIcon[0..7]) -
 $packageFiles=@(Get-ChildItem -LiteralPath $packageRoot -Recurse -File|Where-Object Name -ne 'SHA256.json'|Sort-Object FullName)
 $script:packageBytesWritten=[long](($packageFiles|Measure-Object Length -Sum).Sum)
 if($script:packageBytesWritten -gt $MaximumBytes){throw 'Existing stage exceeds package budget'}
-$packageForbidden=@($packageFiles|Where-Object {$_.Name -match '^(python|RuntimeProbe|QaBootstrap|QaGameplay|QaPreloader|QaTransport)' -or $_.Name -eq 'assembly_valheim.dll' -or $_.Name -match '^UnityEngine\.' -or $_.Extension -in @('.py','.pyc','.pyd','.wav','.flac','.mp3','.ape','.wv','.cue','.cfg','.fch','.fwl','.db','.pdb') -or $_.FullName -match '[\\/](test-saves|test-game|MusicCache|QaBootstrap|QaGameplay|config)[\\/]'})
+$packageForbidden=@($packageFiles|Where-Object {$_.Name -match '^(python|RuntimeProbe|QaBootstrap|QaGameplay|QaPreloader|QaTransport)' -or $_.Name -eq 'assembly_valheim.dll' -or $_.Name -match '^UnityEngine\.' -or $_.Extension -in @('.py','.pyc','.pyd','.ps1','.sh','.bat','.cmd','.patch','.wav','.flac','.mp3','.ape','.wv','.cue','.cfg','.fch','.fwl','.db','.pdb') -or $_.FullName -match '[\\/](test-saves|test-game|MusicCache|QaBootstrap|QaGameplay|config|Sources)[\\/]'})
 if($packageForbidden){throw ('Forbidden runtime/test/music files: '+($packageForbidden.Name -join ', '))}
 $packageHashes=[ordered]@{}
 foreach($packageFile in $packageFiles){$packageHashes[$packageFile.FullName.Substring($packageRoot.Length+1).Replace('\','/')]=(Get-FileHash -LiteralPath $packageFile.FullName -Algorithm SHA256).Hash}

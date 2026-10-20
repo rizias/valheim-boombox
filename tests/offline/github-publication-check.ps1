@@ -39,7 +39,11 @@ function Fake-Build {
     [IO.File]::WriteAllBytes($archive, [byte[]]@(80,75,3,4,42))
     $hash = (Get-FileHash -LiteralPath $archive).Hash
     [IO.File]::WriteAllText(($archive + '.sha256'), ($hash + '  Boombox-1.0.1.zip' + "`n"))
-    [IO.File]::WriteAllText((Join-Path $directory 'release.json'), (@{version='1.0.1'; archive='Boombox-1.0.1.zip'; sha256=$hash; metadata=$entries} | ConvertTo-Json -Depth 5))
+    $sourceArchive = Join-Path $directory 'Boombox-1.0.1-FFmpeg-Sources.zip'
+    [IO.File]::WriteAllBytes($sourceArchive, [byte[]]@(80,75,3,4,43))
+    $sourceHash = (Get-FileHash -LiteralPath $sourceArchive).Hash
+    [IO.File]::WriteAllText(($sourceArchive + '.sha256'), ($sourceHash + '  Boombox-1.0.1-FFmpeg-Sources.zip' + "`n"))
+    [IO.File]::WriteAllText((Join-Path $directory 'release.json'), (@{formatVersion=2;version='1.0.1'; archive='Boombox-1.0.1.zip'; sha256=$hash;ffmpegSourceArchive='Boombox-1.0.1-FFmpeg-Sources.zip';ffmpegSourceSha256=$sourceHash; metadata=$entries} | ConvertTo-Json -Depth 5))
     $state.dirty = $metadata
 }
 function Asset([string]$Path) {
@@ -96,7 +100,7 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
             'api repos/example/boombox/releases/1' { $lines=@($state.release|ConvertTo-Json -Depth 8 -Compress) }
             'release upload *' { if ($state.failUpload) { throw 'Fixture upload failed' }; $state.uploads++; $state.release.assets += Asset $a[3] }
             'release edit *' {
-                Assert ($state.release.assets.Count -eq 2) 'Published before both assets existed'
+                Assert ($state.release.assets.Count -eq 4) 'Published before all four assets existed'
                 Assert ($a -contains '--draft=false' -and $a -contains '--prerelease=false' -and $a -contains '--latest=true') 'Release must be regular and Latest'
                 $state.publishes++
                 $state.release.draft = $false
@@ -120,11 +124,12 @@ function Reject([string]$Contains) {
 New-Fixture 'create-repeat'
 $url = Run
 Assert ($url -eq 'https://github.com/example/boombox/releases/tag/v1.0.1') 'Published URL missing'
-Assert ($state.build -eq 1 -and $state.verify -eq 1 -and $state.commits -eq 1 -and $state.creates -eq 1 -and $state.uploads -eq 2 -and $state.publishes -eq 1) 'Create flow incomplete'
+Assert ($state.build -eq 1 -and $state.verify -eq 1 -and $state.commits -eq 1 -and $state.creates -eq 1 -and $state.uploads -eq 4 -and $state.publishes -eq 1) 'Create flow incomplete'
 $again = Run
-Assert ($again -eq $url -and $state.build -eq 2 -and $state.commits -eq 1 -and $state.uploads -eq 2 -and $state.publishes -eq 1) 'Repeat did not reconcile published release'
+Assert ($again -eq $url -and $state.build -eq 2 -and $state.commits -eq 1 -and $state.uploads -eq 4 -and $state.publishes -eq 1) 'Repeat did not reconcile published release'
 $saved = Get-Content -Raw -LiteralPath (Join-Path $root 'outputs/releases/1.0.1/github-publication.json') | ConvertFrom-Json
 Assert ($saved.plan.postBuildCommitSha -eq $state.head -and $saved.url -eq $url) 'Publication receipt is not bound to actual HEAD and URL'
+Assert ($saved.plan.ffmpegSourceArchiveSha256 -eq (Get-FileHash -LiteralPath $saved.plan.ffmpegSourceArchivePath).Hash -and $saved.plan.ffmpegSourceChecksumSha256 -eq (Get-FileHash -LiteralPath $saved.plan.ffmpegSourceChecksumPath).Hash) 'Publication receipt is not bound to both source assets'
 
 New-Fixture 'partial-draft'
 $state.failUpload = $true
@@ -134,7 +139,27 @@ $state.failUpload = $false
 $state.uploads = 1
 $state.release.assets = @(Asset (Join-Path $root 'outputs/releases/1.0.1/Boombox-1.0.1.zip'))
 Run | Out-Null
-Assert ($state.creates -eq 1 -and $state.uploads -eq 2 -and $state.publishes -eq 1) 'Partial draft was not resumed with only missing asset'
+Assert ($state.creates -eq 1 -and $state.uploads -eq 4 -and $state.publishes -eq 1) 'Partial draft was not resumed with only missing assets'
+
+New-Fixture 'source-checksum-partial-draft'
+$state.failUpload = $true
+Reject 'upload failed'
+$state.failUpload = $false
+$directory = Join-Path $root 'outputs/releases/1.0.1'
+$state.release.assets = @('Boombox-1.0.1.zip','Boombox-1.0.1.zip.sha256','Boombox-1.0.1-FFmpeg-Sources.zip' | ForEach-Object { Asset (Join-Path $directory $_) })
+$state.uploads = 3
+Run | Out-Null
+Assert ($state.creates -eq 1 -and $state.uploads -eq 4 -and $state.publishes -eq 1) 'Draft did not resume only its missing source checksum'
+
+New-Fixture 'source-checksum-mismatch'
+$state.failUpload = $true
+Reject 'upload failed'
+$state.failUpload = $false
+$directory = Join-Path $root 'outputs/releases/1.0.1'
+$state.release.assets = @('Boombox-1.0.1.zip','Boombox-1.0.1.zip.sha256','Boombox-1.0.1-FFmpeg-Sources.zip','Boombox-1.0.1-FFmpeg-Sources.zip.sha256' | ForEach-Object { Asset (Join-Path $directory $_) })
+$state.release.assets[3].digest = 'sha256:wrong'
+Reject 'SHA256'
+Assert ($state.uploads -eq 0) 'Mismatched fourth asset was overwritten'
 
 New-Fixture 'asset-mismatch'
 $state.failUpload = $true
@@ -187,7 +212,15 @@ foreach ($case in @('dirty-source','dirty-metadata','staged','untracked','auth',
 New-Fixture 'draft-list-not-updated'
 $state.hideNewRelease=$true
 $url=Run
-Assert ($state.publishes -eq 1 -and $state.creates -eq 1 -and $state.uploads -eq 2) 'Draft creation depends on a refreshed release listing'
+Assert ($state.publishes -eq 1 -and $state.creates -eq 1 -and $state.uploads -eq 4) 'Draft creation depends on a refreshed release listing'
+
+New-Fixture 'legacy-receipt-retry'
+$state.dirty = @('README.md')
+$legacyDirectory = Join-Path $root 'outputs/releases/0.9.0'
+[IO.Directory]::CreateDirectory($legacyDirectory) | Out-Null
+[IO.File]::WriteAllText((Join-Path $legacyDirectory 'release.json'), '{"version":"0.9.0","archive":"old.zip","metadata":{}}')
+Reject 'Dirty metadata is not a verified release retry'
+Assert ($state.build -eq 0 -and $state.pushes -eq 0) 'Legacy receipt caused a build or push'
 
 New-Fixture 'resume-existing-draft'
 $state.failUpload=$true

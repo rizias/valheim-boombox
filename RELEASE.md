@@ -17,6 +17,10 @@ Screenshots and full English and Russian player guides stay in this repository. 
 3. Wait for `Verified release` or `Reused verified release`. An error means the candidate is not ready.
 4. Take `outputs/releases/<version>/Rizias-ValheimBoombox-<version>.zip` from the printed path. Its `.zip.sha256` file sits beside it.
 
+The separate `Rizias-ValheimBoombox-<version>-FFmpeg-Sources.zip` contains corresponding FFmpeg sources and build instructions. It is published beside the installation ZIP with its own checksum. Do not install the source archive or upload it as the mod package to Thunderstore.
+
+FFmpeg/ffprobe are redistributed under LGPL 3.0 or later using upstream's later-version permission. Before uploading the mod to another service, publish both archives on a public GitHub release. Check that the direct source link in the packaged README downloads without signing in. Keep that source download available while distributing the binaries. The selected terms permit a different source server under GPL 3.0 section 6(d), incorporated by LGPL 3.0. Keep the bundled license texts and notice. The mod remains MIT.
+
 Configure `release.local.json` using the next section before the first local build. The button compiles source, runs offline checks against that DLL, packages it and verifies ZIP contents and hashes. It does not launch Valheim, modify Gale or upload anything.
 
 Changed inputs increment the patch version by default, for example `0.2.1` to `0.2.2`. Success updates manifest, plugin version, both READMEs, player guide and changelog together. The network protocol is unchanged. An ordinary build failure leaves source version metadata unchanged. Repeating an unchanged successful request reuses the same verified archive. Earlier outputs are preserved.
@@ -91,7 +95,7 @@ The builder follows [Thunderstore's package format](https://wiki.thunderstore.io
 3. Select your team and installation on **both client and server**. Review metadata before publishing.
 4. Inspect the package after processing. Each version can be uploaded once.
 
-Hexium accepts compatible ZIPs up to 512 MB. Retain bundled licenses and corresponding FFmpeg `Sources`. Follow the [official packaging rules](https://hexium.gg/packaging) for dependency handling.
+Hexium accepts compatible ZIPs up to 512 MB. Retain the bundled license texts and direct source link. Publish the separate FFmpeg source archive on GitHub first, as described above. Follow the [official packaging rules](https://hexium.gg/packaging) for dependency handling.
 
 ### GitHub
 
@@ -106,7 +110,7 @@ Commit/push source and actual `[Unreleased]` notes in CHANGELOG before release. 
 3. Checks audio decoding, builds the DLL and runs offline checks through `release.ps1`.
 4. Verifies archive/version metadata against the build receipt.
 5. Commits version files as `rizias` with the GitHub noreply identity and pushes tag `v<version>`.
-6. Creates the GitHub Release using that version's CHANGELOG notes, uploads ZIP/checksum, validates sizes/server SHA256 and publishes a regular release marked **Latest**.
+6. Creates the GitHub Release using that version's CHANGELOG notes, uploads the installer, FFmpeg source archive and both checksums, validates all four sizes/server SHA256 values and publishes a regular release marked **Latest**.
 
 Heavy work runs on GitHub. It does not use your Gale, running game or saves. A green Release job and published package establish success. An accepted dispatch request alone does not establish a successful release.
 

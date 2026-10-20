@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+- Move FFmpeg source code and build scripts out of the installation package into a separate source archive.
+- Retain complete license notices and distribute the audio tools under LGPL 3.0 or later, with a direct corresponding-source link.
+
 ## [0.2.6] - 2026-10-20
 
 - Remove outdated private-repository instructions from the installation README.

@@ -90,10 +90,14 @@ try {
     $metadataNames = @('manifest.json','src/BoomboxNetworkProtocol.cs','README.md','README.ru.md','PLAY.md','PLAY.ru.md','CHANGELOG.md','CHANGELOG.ru.md')
     foreach ($receiptFile in Get-ChildItem -LiteralPath $releaseRoot -Filter 'release.json' -Recurse -File | Sort-Object LastWriteTimeUtc -Descending) {
         $receipt = Get-Content -Raw -LiteralPath $receiptFile.FullName | ConvertFrom-Json -AsHashtable
+        if (-not $receipt.ContainsKey('formatVersion') -or $receipt.formatVersion -ne 2) { continue }
         if ($Version -and $Version -ne $receipt.version) { continue }
         if (@($metadataNames | Where-Object { -not $receipt.metadata.ContainsKey($_) }).Count) { continue }
         $archive = Join-Path $receiptFile.DirectoryName $receipt.archive
         if (-not (Test-Path -LiteralPath $archive -PathType Leaf) -or (Get-FileHash -LiteralPath $archive).Hash -ne $receipt.sha256) { throw ('A recorded release archive is missing or damaged. Preserved receipt: ' + $receiptFile.FullName) }
+        if ($receipt.ffmpegSourceArchive -cne ([IO.Path]::GetFileNameWithoutExtension($receipt.archive) + '-FFmpeg-Sources.zip')) { throw 'Invalid recorded FFmpeg source archive identity.' }
+        $sourceArchive = Join-Path $receiptFile.DirectoryName $receipt.ffmpegSourceArchive
+        if (-not (Test-Path -LiteralPath $sourceArchive -PathType Leaf) -or (Get-FileHash -LiteralPath $sourceArchive).Hash -ne $receipt.ffmpegSourceSha256) { throw ('A recorded FFmpeg source archive is missing or damaged. Preserved receipt: ' + $receiptFile.FullName) }
         $overrides = @{}
         $compatible = $true
         foreach ($name in $metadataNames) {
@@ -110,6 +114,7 @@ try {
             }
         }
         [IO.File]::WriteAllText(($archive + '.sha256'), ($receipt.sha256 + '  ' + [IO.Path]::GetFileName($archive) + "`n"), $utf8)
+        [IO.File]::WriteAllText(($sourceArchive + '.sha256'), ($receipt.ffmpegSourceSha256 + '  ' + $receipt.ffmpegSourceArchive + "`n"), $utf8)
         Write-Output ('Reused verified release ' + $receipt.version + ': ' + $archive)
         exit 0
     }
@@ -188,17 +193,22 @@ try {
     $archive = Join-Path $versionRoot $archiveName
     [IO.File]::Copy(($stage + '.zip'), $archive, $false)
     $archiveHash = (Get-FileHash -LiteralPath $archive).Hash
+    $sourceArchiveName = [IO.Path]::GetFileName($stage) + '-FFmpeg-Sources.zip'
+    $sourceArchive = Join-Path $versionRoot $sourceArchiveName
+    [IO.File]::Copy(($stage + '-FFmpeg-Sources.zip'), $sourceArchive, $false)
+    $sourceArchiveHash = (Get-FileHash -LiteralPath $sourceArchive).Hash
     $metadata = [ordered]@{}
     foreach ($name in $metadataNames) {
         $relative = 'metadata/' + $name
         [IO.File]::Copy($overrides[$name], (Join-Path $versionRoot $relative), $false)
         $metadata[$name] = [ordered]@{before=(Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash;after=(Get-FileHash -LiteralPath $overrides[$name]).Hash;candidate=$relative}
     }
-    $receipt = [ordered]@{version=$Version;archive=$archiveName;sha256=$archiveHash;fingerprint=$finalFingerprint;metadata=$metadata}
+    $receipt = [ordered]@{formatVersion=2;version=$Version;archive=$archiveName;sha256=$archiveHash;ffmpegSourceArchive=$sourceArchiveName;ffmpegSourceSha256=$sourceArchiveHash;fingerprint=$finalFingerprint;metadata=$metadata}
     [IO.File]::WriteAllText((Join-Path $versionRoot 'release.json'), ($receipt | ConvertTo-Json -Depth 8), $utf8)
     if ((Get-ReleaseFingerprint) -ne $initialFingerprint) { throw 'Release inputs changed before the source metadata update. Verified artifacts were preserved; source metadata was not advanced.' }
     foreach ($name in $metadataNames) { [IO.File]::WriteAllBytes((Join-Path $PSScriptRoot $name), [IO.File]::ReadAllBytes($overrides[$name])) }
     [IO.File]::WriteAllText(($archive + '.sha256'), ($archiveHash + '  ' + $archiveName + "`n"), $utf8)
+    [IO.File]::WriteAllText(($sourceArchive + '.sha256'), ($sourceArchiveHash + '  ' + $sourceArchiveName + "`n"), $utf8)
     Write-Output ('Verified release ' + $Version + ': ' + $archive)
     Write-Output 'Offline tests passed. In-game testing was not performed. No installation, Git staging or upload was performed.'
 }

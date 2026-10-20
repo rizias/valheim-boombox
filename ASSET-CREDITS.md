@@ -31,4 +31,8 @@ Valheim's UI fonts, trophies and other native objects are obtained from the inst
 
 ## Audio tools
 
-FFmpeg and ffprobe 7.1.5 are separate programs under LGPL-2.1-or-later, not the mod's MIT license. `Tools/FFmpeg` contains their notice, license and manifest. `Tools/FFmpeg/Sources` contains the corresponding upstream archive, exact build scripts and the library-response-file patch. The local MSVC distribution also includes the upstream archive signature. The manifest records source/binary SHA256 values and configure flags. GPL/nonfree components are disabled in this build. The tools can be replaced or rebuilt. No personal music is distributed.
+FFmpeg and ffprobe 7.1.5 are separate programs, not covered by the mod's MIT license. Upstream permits LGPL 2.1 or any later version. Max Smirnov (Rizias) elects LGPL 3.0 or later for this redistribution, as permitted by LGPL 2.1 section 13. `Tools/FFmpeg` retains the original LGPL 2.1 text and includes full LGPL 3.0 and GPL 3.0 texts, a notice and the original build manifest.
+
+Each GitHub release provides a separate `FFmpeg-Sources.zip` with the complete upstream source, exact build scripts and the response-file patch to `ffbuild/library.mak`, dated 2026-10-20. No codec changes were made. The installation README and tool notice link directly to that version's source archive. Source access must remain available when distributing the binaries, including through another hosting service, under GPL 3.0 section 6(d) as incorporated by LGPL 3.0. The tools may be rebuilt or replaced. No personal music is distributed.
+
+The bundled tool notices also retain FFmpeg's third-party copyright notices, MinGW-w64 runtime notices, winpthreads' MIT/BSD notices, and GCC Runtime Library Exception 3.1 with GPL 3.0. The FFmpeg tools are based in part on the work of the Independent JPEG Group. Project build scripts and the response-file patch are MIT-licensed; their license is included in the source archive.

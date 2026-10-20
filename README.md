@@ -8,6 +8,8 @@ Carry your own music through Valheim. Play local tracks and playlists, react to 
 
 Download `Rizias-ValheimBoombox-0.2.6.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
+FFmpeg and ffprobe are distributed under LGPL 3.0 or later. Their [complete corresponding source and build instructions](https://github.com/rizias/valheim-boombox/releases/download/v0.2.6/Rizias-ValheimBoombox-0.2.6-FFmpeg-Sources.zip) are a separate free download. You do not need to install them to use the mod.
+
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
 *A decorated boombox during playback.*
@@ -42,7 +44,7 @@ To test the complete upgrade process, follow [device levels](https://github.com/
 
 Gale, r2modman, and Thunderstore Mod Manager accept the same complete installation ZIP through local mod import. The package does not need a Thunderstore listing before you can test it.
 
-For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. The complete release includes FFmpeg tools and their source and licence materials. No music is included.
+For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. FFmpeg tools and their licenses are included. Their corresponding sources are a separate download on the release page and do not need to be installed. No music is included.
 
 ![Library with a local album, computer audio, game music, and rhythm sources](Screenshots/manual-en-library.png)
 

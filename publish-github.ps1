@@ -36,7 +36,9 @@ function Invoke-GitHubPublication {
     function Changed { @((Git @('-c','core.quotepath=false','diff','--name-only','HEAD','--')).Lines | Where-Object { $_ }) }
     function Read-Receipt([string]$Path) {
         $receipt = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json -AsHashtable
+        if (-not $receipt.ContainsKey('formatVersion') -or $receipt.formatVersion -ne 2) { throw 'Unsupported local release receipt format.' }
         if ($receipt.version -notmatch '^\d+\.\d+\.\d+$' -or $receipt.archive -ne [IO.Path]::GetFileName($receipt.archive) -or -not $receipt.archive.EndsWith('.zip')) { throw 'Invalid local release receipt identity.' }
+        if ($receipt.ffmpegSourceArchive -cne ([IO.Path]::GetFileNameWithoutExtension($receipt.archive) + '-FFmpeg-Sources.zip') -or $receipt.ffmpegSourceSha256 -notmatch '^[A-Fa-f0-9]{64}$') { throw 'Invalid local FFmpeg source receipt identity.' }
         if (@($receipt.metadata.Keys).Count -ne $metadataNames.Count) { throw 'Release receipt must contain exactly the expected version metadata files.' }
         foreach ($name in $metadataNames) {
             $entry = $receipt.metadata[$name]
@@ -66,6 +68,8 @@ function Invoke-GitHubPublication {
         if (@($dirty | Where-Object { $_ -notin $metadataNames }).Count) { throw 'Commit your public source changes before publication. Build was not started.' }
         $retry = $false
         foreach ($file in Get-ChildItem -LiteralPath (Join-Path $Root 'outputs/releases') -Filter release.json -Recurse -File -ErrorAction SilentlyContinue) {
+            $recorded = Get-Content -Raw -LiteralPath $file.FullName | ConvertFrom-Json -AsHashtable
+            if (-not $recorded.ContainsKey('formatVersion') -or $recorded.formatVersion -ne 2) { continue }
             $candidate = Read-Receipt $file.FullName
             $matches = $true
             foreach ($name in $metadataNames) {
@@ -119,8 +123,13 @@ function Invoke-GitHubPublication {
         if (@(Changed).Count -or ((Git @('symbolic-ref','--quiet','--short','HEAD')).Lines -join '') -ne $branch) { throw 'Git state changed during publication.' }
         $commit = (Git @('rev-parse','HEAD')).Lines -join ''
         $archive = Join-Path $releaseDirectory $receipt.archive
+        $sourceArchive = Join-Path $releaseDirectory $receipt.ffmpegSourceArchive
         $releaseCommit = if ($Resume) { $resumeTagCommit } else { $commit }
         $plan = [ordered]@{ repository=$repository; branch=$branch; version=$receipt.version; tag=('v' + $receipt.version); postBuildCommitSha=$commit; releaseTagCommitSha=$releaseCommit; archivePath=$archive; archiveSha256=(Hash $archive); checksumPath=($archive + '.sha256'); checksumSha256=(Hash ($archive + '.sha256')); prerelease=$false }
+        $plan.ffmpegSourceArchivePath = $sourceArchive
+        $plan.ffmpegSourceArchiveSha256 = Hash $sourceArchive
+        $plan.ffmpegSourceChecksumPath = $sourceArchive + '.sha256'
+        $plan.ffmpegSourceChecksumSha256 = Hash ($sourceArchive + '.sha256')
         $publicationPath = Join-Path $releaseDirectory 'github-publication.json'
         if (Test-Path -LiteralPath $publicationPath) {
             $saved = Get-Content -Raw -LiteralPath $publicationPath | ConvertFrom-Json -AsHashtable
@@ -161,7 +170,7 @@ function Invoke-GitHubPublication {
         if ($releases.Count -ne 1) { throw 'Created draft release could not be confirmed.' }
         $release = Read-Release $releases[0].id
         if ($release.prerelease) { throw 'Existing release is marked as a prerelease.' }
-        $assets = @($plan.archivePath,$plan.checksumPath)
+        $assets = @($plan.archivePath,$plan.checksumPath,$plan.ffmpegSourceArchivePath,$plan.ffmpegSourceChecksumPath)
         $names = @($assets | ForEach-Object { [IO.Path]::GetFileName($_) })
         if (@($release.assets | Where-Object { $_.name -cnotin $names }).Count) { throw 'Existing release has unexpected assets.' }
         foreach ($path in $assets) {
