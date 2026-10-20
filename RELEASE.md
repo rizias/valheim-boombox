@@ -17,7 +17,7 @@ Screenshots and full English and Russian player guides stay in this repository. 
 3. Wait for `Verified release` or `Reused verified release`. An error means the candidate is not ready.
 4. Take `outputs/releases/<version>/Rizias-ValheimBoombox-<version>.zip` from the printed path. Its `.zip.sha256` file sits beside it.
 
-The prepared machine already has local settings. The button compiles source, runs offline checks against that DLL, packages it and verifies ZIP contents and hashes. It does not launch Valheim, modify Gale or upload anything.
+Configure `release.local.json` using the next section before the first local build. The button compiles source, runs offline checks against that DLL, packages it and verifies ZIP contents and hashes. It does not launch Valheim, modify Gale or upload anything.
 
 Changed inputs increment the patch version by default, for example `0.2.1` to `0.2.2`. Success updates manifest, plugin version, both READMEs, player guide and changelog together. The network protocol is unchanged. An ordinary build failure leaves source version metadata unchanged. Repeating an unchanged successful request reuses the same verified archive. Earlier outputs are preserved.
 
@@ -57,7 +57,7 @@ The example JSON demonstrates path syntax. Escape Windows backslashes by doublin
 
 | Check | Expected observation |
 |---|---|
-| Equip, open F7 and inventory | Readable menu, draggable controls, no map overlap. |
+| Equip, open inventory, and click Choose music | Readable menu, draggable controls, no map overlap. |
 | Add a small local music folder, create a playlist, choose Listen to playlist | Track plays; pause/resume and reactive speakers work. |
 | Select computer audio, start an external player | Visuals follow the default Windows multimedia output without replaying captured sound. |
 | Toggle independent visuals in Effects | Selected visuals disappear independently of gameplay bonuses. |

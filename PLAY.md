@@ -67,7 +67,7 @@ The player bar under the menu contains previous track, play or pause, next track
 
 With your inventory open, the floating player provides previous, play or pause, next, repeat, mute, and volume minus or plus. It remains visible while the Boombox menu is open. Volume changes in 10% steps. Active repeat and mute buttons are highlighted. Repeat loops the current queue. The main menu bar shows the repeat state, while the floating player changes it.
 
-Drag the floating player's title bar to move it. The music-note button opens the library, and **Bonuses** opens the bonus panel. The menu header's **Player** switch shows or hides this floating panel. **Reset player** enables it and restores its automatic position beside the inventory, including after an interrupted drag. When the panel is hidden, **Choose music** remains available in the inventory. You can drag the main menu by its header and close it with **Close**.
+Drag the floating player's title bar to move it. **Choose music** opens the library, and **Bonuses** opens the bonus panel. The menu header's **Player** switch shows or hides this floating panel. **Reset player** enables it and restores its automatic position beside the inventory, including after an interrupted drag. When the panel is hidden, **Choose music** remains available in the inventory. You can drag the main menu by its header and close it with **Close**.
 
 With several devices, the floating player uses your equipped boombox first, otherwise one of your placed devices, otherwise a device in your backpack. Selecting another device in the main menu does not change that priority.
 
@@ -228,7 +228,7 @@ Recovery restores missing resources. It does not increase their maximum. These p
 
 The basic cassette costs Wood ×2, Resin ×1, and Bone Fragments ×1 at Workbench level 1. Every property upgrade below also requires Workbench level 1.
 
-Even with a host recipe override, a basic cassette requires Bone Fragments. The mod adds one if the override leaves them out. This exception does not apply to property-upgrade recipes.
+Even with a local recipe override, a basic cassette requires Bone Fragments. The mod adds one if the override leaves them out. This exception does not apply to property-upgrade recipes.
 
 | Target rank | Default materials |
 |---|---|
@@ -253,7 +253,7 @@ There are 24 positions. **Stands** contains 7 upper trophy stands. **Upper penda
 
 Slot 1, the first lower front pendant, is already unlocked and selected when you first open **Decorations**. The seven trophy stands start locked. Position numbers run from 1 to 24 across the groups. By default, the next position costs 0 Coins, then subsequent positions cost 50, 100, 150, and so on. The price depends on how many positions are already unlocked, not their position numbers. Every slot unlock requires Workbench level 1, including a free unlock.
 
-The host sets the first purchased slot's price, the increase for each later purchase, and an optional price cap. A zero cap means no cap. The price is the start price plus the step times the number of prior purchases, with a minimum of zero. The menu shows the price of your next unlock.
+The local plugin configuration sets the first purchased slot's price, the increase for each later purchase, and an optional price cap. These values are not synchronized by the server. A zero cap means no cap. The price is the start price plus the step times the number of prior purchases, with a minimum of zero. The menu shows the price of your next unlock.
 
 The miniature boombox and cassette designs are unlocked by default, including on existing devices. They never consume your boombox or cassette. For other item or trophy designs, the default unlock cost is one copy of that object, Wood ×2, and Resin ×1 at Workbench level 1. A miniature building design unlocks without material cost once you know its building recipe. A design unlock belongs to that device and can be reused in its compatible positions. Installing another copy of an unlocked design does not consume another trophy.
 

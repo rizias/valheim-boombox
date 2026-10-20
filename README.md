@@ -8,8 +8,6 @@ Carry your own music through Valheim. Play local tracks and playlists, react to 
 
 Download `Rizias-ValheimBoombox-0.2.5.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
-The ZIP contains the mod and its required audio tools. If GitHub shows 404, sign in with an account that has access while this repository is private.
-
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
 *A decorated boombox during playback.*
