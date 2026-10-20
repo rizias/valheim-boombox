@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-10-20
+
 - Remove outdated private-repository instructions from the installation README.
 - Correct music-button instructions and clarify that recipe overrides and decoration slot prices are local settings.
 
