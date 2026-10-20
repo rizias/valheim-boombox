@@ -1,5 +1,6 @@
 param(
     [switch]$CheckOnly,
+    [switch]$Resume,
     [ValidateSet('Patch','Minor','Major')][string]$Increment = 'Patch',
     [string]$Version,
     [string]$SettingsPath = (Join-Path $PSScriptRoot 'release.local.json')
@@ -25,7 +26,7 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
 }
 
 function Invoke-GitHubPublication {
-    param([string]$Root = $PSScriptRoot, [string]$SettingsPath = (Join-Path $Root 'release.local.json'), [switch]$CheckOnly, [string]$Increment = 'Patch', [string]$Version)
+    param([string]$Root = $PSScriptRoot, [string]$SettingsPath = (Join-Path $Root 'release.local.json'), [switch]$CheckOnly, [switch]$Resume, [string]$Increment = 'Patch', [string]$Version)
     Set-StrictMode -Version Latest
     $Root = [IO.Path]::GetFullPath($Root)
     $metadataNames = @('manifest.json','src/BoomboxNetworkProtocol.cs','README.md','README.ru.md','PLAY.md','PLAY.ru.md','CHANGELOG.md','CHANGELOG.ru.md')
@@ -77,6 +78,15 @@ function Invoke-GitHubPublication {
     }
     $settings = Get-Content -Raw -LiteralPath $SettingsPath | ConvertFrom-Json -AsHashtable
     if (-not $settings.PwshPath -or -not (Test-Path -LiteralPath $settings.PwshPath -PathType Leaf)) { throw 'Set PwshPath in release.local.json to your PowerShell 7 executable.' }
+    $resumeTagCommit = $null
+    if ($Resume) {
+        $current = (Get-Content -Raw -LiteralPath (Join-Path $Root 'manifest.json') | ConvertFrom-Json).version_number
+        if ($Version -cne $current) { throw 'Resume requires the current source version explicitly.' }
+        $resumeTagCommit = (Git @('rev-parse','--verify',('refs/tags/v' + $Version + '^{commit}'))).Lines -join ''
+        $infrastructure = @('publish-github.ps1','release.ps1','tools/release/prepare-hosted.ps1','.github/workflows/release.yml','tests/offline/github-publication-check.ps1','RELEASE.md','RELEASE.ru.md')
+        $changedSinceTag = @((Git @('diff','--name-only',$resumeTagCommit,'HEAD')).Lines | Where-Object { $_ })
+        if (@($changedSinceTag | Where-Object { $_ -notin $infrastructure }).Count) { throw 'Cannot resume: product files differ from the existing release tag.' }
+    }
     if ($CheckOnly) { return ('Publication preflight passed for ' + $repository + ' on ' + $branch + '. No build or remote write performed.') }
     $outputRoot = Join-Path $Root 'outputs'
     [IO.Directory]::CreateDirectory($outputRoot) | Out-Null
@@ -85,6 +95,7 @@ function Invoke-GitHubPublication {
     try {
         $arguments = @('-NoProfile','-NonInteractive','-File',(Join-Path $Root 'release.ps1'),'-SettingsPath',$SettingsPath,'-Increment',$Increment)
         if ($Version) { $arguments += @('-Version',$Version) }
+        if ($Resume) { $arguments += '-Rebuild' }
         Invoke-PublicationCommand $settings.PwshPath $arguments | Out-Null
         $versionNow = (Get-Content -Raw -LiteralPath (Join-Path $Root 'manifest.json') | ConvertFrom-Json).version_number
         $releaseDirectory = Join-Path $Root ('outputs/releases/' + $versionNow)
@@ -101,40 +112,54 @@ function Invoke-GitHubPublication {
         $dirty = @(Changed)
         if (@($dirty | Where-Object { $_ -notin $metadataNames }).Count -or @((Git @('diff','--cached','--name-only')).Lines | Where-Object { $_ }).Count -or @((Git @('ls-files','--others','--exclude-standard')).Lines | Where-Object { $_ }).Count) { throw 'Public source changed during build. Nothing was committed or uploaded.' }
         if (((Git @('rev-parse','HEAD')).Lines -join '') -ne ($head.Lines -join '') -or ((Git @('symbolic-ref','--quiet','--short','HEAD')).Lines -join '') -cne $branch) { throw 'HEAD or branch changed during the build. Nothing was committed or uploaded.' }
+        if ($Resume -and $dirty.Count) { throw 'A resumed build must not change source metadata.' }
         if ($dirty.Count) {
             Git (@('commit','-m',('Release ' + $receipt.version),'--only','--') + $dirty) | Out-Null
         }
         if (@(Changed).Count -or ((Git @('symbolic-ref','--quiet','--short','HEAD')).Lines -join '') -ne $branch) { throw 'Git state changed during publication.' }
         $commit = (Git @('rev-parse','HEAD')).Lines -join ''
         $archive = Join-Path $releaseDirectory $receipt.archive
-        $plan = [ordered]@{ repository=$repository; branch=$branch; version=$receipt.version; tag=('v' + $receipt.version); postBuildCommitSha=$commit; archivePath=$archive; archiveSha256=(Hash $archive); checksumPath=($archive + '.sha256'); checksumSha256=(Hash ($archive + '.sha256')); prerelease=$true }
+        $releaseCommit = if ($Resume) { $resumeTagCommit } else { $commit }
+        $plan = [ordered]@{ repository=$repository; branch=$branch; version=$receipt.version; tag=('v' + $receipt.version); postBuildCommitSha=$commit; releaseTagCommitSha=$releaseCommit; archivePath=$archive; archiveSha256=(Hash $archive); checksumPath=($archive + '.sha256'); checksumSha256=(Hash ($archive + '.sha256')); prerelease=$true }
         $publicationPath = Join-Path $releaseDirectory 'github-publication.json'
         if (Test-Path -LiteralPath $publicationPath) {
             $saved = Get-Content -Raw -LiteralPath $publicationPath | ConvertFrom-Json -AsHashtable
-            if ($saved.plan.Count -ne $plan.Count -or @($plan.Keys | Where-Object { $saved.plan[$_] -cne $plan[$_] }).Count) { throw 'Publication receipt identity differs. Refusing to change its repository, commit or assets.' }
+            if ($saved.plan.Count -ne $plan.Count -or @($plan.Keys | Where-Object { -not ($Resume -and $_ -eq 'postBuildCommitSha') -and $saved.plan[$_] -cne $plan[$_] }).Count) { throw 'Publication receipt identity differs. Refusing to change its repository, commit or assets.' }
         } else { [IO.File]::WriteAllText($publicationPath, (@{plan=$plan; url=$null} | ConvertTo-Json -Depth 5)) }
         $remote = (Git @('ls-remote','--tags','origin',('refs/tags/' + $plan.tag),('refs/tags/' + $plan.tag + '^{}'))).Lines
         $remoteCommits = @($remote | Where-Object { $_ } | ForEach-Object { ($_ -split '\s+')[0] })
-        if ($remoteCommits.Count -and $remoteCommits[-1] -ne $commit) { throw 'Remote release tag points to another commit. No release was uploaded.' }
+        if ($remoteCommits.Count -and $remoteCommits[-1] -ne $releaseCommit) { throw 'Remote release tag points to another commit. No release was uploaded.' }
+        if ($Resume -and -not $remoteCommits.Count) { throw 'Cannot resume without the existing remote release tag.' }
         $localTag = Git @('rev-parse','--verify',('refs/tags/' + $plan.tag + '^{commit}')) -AllowFailure
-        if ($localTag.Code -eq 0 -and ($localTag.Lines -join '') -ne $commit) { throw 'Local release tag points to another commit.' }
+        if ($localTag.Code -eq 0 -and ($localTag.Lines -join '') -ne $releaseCommit) { throw 'Local release tag points to another commit.' }
         if (((Git @('remote','get-url','origin')).Lines -join '') -cne $origin -or ((Git @('remote','get-url','--push','--all','origin')).Lines -join '') -cne $pushOrigins[0]) { throw 'Origin changed during publication. No push was performed.' }
-        if ($localTag.Code -ne 0) { Git @('tag',$plan.tag,$commit) | Out-Null }
-        Git @('push','origin',($commit + ':refs/heads/' + $branch),('refs/tags/' + $plan.tag + ':refs/tags/' + $plan.tag)) | Out-Null
+        if (-not $Resume) {
+            if ($localTag.Code -ne 0) { Git @('tag',$plan.tag,$commit) | Out-Null }
+            Git @('push','origin',($commit + ':refs/heads/' + $branch),('refs/tags/' + $plan.tag + ':refs/tags/' + $plan.tag)) | Out-Null
+        }
         $pushedTag = @((Git @('ls-remote','--tags','origin',('refs/tags/' + $plan.tag),('refs/tags/' + $plan.tag + '^{}'))).Lines | Where-Object { $_ })
-        if (-not $pushedTag.Count -or (($pushedTag[-1] -split '\s+')[0]) -ne $commit) { throw 'Remote tag does not confirm the post-build commit. No release was uploaded.' }
+        if (-not $pushedTag.Count -or (($pushedTag[-1] -split '\s+')[0]) -ne $releaseCommit) { throw 'Remote tag does not confirm the release commit. No release was uploaded.' }
         function Find-Release {
             $pages = ((Gh @('api',('repos/' + $repository + '/releases?per_page=100'),'--paginate','--slurp')).Lines -join "`n") | ConvertFrom-Json
             @($pages | ForEach-Object { $_ } | ForEach-Object { $_ } | Where-Object { $_.tag_name -ceq $plan.tag })
         }
+        function Read-Release([long]$Id) {
+            $value = ((Gh @('api',('repos/' + $repository + '/releases/' + $Id))).Lines -join "`n") | ConvertFrom-Json
+            if ($value.tag_name -cne $plan.tag) { throw 'GitHub release ID belongs to another tag.' }
+            $value
+        }
         $releases = @(Find-Release)
         if ($releases.Count -gt 1) { throw 'Multiple GitHub releases use the requested tag.' }
         if (-not $releases.Count) {
-            Gh @('release','create',$plan.tag,'--repo',$repository,'--draft','--prerelease','--verify-tag','--target',$plan.postBuildCommitSha,'--latest=false','--title',('Valheim Boombox ' + $plan.version),'--notes-file',$notesPath) | Out-Null
-            $releases = @(Find-Release)
+            if ($Resume) { throw 'Cannot resume: existing draft release was not found.' }
+            $requestPath = Join-Path $releaseDirectory 'github-create.json'
+            $request = @{tag_name=$plan.tag;target_commitish=$releaseCommit;name=('Valheim Boombox ' + $plan.version);body=$notes;draft=$true;prerelease=$true;make_latest='false'}
+            [IO.File]::WriteAllText($requestPath,($request | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
+            $created = ((Gh @('api','--method','POST',('repos/' + $repository + '/releases'),'--input',$requestPath)).Lines -join "`n") | ConvertFrom-Json
+            $releases = @($created)
         }
         if ($releases.Count -ne 1) { throw 'Created draft release could not be confirmed.' }
-        $release = $releases[0]
+        $release = Read-Release $releases[0].id
         if ($release.prerelease -ne $true) { throw 'Existing release is not an alpha prerelease.' }
         $assets = @($plan.archivePath,$plan.checksumPath)
         $names = @($assets | ForEach-Object { [IO.Path]::GetFileName($_) })
@@ -146,7 +171,7 @@ function Invoke-GitHubPublication {
             if (-not $matching.Count) {
                 if (-not $release.draft) { throw ('Published release is missing asset: ' + $name) }
                 Gh @('release','upload',$plan.tag,$path,'--repo',$repository) | Out-Null
-                $release = @(Find-Release)[0]
+                $release = Read-Release $release.id
                 $matching = @($release.assets | Where-Object { $_.name -ceq $name })
             }
             if ($matching.Count -ne 1 -or $matching[0].state -ne 'uploaded') { throw ('GitHub asset upload was not confirmed: ' + $name) }
@@ -156,7 +181,7 @@ function Invoke-GitHubPublication {
             if (-not $digest -or $digest.Value -cne $expected) { throw ('GitHub asset SHA256 is missing or mismatched: ' + $name + '. Draft was not published; assets were not overwritten.') }
         }
         if ($release.draft) { Gh @('release','edit',$plan.tag,'--repo',$repository,'--draft=false','--prerelease','--latest=false') | Out-Null }
-        $release = @(Find-Release)[0]
+        $release = Read-Release $release.id
         if ($release.draft -or -not $release.prerelease) { throw 'GitHub did not confirm a published prerelease.' }
         [IO.File]::WriteAllText($publicationPath, (@{plan=$plan; url=$release.html_url} | ConvertTo-Json -Depth 5))
         return $release.html_url
@@ -164,4 +189,4 @@ function Invoke-GitHubPublication {
     finally { $lock.Dispose() }
 }
 
-if ($MyInvocation.InvocationName -ne '.') { Invoke-GitHubPublication -SettingsPath $SettingsPath -CheckOnly:$CheckOnly -Increment $Increment -Version $Version }
+if ($MyInvocation.InvocationName -ne '.') { Invoke-GitHubPublication -SettingsPath $SettingsPath -CheckOnly:$CheckOnly -Resume:$Resume -Increment $Increment -Version $Version }

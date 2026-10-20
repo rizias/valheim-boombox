@@ -88,6 +88,7 @@ jobs:
       - name: Build, verify and publish prerelease
         env:
           RELEASE_VERSION: ${{ steps.plan.outputs.version }}
+          RELEASE_RESUME: ${{ steps.plan.outputs.resume }}
         run: |
           ./publish-github.ps1 -CheckOnly
-          ./publish-github.ps1 -Version $env:RELEASE_VERSION
+          ./publish-github.ps1 -Version $env:RELEASE_VERSION -Resume:($env:RELEASE_RESUME -eq 'true')

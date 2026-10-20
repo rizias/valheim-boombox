@@ -19,7 +19,7 @@ function New-Fixture([string]$Name) {
     [IO.File]::WriteAllText((Join-Path $root 'manifest.json'), '{"version_number":"1.0.0"}')
     $script:settingsFile = Join-Path $root 'release.local.json'
     [IO.File]::WriteAllText($settingsFile, (@{PwshPath=(Get-Process -Id $PID).Path} | ConvertTo-Json))
-    $script:state = @{head=('a' * 40); branch='main'; origin='https://github.com/example/boombox.git'; pushOrigin=''; auth=$true; dirty=@(); staged=@(); untracked=@(); build=0; verify=0; pushes=0; creates=0; uploads=0; publishes=0; commits=0; remoteTag=''; localTag=''; release=$null; failVerify=$false; failUpload=$false; failCommit=$false}
+    $script:state = @{head=('a' * 40); branch='main'; origin='https://github.com/example/boombox.git'; pushOrigin=''; auth=$true; dirty=@(); staged=@(); untracked=@(); build=0; verify=0; pushes=0; creates=0; uploads=0; publishes=0; commits=0; remoteTag=''; localTag=''; release=$null; failVerify=$false; failUpload=$false; failCommit=$false;hideNewRelease=$false;infrastructureDiff=@()}
 }
 function Fake-Build {
     $state.build++
@@ -59,6 +59,7 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
             'symbolic-ref*' { $lines = @($state.branch) }
             'remote get-url*' { $lines = @(if ($a -contains '--push' -and $state.pushOrigin) { $state.pushOrigin } else { $state.origin }) }
             'diff --cached --name-only' { $lines = $state.staged }
+            'diff --name-only *' { $lines = $state.infrastructureDiff }
             'ls-files*' { $lines = $state.untracked }
             '-c core.quotepath=false diff*' { $lines = $state.dirty }
             'commit *' { Assert ($a[3] -eq '--only' -and $a[4] -eq '--') 'Metadata commit must not stage source files'; Assert (@($a | Select-Object -Skip 5 | Where-Object { $_ -notin $metadata }).Count -eq 0) 'Committed a file outside release metadata'; if ($state.failCommit) { throw 'Fixture metadata commit failed' }; $state.commits++; $state.head = 'b' * 40; $state.dirty = @(); $state.staged = @() }
@@ -75,8 +76,9 @@ function Invoke-PublicationCommand([string]$Tool, [string[]]$Arguments, [switch]
             '--version' { $lines = @('gh fixture') }
             'auth status*' { if (-not $state.auth) { $code = 1 } }
             'api repos/example/boombox --silent' { }
-            'api repos/example/boombox/releases?per_page=100*' { Assert ($a -contains '--paginate' -and $a -contains '--slurp') 'Release listing must include all pages'; $items = @($state.release | Where-Object { $null -ne $_ }); $pages = [Collections.Generic.List[object]]::new(); $pages.Add(@()); $pages.Add($items); $lines = @((ConvertTo-Json -InputObject $pages -Depth 8 -Compress)) }
-            'release create *' { Assert ($a -contains '--draft') 'Release was not created as draft'; Assert ($a -contains '--verify-tag') 'Tag verification missing'; $notesIndex = [array]::IndexOf($a, '--notes-file'); Assert ($notesIndex -ge 0 -and (Get-Content -Raw -LiteralPath $a[$notesIndex+1]) -match 'Publish the selected version automatically') 'Release notes do not come from CHANGELOG'; $state.creates++; $state.release = [pscustomobject]@{id=1; tag_name='v1.0.1'; draft=$true; prerelease=$true; assets=@(); html_url='https://github.com/example/boombox/releases/tag/v1.0.1'} }
+            'api repos/example/boombox/releases?per_page=100*' { Assert ($a -contains '--paginate' -and $a -contains '--slurp') 'Release listing must include all pages'; $items = @($state.release | Where-Object { $null -ne $_ -and -not ($state.hideNewRelease -and $state.creates) }); $pages = [Collections.Generic.List[object]]::new(); $pages.Add(@()); $pages.Add($items); $lines = @((ConvertTo-Json -InputObject $pages -Depth 8 -Compress)) }
+            'api --method POST repos/example/boombox/releases --input *' { $request=Get-Content -Raw -LiteralPath $a[-1]|ConvertFrom-Json;Assert ($request.draft -and $request.prerelease) 'Release was not created as alpha draft';Assert ($state.remoteTag -eq $request.target_commitish) 'Release does not target the verified remote tag';Assert ($request.body -match 'Publish the selected version automatically') 'Release notes do not come from CHANGELOG';$state.creates++;$state.release=[pscustomobject]@{id=1;tag_name='v1.0.1';draft=$true;prerelease=$true;assets=@();html_url='https://github.com/example/boombox/releases/tag/v1.0.1'};$lines=@($state.release|ConvertTo-Json -Depth 8 -Compress) }
+            'api repos/example/boombox/releases/1' { $lines=@($state.release|ConvertTo-Json -Depth 8 -Compress) }
             'release upload *' { if ($state.failUpload) { throw 'Fixture upload failed' }; $state.uploads++; $state.release.assets += Asset $a[3] }
             'release edit *' { Assert ($state.release.assets.Count -eq 2) 'Published before both assets existed'; Assert ($a -contains '--draft=false') 'Unexpected release edit'; $state.publishes++; $state.release.draft = $false }
             default { throw ('Unexpected fixture gh call: ' + $key) }
@@ -162,6 +164,32 @@ foreach ($case in @('dirty-source','dirty-metadata','staged','untracked','auth',
     try { Run | Out-Null } catch { $refused = $true }
     Assert ($refused -and $state.build -eq 0 -and $state.commits -eq 0 -and $state.pushes -eq 0) ('Preflight did not refuse before build: ' + $case)
 }
+New-Fixture 'draft-list-not-updated'
+$state.hideNewRelease=$true
+$url=Run
+Assert ($state.publishes -eq 1 -and $state.creates -eq 1 -and $state.uploads -eq 2) 'Draft creation depends on a refreshed release listing'
+
+New-Fixture 'resume-existing-draft'
+$state.failUpload=$true
+Reject 'Fixture upload failed'
+$state.failUpload=$false
+$state.head='c'*40
+$state.infrastructureDiff=@('publish-github.ps1')
+$oldPushes=$state.pushes
+$oldCommits=$state.commits
+Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile -Version '1.0.1' -Resume | Out-Null
+Assert ($state.publishes -eq 1 -and $state.creates -eq 1 -and $state.pushes -eq $oldPushes -and $state.commits -eq $oldCommits -and $state.remoteTag -eq ('b'*40)) 'Resuming changed the version/tag or created another release'
+
+New-Fixture 'resume-refuses-product-changes'
+$state.failUpload=$true
+Reject 'Fixture upload failed'
+$state.failUpload=$false
+$state.head='c'*40
+$state.infrastructureDiff=@('src/AudioDeck.cs')
+$refused=$false
+try { Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile -Version '1.0.1' -Resume | Out-Null } catch { $refused=$_.Exception.Message -like '*product files differ*' }
+Assert ($refused -and $state.publishes -eq 0 -and $state.remoteTag -eq ('b'*40)) 'Product changes were allowed under the old tag'
+
 New-Fixture 'check-only'
 $before = @(Get-ChildItem -LiteralPath $root -File -Recurse | ForEach-Object { $_.FullName + '=' + (Get-FileHash -LiteralPath $_.FullName).Hash }) -join "`n"
 Invoke-GitHubPublication -Root $root -SettingsPath $settingsFile -CheckOnly | Out-Null

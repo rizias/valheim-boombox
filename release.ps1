@@ -1,6 +1,7 @@
 param(
     [ValidateSet('Patch','Minor','Major')][string]$Increment = 'Patch',
     [string]$Version,
+    [switch]$Rebuild,
     [string]$SettingsPath = (Join-Path $PSScriptRoot 'release.local.json')
 )
 $ErrorActionPreference = 'Stop'
@@ -123,7 +124,10 @@ try {
             'Patch' { '{0}.{1}.{2}' -f $currentVersion.Major, $currentVersion.Minor, ($currentVersion.Build + 1) }
         }
     }
-    if ($Version -notmatch '^\d+\.\d+\.\d+$' -or [version]$Version -le $currentVersion) { throw 'Release version must be major.minor.patch and greater than the source version.' }
+    if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Release version must be major.minor.patch.' }
+    if ($Rebuild) {
+        if ([version]$Version -ne $currentVersion) { throw 'Rebuild requires the current source version.' }
+    } elseif ([version]$Version -le $currentVersion) { throw 'Release version must be greater than the source version.' }
     $versionRoot = Join-Path $releaseRoot $Version
     if (Test-Path -LiteralPath $versionRoot) { throw ('Release destination already exists. Preserved files: ' + $versionRoot) }
     $initialFingerprint = Get-ReleaseFingerprint
@@ -142,6 +146,7 @@ try {
                 $text = [regex]::Replace($text, '(public const string Version = ")[^"]+(";)', ('${1}' + $Version + '${2}'))
             }
             'CHANGELOG.md' {
+                if ($Rebuild) { break }
                 if ($text -notmatch '^# Changelog\r?\n') { throw 'Expected # Changelog heading.' }
                 $newline = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
                 $heading = '## [' + $Version + '] - ' + [DateTime]::UtcNow.ToString('yyyy-MM-dd')
@@ -152,6 +157,7 @@ try {
                 }
             }
             'CHANGELOG.ru.md' {
+                if ($Rebuild) { break }
                 $newline = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
                 $heading = '## [' + $Version + '] - ' + [DateTime]::UtcNow.ToString('yyyy-MM-dd')
                 $text = [regex]::Replace($text, '(?m)^(## \[Не выпущено\])\r?$', ('${1}' + $newline + $newline + $heading))
