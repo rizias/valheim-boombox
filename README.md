@@ -1,6 +1,6 @@
 # Valheim Boombox
 
-[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.3 alpha · By **Rizias**
+[Русский](https://github.com/rizias/valheim-boombox/blob/main/README.ru.md) · Windows x64 · 0.2.4 alpha · By **Rizias**
 
 Carry your own music through Valheim. Play local tracks and playlists, react to other Windows audio, and turn music events into enemy waves, equipment charge, and nearby party bonuses.
 

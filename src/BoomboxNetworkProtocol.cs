@@ -6,7 +6,7 @@ namespace VikingBoombox
     public static class BoomboxNetworkProtocol
     {
         public const string Guid = "local.valheim.boombox";
-        public const string Version = "0.2.3";
+        public const string Version = "0.2.4";
         public const int Protocol = 5;
         internal static string LastReason;
         internal static ZPackage Hello()

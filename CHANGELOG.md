@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-10-20
+
 - Keep screenshots and full player guides on GitHub; use GitHub links in the install package README.
 - Separate English and Russian documentation and distinguish local crafting settings from shared host settings.
 - Allow release dispatch for public and private repositories without changing GitHub authentication.
