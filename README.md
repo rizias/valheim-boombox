@@ -4,6 +4,12 @@
 
 Carry your own music through Valheim. Play local tracks and playlists, react to other Windows audio, and turn music events into enemy waves, equipment charge, and nearby party bonuses.
 
+**[Download Valheim Boombox 0.2.4 for Windows](https://github.com/rizias/valheim-boombox/releases/download/v0.2.4/Rizias-ValheimBoombox-0.2.4.zip)** · [All releases, including test builds](https://github.com/rizias/valheim-boombox/releases) · [Install with Gale](#install-and-start)
+
+Download `Rizias-ValheimBoombox-0.2.4.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
+
+**Pre-release** means this is an alpha build for testing. You can download and install it. This package passed automated build and offline checks; it has not yet been accepted through manual testing in Valheim. If GitHub shows 404, sign in with an account that has access while this repository is private.
+
 ![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
 
 *A decorated boombox during playback.*
@@ -25,11 +31,18 @@ Music stays local to each player. Multiplayer shares gameplay and appearance dat
 
 ## Install and start
 
-1. Install BepInExPack Valheim 5.4.2351 in a Valheim mod-manager profile.
-2. Import the complete release ZIP through local mod import in Gale, r2modman, or Thunderstore Mod Manager. Launch modded.
-3. Craft the first device and a basic cassette at Workbench level 1. The [guide lists the materials](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#install-and-start-your-first-track).
-4. In your inventory, right-click the cassette to insert it, then equip the boombox.
-5. Click **Choose music**, open **Folders**, and add your music folder. After the scan, play a track from **Library**.
+1. Download the installation ZIP using the link above. Keep the ZIP intact for import.
+2. In Gale, select **Valheim**. For a separate test setup, choose **Profile → Create new profile** and name it `Boombox Test`.
+3. Install **BepInExPack Valheim 5.4.2351** in that profile.
+4. Choose **Import → …local mod**, then select `Rizias-ValheimBoombox-0.2.4.zip`. Check that the profile contains one enabled Valheim Boombox entry at version **0.2.4**.
+5. Click **Launch modded** in Gale.
+6. At Workbench level 1, craft the first device and a basic cassette. The [guide lists the materials](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#install-and-start-your-first-track).
+7. In your inventory, right-click the cassette to insert it, then equip the boombox.
+8. Click **Choose music**, open **Folders**, and add your music folder. After the scan, play a track from **Library**.
+
+To test the complete upgrade process, follow [device levels](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#upgrade-the-device) and [cassette properties](https://github.com/rizias/valheim-boombox/blob/main/PLAY.md#improve-a-cassette). A separate mod profile does not isolate Valheim saves. The [local testing instructions](https://github.com/rizias/valheim-boombox/blob/main/RELEASE.md#test-locally-with-gale-before-publishing) explain how to use a separate save folder.
+
+Gale, r2modman, and Thunderstore Mod Manager accept the same complete installation ZIP through local mod import. The package does not need a Thunderstore listing before you can test it.
 
 For manual installation, copy the release's `BepInEx` tree into an existing BepInEx installation and retain its subfolders. Keep one plugin DLL. The source-code ZIP is not the release package. The complete release includes FFmpeg tools and their source and licence materials. No music is included.
 
