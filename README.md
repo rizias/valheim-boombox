@@ -8,7 +8,7 @@ Carry your own music through Valheim. Play local tracks and playlists, react to 
 
 Download `Rizias-ValheimBoombox-0.2.8.zip`. This is the complete installation package. GitHub's **Source code** downloads contain the source project instead.
 
-![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox-showcase.png)
+![A playing boombox with trophy heads, pendants, glowing mushrooms, and runes](Screenshots/boombox.gif)
 
 *A decorated boombox during playback.*
 
@@ -26,6 +26,8 @@ Download `Rizias-ValheimBoombox-0.2.8.zip`. This is the complete installation pa
 - Preview five music effects, pick colours, control 13 groups of world visuals, and move the player and bonus HUD.
 
 Music stays local to each player. Multiplayer shares gameplay and appearance data. English and Russian menus follow Valheim's language. A supported Extra Slots version provides a dedicated equipment slot.
+
+![Five selectable music effects](Screenshots/effects.gif)
 
 ## Install and start
 
